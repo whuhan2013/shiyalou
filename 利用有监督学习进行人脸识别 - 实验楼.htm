@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<!-- saved from url=(0056)https://www.shiyanlou.com/courses/707/labs/2301/document -->
+<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style class="vjs-styles-defaults">
+      .video-js {
+        width: 300px;
+        height: 150px;
+      }
+
+      .vjs-fluid {
+        padding-top: 56.25%
+      }
+    </style>
+	
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="author" content="Lei Shi">
+    <meta http-equiv="Cache-Control" content="o-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+	
+		
+        <title>利用有监督学习进行人脸识别 - 实验楼</title>
+		
+	
+
+    
+    <meta content="实验楼是国内领先的IT技术实训平台，创新的实验驱动教学模式，以就业为导向，为IT相关专业的在校学生及从业者提供编程、运维、测试、云计算、大数据、数据库等全面的IT技术动手实践环境，提供Linux、Python、Java、C语言、Ruby、Android、IOS开发等热门课程。" name="description">
+    <meta content="实验楼,IT培训,IT教育,编程,在线编程,Linux,Linux教程,Linux操作系统,Python,Python教程,Python基础教程,Java,Java编程,C语言,大数据,Node.js,Hadoop,PHP,Docker" name="keywords">
+    
+    <meta content="实验楼,琛石科技" name="author">
+
+	<link rel="shortcut icon" href="https://static.shiyanlou.com/favicon.ico">
+	<link rel="stylesheet" href="./利用有监督学习进行人脸识别 - 实验楼_files/font-awesome.min.css">
+    <link rel="stylesheet" href="./利用有监督学习进行人脸识别 - 实验楼_files/monokai-sublime.min.css">
+    <link rel="stylesheet" href="./利用有监督学习进行人脸识别 - 实验楼_files/bootstrap.min.css">
+    <link rel="stylesheet" href="./利用有监督学习进行人脸识别 - 实验楼_files/katex.min.css">
+    <link rel="stylesheet" href="./利用有监督学习进行人脸识别 - 实验楼_files/video-js.min.css">
+	<link rel="stylesheet" href="./利用有监督学习进行人脸识别 - 实验楼_files/styles.css">
+
+	<style>
+		@font-face {
+			font-family: "lantingxihei";
+			src: url("https://static.shiyanlou.com/fonts/FZLTCXHJW.TTF");
+		}
+
+        /* modal 模态框*/
+        #invite-user .modal-body {
+            overflow: hidden;
+        }
+		#invite-user .modal-body .form-label {
+			margin-bottom: 16px;
+			font-size:14px;
+		}
+		#invite-user .modal-body .form-invite {
+			width: 80%;
+			padding: 6px 12px;
+			background-color: #eeeeee;
+			border: 1px solid #cccccc;
+			border-radius: 5px;
+			float: left;
+			margin-right: 10px;
+		}
+		#invite-user .modal-body .msg-modal-style {
+			background-color: #7dd383;
+			margin-top: 10px;
+			padding: 6px 0;
+			text-align: center;
+			width: 100%;
+		}
+		#invite-user .modal-body .modal-flash {
+			position: absolute;
+			top: 53px;
+			right: 74px;
+			z-index: 999;
+		}
+		/* end modal */
+
+        .en-footer {
+            padding: 30px;
+            text-align: center;
+            font-size: 14px;
+        }
+    </style>
+	
+<style>
+    #editor {
+        width: 0;
+		height: 0;
+		margin: 0;
+		padding: 0;
+		border: none;
+    }
+    #preview {
+        padding: 20px;
+        background: #fff;
+        border: solid 1px #eee;
+    }
+	#preview p,
+	#preview li,
+	#preview span,
+	#preview div,
+	#preview blockquote,
+	#preview blockquote	p {
+		font-size: 15px;
+        font-weight: 100;
+	}
+	#preview blockquote p {
+		line-height: 1.6em;
+	}
+    .mobile-alert {
+        display: none;
+        margin-top: 10px;
+        font-size: 16px;
+        text-align: center;
+    }
+    .breadcrumb {
+        border-bottom: solid 1px #eee;
+    }
+    @media (max-width: 768px) {
+        .mobile-alert {
+            display: block;
+        }
+        #preview p,
+        #preview li,
+        #preview span,
+        #preview div,
+        #preview blockquote,
+        #preview blockquote	p {
+            font-weight: 500;
+        }
+    }
+    .start-lab {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 10px 0;
+        text-align: center;
+        box-shadow: 0 2px 4px 2px #eee;
+        background: #274a59;
+        z-index: 100;
+    }
+    .start-lab span {
+        position: relative;
+        top: 4px;
+        color: #fff;
+        font-size: 16px;
+    }
+    .start-lab .btn {
+        margin-left: 10px;
+        padding: 6px 50px;
+        background: #0c9;
+        font-size: 18px;
+        border-color: #0c9;
+    }
+    @media (max-width: 768px) {
+        .start-lab .btn {
+            margin-top: 10px;
+        }
+    }
+    .course-warning {
+        margin-top: 10px;
+        text-align: center;
+        font-size: 16px;
+    }
+    .course-warning a {
+        padding: 6px 50px;
+        font-size: 16px;
+    }
+
+    .info-panel {
+        position: relative;
+        top: 0;
+        background: cornsilk;
+    }
+    .info-panel div {
+        margin-bottom: 10px;
+        font-size: 16px;
+    }
+    .info-panel .btn {
+        margin-top: 10px;
+        border-radius: 4px;
+    }
+    
+</style>
+
+
+	
+    
+<style id="ace_editor.css">.ace_editor {position: relative;overflow: hidden;font: 12px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;direction: ltr;text-align: left;}.ace_scroller {position: absolute;overflow: hidden;top: 0;bottom: 0;background-color: inherit;-ms-user-select: none;-moz-user-select: none;-webkit-user-select: none;user-select: none;cursor: text;}.ace_content {position: absolute;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;min-width: 100%;}.ace_dragging .ace_scroller:before{position: absolute;top: 0;left: 0;right: 0;bottom: 0;content: '';background: rgba(250, 250, 250, 0.01);z-index: 1000;}.ace_dragging.ace_dark .ace_scroller:before{background: rgba(0, 0, 0, 0.01);}.ace_selecting, .ace_selecting * {cursor: text !important;}.ace_gutter {position: absolute;overflow : hidden;width: auto;top: 0;bottom: 0;left: 0;cursor: default;z-index: 4;-ms-user-select: none;-moz-user-select: none;-webkit-user-select: none;user-select: none;}.ace_gutter-active-line {position: absolute;left: 0;right: 0;}.ace_scroller.ace_scroll-left {box-shadow: 17px 0 16px -16px rgba(0, 0, 0, 0.4) inset;}.ace_gutter-cell {padding-left: 19px;padding-right: 6px;background-repeat: no-repeat;}.ace_gutter-cell.ace_error {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAABOFBMVEX/////////QRswFAb/Ui4wFAYwFAYwFAaWGAfDRymzOSH/PxswFAb/SiUwFAYwFAbUPRvjQiDllog5HhHdRybsTi3/Tyv9Tir+Syj/UC3////XurebMBIwFAb/RSHbPx/gUzfdwL3kzMivKBAwFAbbvbnhPx66NhowFAYwFAaZJg8wFAaxKBDZurf/RB6mMxb/SCMwFAYwFAbxQB3+RB4wFAb/Qhy4Oh+4QifbNRcwFAYwFAYwFAb/QRzdNhgwFAYwFAbav7v/Uy7oaE68MBK5LxLewr/r2NXewLswFAaxJw4wFAbkPRy2PyYwFAaxKhLm1tMwFAazPiQwFAaUGAb/QBrfOx3bvrv/VC/maE4wFAbRPBq6MRO8Qynew8Dp2tjfwb0wFAbx6eju5+by6uns4uH9/f36+vr/GkHjAAAAYnRSTlMAGt+64rnWu/bo8eAA4InH3+DwoN7j4eLi4xP99Nfg4+b+/u9B/eDs1MD1mO7+4PHg2MXa347g7vDizMLN4eG+Pv7i5evs/v79yu7S3/DV7/498Yv24eH+4ufQ3Ozu/v7+y13sRqwAAADLSURBVHjaZc/XDsFgGIBhtDrshlitmk2IrbHFqL2pvXf/+78DPokj7+Fz9qpU/9UXJIlhmPaTaQ6QPaz0mm+5gwkgovcV6GZzd5JtCQwgsxoHOvJO15kleRLAnMgHFIESUEPmawB9ngmelTtipwwfASilxOLyiV5UVUyVAfbG0cCPHig+GBkzAENHS0AstVF6bacZIOzgLmxsHbt2OecNgJC83JERmePUYq8ARGkJx6XtFsdddBQgZE2nPR6CICZhawjA4Fb/chv+399kfR+MMMDGOQAAAABJRU5ErkJggg==");background-repeat: no-repeat;background-position: 2px center;}.ace_gutter-cell.ace_warning {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAmVBMVEX///8AAAD///8AAAAAAABPSzb/5sAAAAB/blH/73z/ulkAAAAAAAD85pkAAAAAAAACAgP/vGz/rkDerGbGrV7/pkQICAf////e0IsAAAD/oED/qTvhrnUAAAD/yHD/njcAAADuv2r/nz//oTj/p064oGf/zHAAAAA9Nir/tFIAAAD/tlTiuWf/tkIAAACynXEAAAAAAAAtIRW7zBpBAAAAM3RSTlMAABR1m7RXO8Ln31Z36zT+neXe5OzooRDfn+TZ4p3h2hTf4t3k3ucyrN1K5+Xaks52Sfs9CXgrAAAAjklEQVR42o3PbQ+CIBQFYEwboPhSYgoYunIqqLn6/z8uYdH8Vmdnu9vz4WwXgN/xTPRD2+sgOcZjsge/whXZgUaYYvT8QnuJaUrjrHUQreGczuEafQCO/SJTufTbroWsPgsllVhq3wJEk2jUSzX3CUEDJC84707djRc5MTAQxoLgupWRwW6UB5fS++NV8AbOZgnsC7BpEAAAAABJRU5ErkJggg==");background-position: 2px center;}.ace_gutter-cell.ace_info {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAAAAAA6mKC9AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAJ0Uk5TAAB2k804AAAAPklEQVQY02NgIB68QuO3tiLznjAwpKTgNyDbMegwisCHZUETUZV0ZqOquBpXj2rtnpSJT1AEnnRmL2OgGgAAIKkRQap2htgAAAAASUVORK5CYII=");background-position: 2px center;}.ace_dark .ace_gutter-cell.ace_info {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAJFBMVEUAAAChoaGAgIAqKiq+vr6tra1ZWVmUlJSbm5s8PDxubm56enrdgzg3AAAAAXRSTlMAQObYZgAAAClJREFUeNpjYMAPdsMYHegyJZFQBlsUlMFVCWUYKkAZMxZAGdxlDMQBAG+TBP4B6RyJAAAAAElFTkSuQmCC");}.ace_scrollbar {position: absolute;right: 0;bottom: 0;z-index: 6;}.ace_scrollbar-inner {position: absolute;cursor: text;left: 0;top: 0;}.ace_scrollbar-v{overflow-x: hidden;overflow-y: scroll;top: 0;}.ace_scrollbar-h {overflow-x: scroll;overflow-y: hidden;left: 0;}.ace_print-margin {position: absolute;height: 100%;}.ace_text-input {position: absolute;z-index: 0;width: 0.5em;height: 1em;opacity: 0;background: transparent;-moz-appearance: none;appearance: none;border: none;resize: none;outline: none;overflow: hidden;font: inherit;padding: 0 1px;margin: 0 -1px;text-indent: -1em;-ms-user-select: text;-moz-user-select: text;-webkit-user-select: text;user-select: text;white-space: pre!important;}.ace_text-input.ace_composition {background: inherit;color: inherit;z-index: 1000;opacity: 1;text-indent: 0;}.ace_layer {z-index: 1;position: absolute;overflow: hidden;word-wrap: normal;white-space: pre;height: 100%;width: 100%;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;pointer-events: none;}.ace_gutter-layer {position: relative;width: auto;text-align: right;pointer-events: auto;}.ace_text-layer {font: inherit !important;}.ace_cjk {display: inline-block;text-align: center;}.ace_cursor-layer {z-index: 4;}.ace_cursor {z-index: 4;position: absolute;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;border-left: 2px solid;transform: translatez(0);}.ace_slim-cursors .ace_cursor {border-left-width: 1px;}.ace_overwrite-cursors .ace_cursor {border-left-width: 0;border-bottom: 1px solid;}.ace_hidden-cursors .ace_cursor {opacity: 0.2;}.ace_smooth-blinking .ace_cursor {-webkit-transition: opacity 0.18s;transition: opacity 0.18s;}.ace_editor.ace_multiselect .ace_cursor {border-left-width: 1px;}.ace_marker-layer .ace_step, .ace_marker-layer .ace_stack {position: absolute;z-index: 3;}.ace_marker-layer .ace_selection {position: absolute;z-index: 5;}.ace_marker-layer .ace_bracket {position: absolute;z-index: 6;}.ace_marker-layer .ace_active-line {position: absolute;z-index: 2;}.ace_marker-layer .ace_selected-word {position: absolute;z-index: 4;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;}.ace_line .ace_fold {-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;display: inline-block;height: 11px;margin-top: -2px;vertical-align: middle;background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAJCAYAAADU6McMAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAJpJREFUeNpi/P//PwOlgAXGYGRklAVSokD8GmjwY1wasKljQpYACtpCFeADcHVQfQyMQAwzwAZI3wJKvCLkfKBaMSClBlR7BOQikCFGQEErIH0VqkabiGCAqwUadAzZJRxQr/0gwiXIal8zQQPnNVTgJ1TdawL0T5gBIP1MUJNhBv2HKoQHHjqNrA4WO4zY0glyNKLT2KIfIMAAQsdgGiXvgnYAAAAASUVORK5CYII="),url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAA3CAYAAADNNiA5AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAACJJREFUeNpi+P//fxgTAwPDBxDxD078RSX+YeEyDFMCIMAAI3INmXiwf2YAAAAASUVORK5CYII=");background-repeat: no-repeat, repeat-x;background-position: center center, top left;color: transparent;border: 1px solid black;border-radius: 2px;cursor: pointer;pointer-events: auto;}.ace_dark .ace_fold {}.ace_fold:hover{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAJCAYAAADU6McMAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAJpJREFUeNpi/P//PwOlgAXGYGRklAVSokD8GmjwY1wasKljQpYACtpCFeADcHVQfQyMQAwzwAZI3wJKvCLkfKBaMSClBlR7BOQikCFGQEErIH0VqkabiGCAqwUadAzZJRxQr/0gwiXIal8zQQPnNVTgJ1TdawL0T5gBIP1MUJNhBv2HKoQHHjqNrA4WO4zY0glyNKLT2KIfIMAAQsdgGiXvgnYAAAAASUVORK5CYII="),url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAA3CAYAAADNNiA5AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAACBJREFUeNpi+P//fz4TAwPDZxDxD5X4i5fLMEwJgAADAEPVDbjNw87ZAAAAAElFTkSuQmCC");}.ace_tooltip {background-color: #FFF;background-image: -webkit-linear-gradient(top, transparent, rgba(0, 0, 0, 0.1));background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.1));border: 1px solid gray;border-radius: 1px;box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);color: black;max-width: 100%;padding: 3px 4px;position: fixed;z-index: 999999;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;cursor: default;white-space: pre;word-wrap: break-word;line-height: normal;font-style: normal;font-weight: normal;letter-spacing: normal;pointer-events: none;}.ace_folding-enabled > .ace_gutter-cell {padding-right: 13px;}.ace_fold-widget {-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;margin: 0 -12px 0 1px;display: none;width: 11px;vertical-align: top;background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAANElEQVR42mWKsQ0AMAzC8ixLlrzQjzmBiEjp0A6WwBCSPgKAXoLkqSot7nN3yMwR7pZ32NzpKkVoDBUxKAAAAABJRU5ErkJggg==");background-repeat: no-repeat;background-position: center;border-radius: 3px;border: 1px solid transparent;cursor: pointer;}.ace_folding-enabled .ace_fold-widget {display: inline-block;   }.ace_fold-widget.ace_end {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAANElEQVR42m3HwQkAMAhD0YzsRchFKI7sAikeWkrxwScEB0nh5e7KTPWimZki4tYfVbX+MNl4pyZXejUO1QAAAABJRU5ErkJggg==");}.ace_fold-widget.ace_closed {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAGCAYAAAAG5SQMAAAAOUlEQVR42jXKwQkAMAgDwKwqKD4EwQ26sSOkVWjgIIHAzPiCgaqiqnJHZnKICBERHN194O5b9vbLuAVRL+l0YWnZAAAAAElFTkSuQmCCXA==");}.ace_fold-widget:hover {border: 1px solid rgba(0, 0, 0, 0.3);background-color: rgba(255, 255, 255, 0.2);box-shadow: 0 1px 1px rgba(255, 255, 255, 0.7);}.ace_fold-widget:active {border: 1px solid rgba(0, 0, 0, 0.4);background-color: rgba(0, 0, 0, 0.05);box-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);}.ace_dark .ace_fold-widget {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHklEQVQIW2P4//8/AzoGEQ7oGCaLLAhWiSwB146BAQCSTPYocqT0AAAAAElFTkSuQmCC");}.ace_dark .ace_fold-widget.ace_end {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAH0lEQVQIW2P4//8/AxQ7wNjIAjDMgC4AxjCVKBirIAAF0kz2rlhxpAAAAABJRU5ErkJggg==");}.ace_dark .ace_fold-widget.ace_closed {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAFCAYAAACAcVaiAAAAHElEQVQIW2P4//+/AxAzgDADlOOAznHAKgPWAwARji8UIDTfQQAAAABJRU5ErkJggg==");}.ace_dark .ace_fold-widget:hover {box-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);background-color: rgba(255, 255, 255, 0.1);}.ace_dark .ace_fold-widget:active {box-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);}.ace_fold-widget.ace_invalid {background-color: #FFB4B4;border-color: #DE5555;}.ace_fade-fold-widgets .ace_fold-widget {-webkit-transition: opacity 0.4s ease 0.05s;transition: opacity 0.4s ease 0.05s;opacity: 0;}.ace_fade-fold-widgets:hover .ace_fold-widget {-webkit-transition: opacity 0.05s ease 0.05s;transition: opacity 0.05s ease 0.05s;opacity:1;}.ace_underline {text-decoration: underline;}.ace_bold {font-weight: bold;}.ace_nobold .ace_bold {font-weight: normal;}.ace_italic {font-style: italic;}.ace_error-marker {background-color: rgba(255, 0, 0,0.2);position: absolute;z-index: 9;}.ace_highlight-marker {background-color: rgba(255, 255, 0,0.2);position: absolute;z-index: 8;}.ace_br1 {border-top-left-radius    : 3px;}.ace_br2 {border-top-right-radius   : 3px;}.ace_br3 {border-top-left-radius    : 3px; border-top-right-radius:    3px;}.ace_br4 {border-bottom-right-radius: 3px;}.ace_br5 {border-top-left-radius    : 3px; border-bottom-right-radius: 3px;}.ace_br6 {border-top-right-radius   : 3px; border-bottom-right-radius: 3px;}.ace_br7 {border-top-left-radius    : 3px; border-top-right-radius:    3px; border-bottom-right-radius: 3px;}.ace_br8 {border-bottom-left-radius : 3px;}.ace_br9 {border-top-left-radius    : 3px; border-bottom-left-radius:  3px;}.ace_br10{border-top-right-radius   : 3px; border-bottom-left-radius:  3px;}.ace_br11{border-top-left-radius    : 3px; border-top-right-radius:    3px; border-bottom-left-radius:  3px;}.ace_br12{border-bottom-right-radius: 3px; border-bottom-left-radius:  3px;}.ace_br13{border-top-left-radius    : 3px; border-bottom-right-radius: 3px; border-bottom-left-radius:  3px;}.ace_br14{border-top-right-radius   : 3px; border-bottom-right-radius: 3px; border-bottom-left-radius:  3px;}.ace_br15{border-top-left-radius    : 3px; border-top-right-radius:    3px; border-bottom-right-radius: 3px; border-bottom-left-radius: 3px;}
+/*# sourceURL=ace/css/ace_editor.css */</style><style id="ace-tm">.ace-tm .ace_gutter {background: #f0f0f0;color: #333;}.ace-tm .ace_print-margin {width: 1px;background: #e8e8e8;}.ace-tm .ace_fold {background-color: #6B72E6;}.ace-tm {background-color: #FFFFFF;color: black;}.ace-tm .ace_cursor {color: black;}.ace-tm .ace_invisible {color: rgb(191, 191, 191);}.ace-tm .ace_storage,.ace-tm .ace_keyword {color: blue;}.ace-tm .ace_constant {color: rgb(197, 6, 11);}.ace-tm .ace_constant.ace_buildin {color: rgb(88, 72, 246);}.ace-tm .ace_constant.ace_language {color: rgb(88, 92, 246);}.ace-tm .ace_constant.ace_library {color: rgb(6, 150, 14);}.ace-tm .ace_invalid {background-color: rgba(255, 0, 0, 0.1);color: red;}.ace-tm .ace_support.ace_function {color: rgb(60, 76, 114);}.ace-tm .ace_support.ace_constant {color: rgb(6, 150, 14);}.ace-tm .ace_support.ace_type,.ace-tm .ace_support.ace_class {color: rgb(109, 121, 222);}.ace-tm .ace_keyword.ace_operator {color: rgb(104, 118, 135);}.ace-tm .ace_string {color: rgb(3, 106, 7);}.ace-tm .ace_comment {color: rgb(76, 136, 107);}.ace-tm .ace_comment.ace_doc {color: rgb(0, 102, 255);}.ace-tm .ace_comment.ace_doc.ace_tag {color: rgb(128, 159, 191);}.ace-tm .ace_constant.ace_numeric {color: rgb(0, 0, 205);}.ace-tm .ace_variable {color: rgb(49, 132, 149);}.ace-tm .ace_xml-pe {color: rgb(104, 104, 91);}.ace-tm .ace_entity.ace_name.ace_function {color: #0000A2;}.ace-tm .ace_heading {color: rgb(12, 7, 255);}.ace-tm .ace_list {color:rgb(185, 6, 144);}.ace-tm .ace_meta.ace_tag {color:rgb(0, 22, 142);}.ace-tm .ace_string.ace_regex {color: rgb(255, 0, 0)}.ace-tm .ace_marker-layer .ace_selection {background: rgb(181, 213, 255);}.ace-tm.ace_multiselect .ace_selection.ace_start {box-shadow: 0 0 3px 0px white;}.ace-tm .ace_marker-layer .ace_step {background: rgb(252, 255, 0);}.ace-tm .ace_marker-layer .ace_stack {background: rgb(164, 229, 101);}.ace-tm .ace_marker-layer .ace_bracket {margin: -1px 0 0 -1px;border: 1px solid rgb(192, 192, 192);}.ace-tm .ace_marker-layer .ace_active-line {background: rgba(0, 0, 0, 0.07);}.ace-tm .ace_gutter-active-line {background-color : #dcdcdc;}.ace-tm .ace_marker-layer .ace_selected-word {background: rgb(250, 250, 255);border: 1px solid rgb(200, 200, 250);}.ace-tm .ace_indent-guide {background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAE0lEQVQImWP4////f4bLly//BwAmVgd1/w11/gAAAABJRU5ErkJggg==") right repeat-y;}
+/*# sourceURL=ace/css/ace-tm */</style><style>    .error_widget_wrapper {        background: inherit;        color: inherit;        border:none    }    .error_widget {        border-top: solid 2px;        border-bottom: solid 2px;        margin: 5px 0;        padding: 10px 40px;        white-space: pre-wrap;    }    .error_widget.ace_error, .error_widget_arrow.ace_error{        border-color: #ff5a5a    }    .error_widget.ace_warning, .error_widget_arrow.ace_warning{        border-color: #F1D817    }    .error_widget.ace_info, .error_widget_arrow.ace_info{        border-color: #5a5a5a    }    .error_widget.ace_ok, .error_widget_arrow.ace_ok{        border-color: #5aaa5a    }    .error_widget_arrow {        position: absolute;        border: solid 5px;        border-top-color: transparent!important;        border-right-color: transparent!important;        border-left-color: transparent!important;        top: -5px;    }</style></head>
+
+<body>
+	
+        
+        
+            
+
+
+
+
+
+
+<nav class="navbar navbar-default navbar-fixed-top header">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-navbar-collapse" aria-expanded="false">
+                <span class="sr-only">实验楼</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://www.shiyanlou.com/">
+                <img src="./利用有监督学习进行人脸识别 - 实验楼_files/logo_03.png">
+            </a>
+        </div>
+        <div class="collapse navbar-collapse" id="header-navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="dropdown active">
+                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
+                        课程
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="" href="https://www.shiyanlou.com/courses/">全部课程</a></li>
+                        <li><a class="" href="https://www.shiyanlou.com/courses/?status=preview">即将上线</a></li>
+                        <li><a class="" href="https://www.shiyanlou.com/developer">开发者</a></li>
+                    </ul>
+                </li>
+                <li class="">
+                    <a href="https://www.shiyanlou.com/paths/">路径</a>
+                </li>
+                <li class="">
+                    <a href="https://www.shiyanlou.com/questions/">讨论区</a>
+                </li>
+                <li class=" bootcamp new-nav logo-1111">
+                    <a href="https://www.shiyanlou.com/bootcamp/">训练营</a>
+                    
+                </li>
+                <li class=" new-nav logo-1111">
+                    <a href="https://www.shiyanlou.com/vip">会员</a>
+                    
+                </li>
+                
+					
+					<li class=""><a href="https://www.shiyanlou.com/user/235723">我的课程</a></li>
+					
+                
+            </ul>
+
+            
+            <ul class="nav navbar-nav navbar-right user">
+                
+                <li class="dropdown">
+                    <a href="https://www.shiyanlou.com/user/235723" class="dropdown-toggle hidden-xs">
+                        <img class="header-avatar" src="./利用有监督学习进行人脸识别 - 实验楼_files/gravatarHA954FKT7YJW.jpg" data-toggle="tooltip" data-placement="bottom" data-trigger="manual" title="" data-template="&lt;div class=&quot;tooltip&quot; data-url=&quot;/user/235723/messages&quot; role=&quot;tooltip&quot;&gt;&lt;div class=&quot;tooltip-arrow&quot; style=&quot;border-bottom-color:#f66e6e;&quot;&gt;&lt;/div&gt;&lt;div class=&quot;tooltip-inner&quot; style=&quot;background:#f66e6e;&quot;&gt;&lt;/div&gt;&lt;/div&gt;" data-original-title="新消息">
+                        
+                        <span class="header-msg-count" style="display:none;"></span>
+                        
+    
+    
+    
+    <div class="user-username ">
+        <span class="username" href="/user/235723" target="_blank">
+            whuhan2013
+        </span>
+        <span class="user-level">L1</span>
+    </div>
+
+                        <span class="caret"></span>
+                    </a>
+					<a href="https://www.shiyanlou.com/courses/707/labs/2301/document#" class="dropdown-toggle visible-xs-block" data-toggle="dropdown">
+                        <img class="header-avatar" src="./利用有监督学习进行人脸识别 - 实验楼_files/gravatarHA954FKT7YJW.jpg">
+                        
+                        <span class="header-msg-count" style="display:none;"></span>
+                        <span class="header-username">whuhan2013</span>
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="https://www.shiyanlou.com/user/235723">主页</a></li>
+                        <li><a href="https://www.shiyanlou.com/user/friends">好友</a></li>
+                        <li><a href="https://www.shiyanlou.com/user/message">
+                            <span class="position-relative"><span class="header-msg-mark" style="display:none;"></span>消息</span>
+                        </a></li>
+                        <li><a href="https://www.shiyanlou.com/user/profile">设置</a></li>
+                        <li rolw="separator" class="divider"></li>
+                        <li><a href="https://www.shiyanlou.com/logout">退出</a></li>
+                    </ul>
+                </li>
+            </ul>
+            
+
+            <form class="navbar-form navbar-right" action="https://www.shiyanlou.com/search" method="get" role="search">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="search" autocomplete="off" placeholder="搜索 课程/问答">
+                </div>
+            </form>
+        </div>
+    </div>
+</nav>
+
+
+
+
+        
+	
+
+
+
+	
+	
+
+	
+
+
+<div class="container layout layout-margin-top">
+    
+<ol class="breadcrumb">
+    <li><a href="https://www.shiyanlou.com/courses/">全部课程</a></li>
+    <li>
+        <a href="https://www.shiyanlou.com/courses/707">神经网络实现人脸识别任务</a>
+    </li>
+    <li class="active">
+        利用有监督学习进行人脸识别
+    </li>
+</ol>
+
+    <div class="row">
+        <div class="col-md-9 layout-body">
+            
+<div class="mobile-alert alert alert-danger">在线实验，请到PC端体验</div>
+<div id="preview" class="markdown-body"><h1 id="-">利用有监督学习进行人脸识别</h1>
+<h2 id="-">一、课程介绍</h2>
+<h3 id="1-1-">1.1 内容简介</h3>
+<p>虽然目前深度学习取得了非常不错的成果，但是由于网络结构复杂，训练非常耗时。而且目前要进行深度学习的分类训练需要大量的带标记数据，对这些数据进行标记是非常耗时耗人力的。因此我们可用<code>无监督学习</code>利用无标记数据提取特征，并且利用无标记数据基于无监督学习对数据进行降维后，结合有标记数据基于<code>有监督学习</code>进行分类训练，实现人脸识别，图像分类等任务。</p>
+<p>本次课程我们将利用在 <a href="https://www.shiyanlou.com/courses/696" target="_blank">基于无监督学习的自编码器实现</a> 课程中介绍过的自编码器，实现对<a href="http://vision.ucsd.edu/content/extended-yale-face-database-b-b" target="_blank">耶鲁大学人脸数据库B+</a>中的人脸图片数据进行降维，再利用降维后的人脸数据进行<code>有监督神经网络学习</code>进行分类器训练，最终达到人脸识别的目的。</p>
+<p>通过上节课程对我们应用的介绍，及在自编码器基础上实现了数据降维后，本节课程我们将降维后的数据编码作为有监督学习网络的输入，实现人脸识别分类器。</p>
+<h3 id="1-2-">1.2 基于<code>有监督学习</code>的分类器训练结果展示</h3>
+<p>随着训练次数的增加，分类器预测正确率的变化：</p>
+<p><img src="./利用有监督学习进行人脸识别 - 实验楼_files/wm" alt="正确率"></p>
+<p>随着训练次数的增加，分类器的实际输出与目标输出间误差的变化：</p>
+<p><img src="./利用有监督学习进行人脸识别 - 实验楼_files/wm(1)" alt="误差"></p>
+<h2 id="-">二、实验原理</h2>
+<p>总体网络结构：</p>
+<p><img src="./利用有监督学习进行人脸识别 - 实验楼_files/wm(2)" alt="神经网络总体结构"></p>
+<p>本节课程，我们将实现上图中有监督训练部分。</p>
+<h2 id="-">三、实验操作</h2>
+<p>设置有监督网络结构及参数</p>
+<pre><code class="lang-python hljs"><span class="hljs-keyword">from</span> __future__ <span class="hljs-keyword">import</span> division
+
+<span class="hljs-comment"># 定义有监督学习参数</span>
+
+supervised_alpha= <span class="hljs-number">0.5</span> <span class="hljs-comment"># 有监督学习训练步长</span>
+max_epoch = <span class="hljs-number">200</span> <span class="hljs-comment"># 有监督学习总训练次数</span>
+mini_batch = <span class="hljs-number">14</span>
+SJ = []  <span class="hljs-comment"># 用于保存训练过程的误差值变化</span>
+SAcc = [] <span class="hljs-comment"># 用于记录训练过程中分类器预测的正确率变化过程</span>
+
+<span class="hljs-comment"># 初始化有监督升级网络结构</span>
+SL_layer_srtuc = []
+SL_layer_num = <span class="hljs-number">2</span>
+SL_layer_struc = [[<span class="hljs-number">0</span>, hidden_node],
+                  [<span class="hljs-number">0</span>, <span class="hljs-number">4</span>]]
+
+<span class="hljs-comment"># 初始化有监督训练部分神经网络的权值</span>
+supervised_weight = []
+<span class="hljs-keyword">for</span> l <span class="hljs-keyword">in</span> range(SL_layer_num<span class="hljs-number">-1</span>):
+    supervised_weight.append(np.random.randn(SL_layer_struc[l+<span class="hljs-number">1</span>][<span class="hljs-number">1</span>],sum(SL_layer_struc[l])))
+
+<span class="hljs-comment">#  用于有监督学习的误差调整时的 δ   </span>
+delta = []
+<span class="hljs-keyword">for</span> l <span class="hljs-keyword">in</span> range(SL_layer_num):
+    delta.append([])
+</code></pre>
+<p>导入预先准备好的训练集和测试集数据，及其对应的标记数据。并且对数据进行归一化</p>
+<pre><code class="lang-python hljs"><span class="hljs-comment"># 训练集数据</span>
+trainData = DataSet[<span class="hljs-string">'trainData'</span>] 
+trainData = trainData[:,:]   
+train_data = np.zeros(trainData.shape)
+
+<span class="hljs-comment"># 归一化处理</span>
+trainData_size = <span class="hljs-number">56</span>  
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(trainData_size):
+    tmp = trainData[:,i]
+    train_data[:,i] = (tmp - np.mean(tmp)) / np.std(tmp) 
+
+train_labels = DataSet[<span class="hljs-string">'train_labels'</span>]
+train_labels = train_labels[:,:]
+
+<span class="hljs-comment"># 测试集数据      </span>
+testData = DataSet[<span class="hljs-string">'testData'</span>]
+testData = testData[:,:]
+test_data = np.zeros(testData.shape)
+
+<span class="hljs-comment"># 归一化处理</span>
+testData_size = <span class="hljs-number">40</span>  
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(testData_size):
+    tmp = testData[:,i]
+    test_data[:,i] = (tmp - np.mean(tmp)) / np.std(tmp) 
+
+test_labels = DataSet[<span class="hljs-string">'test_labels'</span>]
+test_labels = test_labels[:,:]
+</code></pre>
+<p>利用自编码器获取训练集和测试集降维后的编码：</p>
+<pre><code class="lang-python hljs"><span class="hljs-comment"># 训练集</span>
+a = []
+a.append(np.zeros((layer_struc[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>],trainData_size)))
+<span class="hljs-keyword">for</span> l <span class="hljs-keyword">in</span> range(hidden_layer<span class="hljs-number">-1</span>):
+    <span class="hljs-keyword">if</span> l == <span class="hljs-number">0</span>:
+        tmpA,tmpZ = feedforward(w[l], a[l], train_data)
+        a.append(tmpA)
+    <span class="hljs-keyword">else</span>:
+        tmpA,tmpZ = feedforward(w[l],a[l], np.zeros((<span class="hljs-number">0</span>,trainData_size)))
+        a.append(tmpA)
+
+small_trainData = a[hidden_layer<span class="hljs-number">-1</span>]
+
+<span class="hljs-comment"># 测试集</span>
+a = []
+a.append(np.zeros((layer_struc[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>],testData_size)))
+<span class="hljs-keyword">for</span> l <span class="hljs-keyword">in</span> range(hidden_layer<span class="hljs-number">-1</span>):
+    <span class="hljs-keyword">if</span> l == <span class="hljs-number">0</span>:
+        tmpA,tmpZ = feedforward(w[l], a[l], test_data)
+        a.append(tmpA)
+    <span class="hljs-keyword">else</span>:
+        tmpA,tmpZ = feedforward(w[l],a[l], np.zeros((<span class="hljs-number">0</span>,testData_size)))
+        a.append(tmpA)
+
+small_testData = a[hidden_layer<span class="hljs-number">-1</span>]
+</code></pre>
+<p>有监督训练过程：</p>
+<pre><code class="lang-python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">supervised_training</span><span class="hljs-params">()</span>:</span>
+
+    <span class="hljs-keyword">global</span> SJ
+    <span class="hljs-keyword">global</span> SAcc
+
+    print(<span class="hljs-string">'Supervised training start..'</span>)
+    <span class="hljs-keyword">for</span> iter <span class="hljs-keyword">in</span> range(max_epoch):
+
+        <span class="hljs-comment"># 随机从数据集中挑取数据进行训练</span>
+        ind = list(range(trainData_size))
+        random.shuffle(ind)
+
+        a = []
+        z = []
+        z.append([])
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(int(np.ceil(trainData_size / mini_batch))):
+
+            <span class="hljs-comment"># 网络内部节点</span>
+            a.append(small_trainData[:,ind[i*mini_batch:min((i+<span class="hljs-number">1</span>)*mini_batch,trainData_size)]])
+            <span class="hljs-comment"># 准备网络训练的外部节点</span>
+            x = []
+            <span class="hljs-keyword">for</span> l <span class="hljs-keyword">in</span> range(SL_layer_num):
+                x.append( np.zeros((<span class="hljs-number">0</span>,min((i+<span class="hljs-number">1</span>)*mini_batch,trainData_size)-i*mini_batch)))
+
+            <span class="hljs-comment"># 网络的目标输出</span>
+            y = train_labels[:,ind[i*mini_batch:min((i+<span class="hljs-number">1</span>)*mini_batch,trainData_size)]]
+
+            <span class="hljs-comment"># 进行网络的前向传播计算</span>
+            <span class="hljs-keyword">for</span> l <span class="hljs-keyword">in</span> range(SL_layer_num<span class="hljs-number">-1</span>):
+                a.append([])
+                z.append([])
+                a[l+<span class="hljs-number">1</span>],z[l+<span class="hljs-number">1</span>] = feedforward(supervised_weight[l],a[l],x[l])
+
+            <span class="hljs-comment"># 计算网络输出与目标输出的误差值</span>
+            delta[SL_layer_num<span class="hljs-number">-1</span>] = np.array(a[SL_layer_num<span class="hljs-number">-1</span>] - y) * np.array(a[SL_layer_num<span class="hljs-number">-1</span>])
+            delta[SL_layer_num<span class="hljs-number">-1</span>] = delta[SL_layer_num<span class="hljs-number">-1</span>] * np.array(<span class="hljs-number">1</span>-a[SL_layer_num<span class="hljs-number">-1</span>])
+
+            <span class="hljs-comment"># 进行误差反向传播</span>
+            <span class="hljs-keyword">for</span> l <span class="hljs-keyword">in</span> range(SL_layer_num<span class="hljs-number">-2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">-1</span>):
+                delta[l] = backprop(supervised_weight[l],z[l],delta[l+<span class="hljs-number">1</span>])
+
+            <span class="hljs-keyword">for</span> l <span class="hljs-keyword">in</span> range(SL_layer_num<span class="hljs-number">-1</span>):
+                dw = np.dot(delta[l+<span class="hljs-number">1</span>], np.concatenate((a[l],x[l]),axis=<span class="hljs-number">0</span>).T) / mini_batch
+                supervised_weight[l] = supervised_weight[l] - supervised_alpha * dw
+
+
+            tmpResult = a[SL_layer_num<span class="hljs-number">-1</span>]
+            SJ.append(np.sum(np.multiply(tmpResult[:] - y[:], tmpResult[:] - y[:]))/<span class="hljs-number">2</span>/mini_batch)   
+            SAcc.append(float(sum(np.argmax(y, axis=<span class="hljs-number">0</span>) == np.argmax(tmpResult, axis=<span class="hljs-number">0</span>))/mini_batch))
+
+    <span class="hljs-comment"># 展示训练过程的预测正确率和误差值变化</span>
+    print(<span class="hljs-string">'Supervised learning done!'</span>)         
+    plt.figure()
+    plt.plot(SJ)
+    plt.title(<span class="hljs-string">'loss function'</span>)
+    plt.figure()
+    plt.plot(SAcc)
+    plt.title(<span class="hljs-string">'Accuracy'</span>)
+</code></pre>
+<p>测试有监督训练的结果，输出其对于训练集和测试集的预测正确率：</p>
+<pre><code class="lang-python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">supervised_testing</span><span class="hljs-params">()</span>:</span>
+    print(<span class="hljs-string">'Testing..'</span>)
+
+    <span class="hljs-comment"># 测试对训练集的预测结果正确率</span>
+    tmpA, tmpZ = feedforward(supervised_weight[<span class="hljs-number">0</span>], small_trainData, np.zeros((<span class="hljs-number">0</span>,trainData_size)))    
+    train_pred = np.argmax(tmpA, axis=<span class="hljs-number">0</span>)
+    train_res = np.argmax(train_labels,axis=<span class="hljs-number">0</span>)
+
+    train_acc = float(sum(train_pred == train_res) / trainData_size) * <span class="hljs-number">100</span>
+    print(<span class="hljs-string">'Training accuracy:%.2f%c'</span> % (train_acc,<span class="hljs-string">'%'</span>))
+
+    <span class="hljs-comment"># 测试对测试集的预测结果正确率</span>
+    tmpA, tmpZ = feedforward(supervised_weight[<span class="hljs-number">0</span>], small_testData, np.zeros((<span class="hljs-number">0</span>,testData_size)))    
+    test_pred = np.argmax(tmpA, axis=<span class="hljs-number">0</span>)
+    test_res = np.argmax(test_labels, axis=<span class="hljs-number">0</span>)
+    test_acc = float(sum(test_pred == test_res) / testData_size) * <span class="hljs-number">100</span>
+    print(<span class="hljs-string">'Testing accuracy:%.2f%c'</span> % (test_acc, <span class="hljs-string">'%'</span>))
+</code></pre>
+<p>设计完所有函数，调用其查看结果</p>
+<pre><code class="lang-python hljs">supervised_training()
+supervised_testing()
+
+plt.show()
+</code></pre>
+<h2 id="-">四、 总结</h2>
+<p>这次的人脸识别任务课程，我们结合了无监督学习及有监督学习进行了神经网络的训练，可以看到我们的训练效果并不是特别的好。效果不好的原因有很多，网络的参数（学习步长，网络节点数目设置，结构设置）是其一，另外一个就是其实我们的数据量很小，仅有80张无标记数据进行特征提取，且有监督阶段也仅用了14张有标记图片。而在现在的神经网络应用中，其实是有大量的无标记数据的，及有专门聘请人进行筛选标记数据的数据库，如<a href="http://image-net.org/" target="_blank">imageNet</a>，很多<code>计算机视觉</code>的任务也会应用这个数据库的数据进行算法的性能测试。有兴趣的同学可以基于我们这个课程，自己下载数据对这次课程的神经网络结构进行拓展。</p>
+<p>本次课程的所有源码可通过以下命令获得：</p>
+<pre><code class="lang-bash hljs">wget http://labfile.oss.aliyuncs.com/courses/707/face_recognition.py
+</code></pre>
+</div>
+
+<textarea id="editor" style="display:none;"># 利用有监督学习进行人脸识别
+
+## 一、课程介绍
+
+### 1.1 内容简介
+
+虽然目前深度学习取得了非常不错的成果，但是由于网络结构复杂，训练非常耗时。而且目前要进行深度学习的分类训练需要大量的带标记数据，对这些数据进行标记是非常耗时耗人力的。因此我们可用`无监督学习`利用无标记数据提取特征，并且利用无标记数据基于无监督学习对数据进行降维后，结合有标记数据基于`有监督学习`进行分类训练，实现人脸识别，图像分类等任务。
+
+本次课程我们将利用在 [基于无监督学习的自编码器实现](https://www.shiyanlou.com/courses/696) 课程中介绍过的自编码器，实现对[耶鲁大学人脸数据库B+](http://vision.ucsd.edu/content/extended-yale-face-database-b-b)中的人脸图片数据进行降维，再利用降维后的人脸数据进行`有监督神经网络学习`进行分类器训练，最终达到人脸识别的目的。
+
+通过上节课程对我们应用的介绍，及在自编码器基础上实现了数据降维后，本节课程我们将降维后的数据编码作为有监督学习网络的输入，实现人脸识别分类器。
+
+### 1.2 基于`有监督学习`的分类器训练结果展示
+
+随着训练次数的增加，分类器预测正确率的变化：
+
+![正确率](https://dn-anything-about-doc.qbox.me/document-uid291340labid2301timestamp1479459682174.png/wm)
+
+随着训练次数的增加，分类器的实际输出与目标输出间误差的变化：
+
+![误差](https://dn-anything-about-doc.qbox.me/document-uid291340labid2301timestamp1479459754649.png/wm)
+
+
+## 二、实验原理
+
+总体网络结构：
+
+![神经网络总体结构](https://dn-anything-about-doc.qbox.me/document-uid291340labid2300timestamp1479458896226.png/wm)
+
+本节课程，我们将实现上图中有监督训练部分。
+
+## 三、实验操作
+
+设置有监督网络结构及参数
+
+```python 
+from __future__ import division
+
+# 定义有监督学习参数
+
+supervised_alpha= 0.5 # 有监督学习训练步长
+max_epoch = 200 # 有监督学习总训练次数
+mini_batch = 14
+SJ = []  # 用于保存训练过程的误差值变化
+SAcc = [] # 用于记录训练过程中分类器预测的正确率变化过程
+
+# 初始化有监督升级网络结构
+SL_layer_srtuc = []
+SL_layer_num = 2
+SL_layer_struc = [[0, hidden_node],
+                  [0, 4]]
+
+# 初始化有监督训练部分神经网络的权值
+supervised_weight = []
+for l in range(SL_layer_num-1):
+    supervised_weight.append(np.random.randn(SL_layer_struc[l+1][1],sum(SL_layer_struc[l])))
+
+#  用于有监督学习的误差调整时的 δ   
+delta = []
+for l in range(SL_layer_num):
+    delta.append([])    
+
+```
+
+导入预先准备好的训练集和测试集数据，及其对应的标记数据。并且对数据进行归一化
+
+```python
+# 训练集数据
+trainData = DataSet['trainData'] 
+trainData = trainData[:,:]   
+train_data = np.zeros(trainData.shape)
+
+# 归一化处理
+trainData_size = 56  
+for i in range(trainData_size):
+    tmp = trainData[:,i]
+    train_data[:,i] = (tmp - np.mean(tmp)) / np.std(tmp) 
+      
+train_labels = DataSet['train_labels']
+train_labels = train_labels[:,:]
+
+# 测试集数据      
+testData = DataSet['testData']
+testData = testData[:,:]
+test_data = np.zeros(testData.shape)
+
+# 归一化处理
+testData_size = 40  
+for i in range(testData_size):
+    tmp = testData[:,i]
+    test_data[:,i] = (tmp - np.mean(tmp)) / np.std(tmp) 
+    
+test_labels = DataSet['test_labels']
+test_labels = test_labels[:,:]
+```
+
+利用自编码器获取训练集和测试集降维后的编码：
+
+```python
+# 训练集
+a = []
+a.append(np.zeros((layer_struc[0][1],trainData_size)))
+for l in range(hidden_layer-1):
+    if l == 0:
+        tmpA,tmpZ = feedforward(w[l], a[l], train_data)
+        a.append(tmpA)
+    else:
+        tmpA,tmpZ = feedforward(w[l],a[l], np.zeros((0,trainData_size)))
+        a.append(tmpA)
+
+small_trainData = a[hidden_layer-1]
+
+# 测试集
+a = []
+a.append(np.zeros((layer_struc[0][1],testData_size)))
+for l in range(hidden_layer-1):
+    if l == 0:
+        tmpA,tmpZ = feedforward(w[l], a[l], test_data)
+        a.append(tmpA)
+    else:
+        tmpA,tmpZ = feedforward(w[l],a[l], np.zeros((0,testData_size)))
+        a.append(tmpA)
+    
+small_testData = a[hidden_layer-1]
+```
+
+有监督训练过程：
+
+```python
+def supervised_training():
+    
+    global SJ
+    global SAcc
+    
+    print('Supervised training start..')
+    for iter in range(max_epoch):
+        
+        # 随机从数据集中挑取数据进行训练
+        ind = list(range(trainData_size))
+        random.shuffle(ind)
+        
+        a = []
+        z = []
+        z.append([])
+        for i in range(int(np.ceil(trainData_size / mini_batch))):
+            
+            # 网络内部节点
+            a.append(small_trainData[:,ind[i*mini_batch:min((i+1)*mini_batch,trainData_size)]])
+            # 准备网络训练的外部节点
+            x = []
+            for l in range(SL_layer_num):
+                x.append( np.zeros((0,min((i+1)*mini_batch,trainData_size)-i*mini_batch)))
+    
+            # 网络的目标输出
+            y = train_labels[:,ind[i*mini_batch:min((i+1)*mini_batch,trainData_size)]]
+            
+            # 进行网络的前向传播计算
+            for l in range(SL_layer_num-1):
+                a.append([])
+                z.append([])
+                a[l+1],z[l+1] = feedforward(supervised_weight[l],a[l],x[l])
+            
+            # 计算网络输出与目标输出的误差值
+            delta[SL_layer_num-1] = np.array(a[SL_layer_num-1] - y) * np.array(a[SL_layer_num-1])
+            delta[SL_layer_num-1] = delta[SL_layer_num-1] * np.array(1-a[SL_layer_num-1])
+            
+            # 进行误差反向传播
+            for l in range(SL_layer_num-2, 0, -1):
+                delta[l] = backprop(supervised_weight[l],z[l],delta[l+1])
+    
+            for l in range(SL_layer_num-1):
+                dw = np.dot(delta[l+1], np.concatenate((a[l],x[l]),axis=0).T) / mini_batch
+                supervised_weight[l] = supervised_weight[l] - supervised_alpha * dw
+    
+
+            tmpResult = a[SL_layer_num-1]
+            SJ.append(np.sum(np.multiply(tmpResult[:] - y[:], tmpResult[:] - y[:]))/2/mini_batch)   
+            SAcc.append(float(sum(np.argmax(y, axis=0) == np.argmax(tmpResult, axis=0))/mini_batch))
+    
+    # 展示训练过程的预测正确率和误差值变化
+    print('Supervised learning done!')         
+    plt.figure()
+    plt.plot(SJ)
+    plt.title('loss function')
+    plt.figure()
+    plt.plot(SAcc)
+    plt.title('Accuracy')
+```
+
+测试有监督训练的结果，输出其对于训练集和测试集的预测正确率：
+
+```python
+def supervised_testing():
+    print('Testing..')
+    
+    # 测试对训练集的预测结果正确率
+    tmpA, tmpZ = feedforward(supervised_weight[0], small_trainData, np.zeros((0,trainData_size)))    
+    train_pred = np.argmax(tmpA, axis=0)
+    train_res = np.argmax(train_labels,axis=0)
+
+    train_acc = float(sum(train_pred == train_res) / trainData_size) * 100
+    print('Training accuracy:%.2f%c' % (train_acc,'%'))
+    
+    # 测试对测试集的预测结果正确率
+    tmpA, tmpZ = feedforward(supervised_weight[0], small_testData, np.zeros((0,testData_size)))    
+    test_pred = np.argmax(tmpA, axis=0)
+    test_res = np.argmax(test_labels, axis=0)
+    test_acc = float(sum(test_pred == test_res) / testData_size) * 100
+    print('Testing accuracy:%.2f%c' % (test_acc, '%'))
+```
+
+设计完所有函数，调用其查看结果
+```python
+supervised_training()
+supervised_testing()
+
+plt.show()
+```
+
+## 四、 总结
+
+这次的人脸识别任务课程，我们结合了无监督学习及有监督学习进行了神经网络的训练，可以看到我们的训练效果并不是特别的好。效果不好的原因有很多，网络的参数（学习步长，网络节点数目设置，结构设置）是其一，另外一个就是其实我们的数据量很小，仅有80张无标记数据进行特征提取，且有监督阶段也仅用了14张有标记图片。而在现在的神经网络应用中，其实是有大量的无标记数据的，及有专门聘请人进行筛选标记数据的数据库，如[imageNet](http://image-net.org/)，很多`计算机视觉`的任务也会应用这个数据库的数据进行算法的性能测试。有兴趣的同学可以基于我们这个课程，自己下载数据对这次课程的神经网络结构进行拓展。
+
+本次课程的所有源码可通过以下命令获得：
+
+```bash
+wget http://labfile.oss.aliyuncs.com/courses/707/face_recognition.py
+```
+</textarea>
+<nav>
+    <ul class="pager">
+        
+        <li class="previous">
+            <a href="https://www.shiyanlou.com/courses/707/labs/2300/document">
+                <i class="fa fa-chevron-left"></i> 上一节
+            </a>
+        </li>
+        
+        
+    </ul>
+</nav>
+
+
+    
+    <div class="vip-banner">
+        
+        动手实践是学习 IT 技术最有效的方式！
+        
+        
+
+        
+
+        
+            
+        
+
+        
+        <a class="btn   lab-item-start" data-mobile-url="/courses/document/2301" data-url="/courses/start/2301" data-next="/courses/running">开始实验</a>
+    </div>
+    
+
+
+        </div>
+        <div class="col-md-3 layout-side">
+            
+    <div class="side-image side-image-pc">
+        <img src="./利用有监督学习进行人脸识别 - 实验楼_files/1479805621420.png">
+    </div>
+    
+    
+
+    
+        
+    
+
+
+    
+        
+<div class="sidebox mooc-teacher">
+    <div class="sidebox-header mooc-header">
+        <h4 class="sidebox-title">课程教师</h4>
+    </div>
+    <div class="sidebox-body mooc-content">
+        <a href="https://www.shiyanlou.com/user/291340" target="_blank">
+            <img src="./利用有监督学习进行人脸识别 - 实验楼_files/gravatar291340.png">
+        </a>
+        <div class="mooc-info">
+            <div class="name"><strong>zyj061</strong> </div>
+            
+            <div class="courses">共发布过<strong>3</strong>门课程</div>
+        </div>
+        <div class="mooc-extra-info">
+            <div class="word long-paragraph">
+                
+            </div>
+        </div>
+    </div>
+    <div class="sidebox-footer mooc-footer">
+        <a href="https://www.shiyanlou.com/teacher/291340" target="_blank">查看老师的所有课程 &gt;</a>
+    </div>
+</div>
+
+    
+    
+    
+    
+    <div class="side-image">
+    <a href="https://www.shiyanlou.com/vip" target="_blank">
+        <img src="./利用有监督学习进行人脸识别 - 实验楼_files/banner-vip.png">
+    </a>
+</div>
+    
+    
+    
+    
+    
+
+        </div>
+    </div>
+</div>
+
+
+	<div class="modal fade" id="invite-user" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">邀请好友，双方都可获赠实验豆！</h4>
+				</div>
+				<div class="modal-body">
+                    
+					<div class="form-label">
+                        分享专属链接给好友，或粘贴到QQ群/微博/论坛，好友注册后，您和好友将分别获赠3个实验豆！
+                    </div>
+					<input type="text" id="bstext" class="form-invite" value="https://www.shiyanlou.com/register?inviter=NTY0MzE5MjQ4Mzk4">              
+                    
+					<div id="msg-modal"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	
+    
+        
+        
+<div class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 clearfix footer-col">
+                <img src="./利用有监督学习进行人脸识别 - 实验楼_files/logo_03.png">
+                <div class="footer-slogan">动手做实验，轻松学编程</div>
+                <div class="col-xs-2">
+                    <div class="social-item footer-weixin-item">
+                        <i class="fa fa-weixin"></i>
+                        <div class="footer-weixin">
+                            <img src="./利用有监督学习进行人脸识别 - 实验楼_files/footer-weixin.png">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-2">
+                    <div class="social-item footer-qq-item" data-original-title="" title="">
+                        <i class="fa fa-qq"></i>
+                    </div>
+                </div>
+                <div class="col-xs-2">
+                    <div class="social-item footer-weibo-item">
+                        <a href="http://weibo.com/shiyanlou2013" target="_blank">
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6 col-sm-3 col-md-2 footer-col">
+                <div class="col-title">公司</div>
+                <a href="https://www.shiyanlou.com/aboutus" target="_blank">关于我们</a><br>
+                <a href="https://www.shiyanlou.com/contact" target="_blank">联系我们</a><br>
+                <a href="http://www.simplecloud.cn/jobs.html" target="_blank">加入我们</a><br>
+                <a href="https://blog.shiyanlou.com/" target="_blank">技术博客</a><br>
+            </div>
+            <div class="col-xs-6 col-sm-3 col-md-2 footer-col">
+                <div class="col-title">合作</div>
+                <a href="https://www.shiyanlou.com/contribute" target="_blank">我要投稿</a><br>
+                <a href="https://www.shiyanlou.com/labs" target="_blank">教师合作</a><br>
+                <a href="https://www.shiyanlou.com/edu/" target="_blank">高校合作</a><br>
+                <a href="https://www.shiyanlou.com/friends" target="_blank">友情链接</a>
+            </div>
+            <div class="col-xs-6 col-sm-3 col-md-2 footer-col">
+                <div class="col-title">服务</div>
+                <a href="https://www.shiyanlou.com/bootcamp/" target="_blank">实战训练营</a><br>
+                <a href="https://www.shiyanlou.com/vip" target="_blank">会员服务</a><br>
+                <a href="https://www.shiyanlou.com/courses/reports" target="_blank">实验报告</a><br>
+                <a href="https://www.shiyanlou.com/questions/?tag=%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98" target="_blank">常见问题</a><br>
+                <a href="https://www.shiyanlou.com/privacy" target="_blank">隐私条款</a>
+            </div>
+            <div class="col-xs-6 col-sm-3 col-md-2 footer-col">
+                <div class="col-title">学习路径</div>
+                <a href="https://www.shiyanlou.com/paths/python" target="_blank">Python学习路径</a><br>
+                <a href="https://www.shiyanlou.com/paths/linuxdev" target="_blank">Linux学习路径</a><br>
+                <a href="https://www.shiyanlou.com/paths/bigdata" target="_blank">大数据学习路径</a><br>
+                <a href="https://www.shiyanlou.com/paths/java" target="_blank">Java学习路径</a><br>
+                <a href="https://www.shiyanlou.com/paths/php" target="_blank">PHP学习路径</a><br>
+                <a href="https://www.shiyanlou.com/paths/" ,="" target="_blank">全部</a>
+            </div>
+        </div>
+    </div>
+    <div class="text-center copyright">
+        <span>Copyright @2013-2016 实验楼在线教育</span>
+        <span class="ver-line"> | </span>
+        <a href="http://www.miibeian.gov.cn/" target="_blank">蜀ICP备13019762号</a>
+        <script charset="utf-8" src="./利用有监督学习进行人脸识别 - 实验楼_files/v.js"></script><script src="./利用有监督学习进行人脸识别 - 实验楼_files/hm.js"></script><script type="text/javascript">
+            var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+            document.write(unescape("%3Cspan id='cnzz_stat_icon_5902315'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D5902315' type='text/javascript'%3E%3C/script%3E"));
+        </script><span id="cnzz_stat_icon_5902315"><a href="http://www.cnzz.com/stat/website.php?web_id=5902315" target="_blank" title="站长统计">站长统计</a></span><script src="./利用有监督学习进行人脸识别 - 实验楼_files/stat.php" type="text/javascript"></script><script src="./利用有监督学习进行人脸识别 - 实验楼_files/core.php" charset="utf-8" type="text/javascript"></script>
+        <script>
+            var _hmt = _hmt || [];
+            (function() {
+             var hm = document.createElement("script");
+             hm.src = "//hm.baidu.com/hm.js?6eb47a3aeda6ea31fa53985fdfdc78e8";
+             var s = document.getElementsByTagName("script")[0];
+             s.parentNode.insertBefore(hm, s);
+             })();
+        </script>
+    </div>
+</div>
+
+        
+    
+	
+
+	<div class="modal fade" id="flash-message" tabindex="-1" role="dialog">
+		<div class="modal-dialog" rolw="document">
+		</div>
+	</div>
+	<div class="modal fade" id="modal-message" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">注意</h4>
+				</div>
+				<div class="modal-body">
+				</div>
+				<div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary confirm" data-dismiss="modal">确定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+    
+<div class="modal fade" id="start-newlab">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3>开始新实验</h3>
+			</div>
+			<div class="modal-body">
+                <p>一个实验正在进行，是否停止它，开始新实验？</p>
+			</div>
+			<div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+                <a class="btn btn-primary start-newlab-confirm">确定</a>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div>
+<div class="modal fade" id="start-evaluation-course">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3>开始评估课实验</h3>
+			</div>
+			<div class="modal-body">
+                <div>
+                    <p>为了让评估结果更加准确，请注意以下操作：</p>
+                    <ul>
+                        <li>完成实验后点击「停止实验」按钮</li>
+                        <li>将代码提交到代码库</li>
+                        <li>尽可能详尽的撰写实验报告</li>
+                        <li>尽可能在实验操作的关键步骤截图</li>
+                        <li>尽可能减少无用操作</li>
+                        <li>尽可能高效的利用内存/CPU资源</li>
+                    </ul>
+                    <p>评估课还在不断完善中，我们真挚希望你能通过我们提供的这个平台，找到更好的发展机会。</p>
+                </div>
+                <br>
+                <div class="start-newlab"></div>
+			</div>
+			<div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+                <a class="btn btn-primary start-confirm">确定</a>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div>
+<div class="modal fade" id="vip-startlab-modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3>开始实验</h3>
+			</div>
+			<div class="modal-body">
+                <div class="start-newlab"></div>
+                <br>
+                <div class="text-center vip-vm">
+                    <a class="btn btn-default btn-lg newvm">创建新环境</a>
+					
+                </div>
+                <br>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div>
+
+
+	
+		
+			
+		
+	
+
+    
+
+    <div id="base-data" data-flash="false" data-csrf-token="/questions/form" data-is-login="true" data-jwt-token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzaGl5YW5sb3U6d2ViOmFwcCIsInVuYW1lIjoid2h1aGFuMjAxMyIsInVpZCI6IjIzNTcyMyIsImV4cCI6MTQ4MTQyMTAyNiwiaWF0IjoxNDgxMzM0NjI2fQ.u48pA5Jknp_fboOL9GvGdecDdMeAQEzT21-l-N0B26k" data-user-id="235723" data-is-jwt="true" data-socket-url="wss://comet.shiyanlou.com" data-msg-user="" data-msg-system=""></div>
+
+    <script src="./利用有监督学习进行人脸识别 - 实验楼_files/lib.js"></script>
+    <script src="./利用有监督学习进行人脸识别 - 实验楼_files/jquery.min.js"></script>
+    <script src="./利用有监督学习进行人脸识别 - 实验楼_files/ace.js"></script>
+    <script src="./利用有监督学习进行人脸识别 - 实验楼_files/aliyun-oss-sdk-4.3.0.min.js"></script>
+    <script src="./利用有监督学习进行人脸识别 - 实验楼_files/highlight.min.js"></script>
+    <script src="./利用有监督学习进行人脸识别 - 实验楼_files/jspdf.min.js"></script>
+    <script src="./利用有监督学习进行人脸识别 - 实验楼_files/plupload.full.min.js"></script>
+    <script src="./利用有监督学习进行人脸识别 - 实验楼_files/ZeroClipboard.min.js"></script>
+    <script src="./利用有监督学习进行人脸识别 - 实验楼_files/video.min.js"></script>
+    <script src="./利用有监督学习进行人脸识别 - 实验楼_files/bootstrap-tour.min.js"></script>
+    <script src="./利用有监督学习进行人脸识别 - 实验楼_files/bootstrap-table.min.js"></script>
+    <script src="./利用有监督学习进行人脸识别 - 实验楼_files/bootstrap-table-zh-CN.min.js"></script>
+    <script src="./利用有监督学习进行人脸识别 - 实验楼_files/bootstrap-table-filter-control.min.js"></script>
+
+    <script src="./利用有监督学习进行人脸识别 - 实验楼_files/raven.min.js"></script>
+    <script>
+    Raven.config('https://bc3878b7ed0a4468a65390bd79e6e73f@sentry.shiyanlou.com/5', {
+        release: '3.11.28'
+    }).install();
+    </script>
+    
+<div id="jinja-data" data-tencent-labid="[662]" data-course-detail="/courses/707" data-left-time="0" data-course-id="707" data-userlab-id="None" data-start-newlab-url="/courses/clear"></div>
+<script src="./利用有监督学习进行人脸识别 - 实验楼_files/labDoc.js"></script><div style="display: none; position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; background: rgba(0, 0, 0, 0.498039); text-align: center; z-index: 1600;"><i class="fa fa-spinner fa-pulse" style="margin-top: 243.6px; color: rgb(255, 255, 255); font-size: 35px;"></i></div>
+
+
+
+</body></html>

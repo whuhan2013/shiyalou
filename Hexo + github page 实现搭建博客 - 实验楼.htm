@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<!-- saved from url=(0056)https://www.shiyanlou.com/courses/700/labs/2294/document -->
+<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style class="vjs-styles-defaults">
+      .video-js {
+        width: 300px;
+        height: 150px;
+      }
+
+      .vjs-fluid {
+        padding-top: 56.25%
+      }
+    </style>
+	
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="author" content="Lei Shi">
+    <meta http-equiv="Cache-Control" content="o-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+	
+		
+        <title>Hexo + github page 实现搭建博客 - 实验楼</title>
+		
+	
+
+    
+    <meta content="实验楼是国内领先的IT技术实训平台，创新的实验驱动教学模式，以就业为导向，为IT相关专业的在校学生及从业者提供编程、运维、测试、云计算、大数据、数据库等全面的IT技术动手实践环境，提供Linux、Python、Java、C语言、Ruby、Android、IOS开发等热门课程。" name="description">
+    <meta content="实验楼,IT培训,IT教育,编程,在线编程,Linux,Linux教程,Linux操作系统,Python,Python教程,Python基础教程,Java,Java编程,C语言,大数据,Node.js,Hadoop,PHP,Docker" name="keywords">
+    
+    <meta content="实验楼,琛石科技" name="author">
+
+	<link rel="shortcut icon" href="https://static.shiyanlou.com/favicon.ico">
+	<link rel="stylesheet" href="./Hexo + github page 实现搭建博客 - 实验楼_files/font-awesome.min.css">
+    <link rel="stylesheet" href="./Hexo + github page 实现搭建博客 - 实验楼_files/monokai-sublime.min.css">
+    <link rel="stylesheet" href="./Hexo + github page 实现搭建博客 - 实验楼_files/bootstrap.min.css">
+    <link rel="stylesheet" href="./Hexo + github page 实现搭建博客 - 实验楼_files/katex.min.css">
+    <link rel="stylesheet" href="./Hexo + github page 实现搭建博客 - 实验楼_files/video-js.min.css">
+	<link rel="stylesheet" href="./Hexo + github page 实现搭建博客 - 实验楼_files/styles.css">
+
+	<style>
+		@font-face {
+			font-family: "lantingxihei";
+			src: url("https://static.shiyanlou.com/fonts/FZLTCXHJW.TTF");
+		}
+
+        /* modal 模态框*/
+        #invite-user .modal-body {
+            overflow: hidden;
+        }
+		#invite-user .modal-body .form-label {
+			margin-bottom: 16px;
+			font-size:14px;
+		}
+		#invite-user .modal-body .form-invite {
+			width: 80%;
+			padding: 6px 12px;
+			background-color: #eeeeee;
+			border: 1px solid #cccccc;
+			border-radius: 5px;
+			float: left;
+			margin-right: 10px;
+		}
+		#invite-user .modal-body .msg-modal-style {
+			background-color: #7dd383;
+			margin-top: 10px;
+			padding: 6px 0;
+			text-align: center;
+			width: 100%;
+		}
+		#invite-user .modal-body .modal-flash {
+			position: absolute;
+			top: 53px;
+			right: 74px;
+			z-index: 999;
+		}
+		/* end modal */
+
+        .en-footer {
+            padding: 30px;
+            text-align: center;
+            font-size: 14px;
+        }
+    </style>
+	
+<style>
+    #editor {
+        width: 0;
+		height: 0;
+		margin: 0;
+		padding: 0;
+		border: none;
+    }
+    #preview {
+        padding: 20px;
+        background: #fff;
+        border: solid 1px #eee;
+    }
+	#preview p,
+	#preview li,
+	#preview span,
+	#preview div,
+	#preview blockquote,
+	#preview blockquote	p {
+		font-size: 15px;
+        font-weight: 100;
+	}
+	#preview blockquote p {
+		line-height: 1.6em;
+	}
+    .mobile-alert {
+        display: none;
+        margin-top: 10px;
+        font-size: 16px;
+        text-align: center;
+    }
+    .breadcrumb {
+        border-bottom: solid 1px #eee;
+    }
+    @media (max-width: 768px) {
+        .mobile-alert {
+            display: block;
+        }
+        #preview p,
+        #preview li,
+        #preview span,
+        #preview div,
+        #preview blockquote,
+        #preview blockquote	p {
+            font-weight: 500;
+        }
+    }
+    .start-lab {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 10px 0;
+        text-align: center;
+        box-shadow: 0 2px 4px 2px #eee;
+        background: #274a59;
+        z-index: 100;
+    }
+    .start-lab span {
+        position: relative;
+        top: 4px;
+        color: #fff;
+        font-size: 16px;
+    }
+    .start-lab .btn {
+        margin-left: 10px;
+        padding: 6px 50px;
+        background: #0c9;
+        font-size: 18px;
+        border-color: #0c9;
+    }
+    @media (max-width: 768px) {
+        .start-lab .btn {
+            margin-top: 10px;
+        }
+    }
+    .course-warning {
+        margin-top: 10px;
+        text-align: center;
+        font-size: 16px;
+    }
+    .course-warning a {
+        padding: 6px 50px;
+        font-size: 16px;
+    }
+
+    .info-panel {
+        position: relative;
+        top: 0;
+        background: cornsilk;
+    }
+    .info-panel div {
+        margin-bottom: 10px;
+        font-size: 16px;
+    }
+    .info-panel .btn {
+        margin-top: 10px;
+        border-radius: 4px;
+    }
+    
+</style>
+
+
+	
+    
+<style id="ace_editor.css">.ace_editor {position: relative;overflow: hidden;font: 12px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;direction: ltr;text-align: left;}.ace_scroller {position: absolute;overflow: hidden;top: 0;bottom: 0;background-color: inherit;-ms-user-select: none;-moz-user-select: none;-webkit-user-select: none;user-select: none;cursor: text;}.ace_content {position: absolute;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;min-width: 100%;}.ace_dragging .ace_scroller:before{position: absolute;top: 0;left: 0;right: 0;bottom: 0;content: '';background: rgba(250, 250, 250, 0.01);z-index: 1000;}.ace_dragging.ace_dark .ace_scroller:before{background: rgba(0, 0, 0, 0.01);}.ace_selecting, .ace_selecting * {cursor: text !important;}.ace_gutter {position: absolute;overflow : hidden;width: auto;top: 0;bottom: 0;left: 0;cursor: default;z-index: 4;-ms-user-select: none;-moz-user-select: none;-webkit-user-select: none;user-select: none;}.ace_gutter-active-line {position: absolute;left: 0;right: 0;}.ace_scroller.ace_scroll-left {box-shadow: 17px 0 16px -16px rgba(0, 0, 0, 0.4) inset;}.ace_gutter-cell {padding-left: 19px;padding-right: 6px;background-repeat: no-repeat;}.ace_gutter-cell.ace_error {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAABOFBMVEX/////////QRswFAb/Ui4wFAYwFAYwFAaWGAfDRymzOSH/PxswFAb/SiUwFAYwFAbUPRvjQiDllog5HhHdRybsTi3/Tyv9Tir+Syj/UC3////XurebMBIwFAb/RSHbPx/gUzfdwL3kzMivKBAwFAbbvbnhPx66NhowFAYwFAaZJg8wFAaxKBDZurf/RB6mMxb/SCMwFAYwFAbxQB3+RB4wFAb/Qhy4Oh+4QifbNRcwFAYwFAYwFAb/QRzdNhgwFAYwFAbav7v/Uy7oaE68MBK5LxLewr/r2NXewLswFAaxJw4wFAbkPRy2PyYwFAaxKhLm1tMwFAazPiQwFAaUGAb/QBrfOx3bvrv/VC/maE4wFAbRPBq6MRO8Qynew8Dp2tjfwb0wFAbx6eju5+by6uns4uH9/f36+vr/GkHjAAAAYnRSTlMAGt+64rnWu/bo8eAA4InH3+DwoN7j4eLi4xP99Nfg4+b+/u9B/eDs1MD1mO7+4PHg2MXa347g7vDizMLN4eG+Pv7i5evs/v79yu7S3/DV7/498Yv24eH+4ufQ3Ozu/v7+y13sRqwAAADLSURBVHjaZc/XDsFgGIBhtDrshlitmk2IrbHFqL2pvXf/+78DPokj7+Fz9qpU/9UXJIlhmPaTaQ6QPaz0mm+5gwkgovcV6GZzd5JtCQwgsxoHOvJO15kleRLAnMgHFIESUEPmawB9ngmelTtipwwfASilxOLyiV5UVUyVAfbG0cCPHig+GBkzAENHS0AstVF6bacZIOzgLmxsHbt2OecNgJC83JERmePUYq8ARGkJx6XtFsdddBQgZE2nPR6CICZhawjA4Fb/chv+399kfR+MMMDGOQAAAABJRU5ErkJggg==");background-repeat: no-repeat;background-position: 2px center;}.ace_gutter-cell.ace_warning {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAmVBMVEX///8AAAD///8AAAAAAABPSzb/5sAAAAB/blH/73z/ulkAAAAAAAD85pkAAAAAAAACAgP/vGz/rkDerGbGrV7/pkQICAf////e0IsAAAD/oED/qTvhrnUAAAD/yHD/njcAAADuv2r/nz//oTj/p064oGf/zHAAAAA9Nir/tFIAAAD/tlTiuWf/tkIAAACynXEAAAAAAAAtIRW7zBpBAAAAM3RSTlMAABR1m7RXO8Ln31Z36zT+neXe5OzooRDfn+TZ4p3h2hTf4t3k3ucyrN1K5+Xaks52Sfs9CXgrAAAAjklEQVR42o3PbQ+CIBQFYEwboPhSYgoYunIqqLn6/z8uYdH8Vmdnu9vz4WwXgN/xTPRD2+sgOcZjsge/whXZgUaYYvT8QnuJaUrjrHUQreGczuEafQCO/SJTufTbroWsPgsllVhq3wJEk2jUSzX3CUEDJC84707djRc5MTAQxoLgupWRwW6UB5fS++NV8AbOZgnsC7BpEAAAAABJRU5ErkJggg==");background-position: 2px center;}.ace_gutter-cell.ace_info {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAAAAAA6mKC9AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAJ0Uk5TAAB2k804AAAAPklEQVQY02NgIB68QuO3tiLznjAwpKTgNyDbMegwisCHZUETUZV0ZqOquBpXj2rtnpSJT1AEnnRmL2OgGgAAIKkRQap2htgAAAAASUVORK5CYII=");background-position: 2px center;}.ace_dark .ace_gutter-cell.ace_info {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAJFBMVEUAAAChoaGAgIAqKiq+vr6tra1ZWVmUlJSbm5s8PDxubm56enrdgzg3AAAAAXRSTlMAQObYZgAAAClJREFUeNpjYMAPdsMYHegyJZFQBlsUlMFVCWUYKkAZMxZAGdxlDMQBAG+TBP4B6RyJAAAAAElFTkSuQmCC");}.ace_scrollbar {position: absolute;right: 0;bottom: 0;z-index: 6;}.ace_scrollbar-inner {position: absolute;cursor: text;left: 0;top: 0;}.ace_scrollbar-v{overflow-x: hidden;overflow-y: scroll;top: 0;}.ace_scrollbar-h {overflow-x: scroll;overflow-y: hidden;left: 0;}.ace_print-margin {position: absolute;height: 100%;}.ace_text-input {position: absolute;z-index: 0;width: 0.5em;height: 1em;opacity: 0;background: transparent;-moz-appearance: none;appearance: none;border: none;resize: none;outline: none;overflow: hidden;font: inherit;padding: 0 1px;margin: 0 -1px;text-indent: -1em;-ms-user-select: text;-moz-user-select: text;-webkit-user-select: text;user-select: text;white-space: pre!important;}.ace_text-input.ace_composition {background: inherit;color: inherit;z-index: 1000;opacity: 1;text-indent: 0;}.ace_layer {z-index: 1;position: absolute;overflow: hidden;word-wrap: normal;white-space: pre;height: 100%;width: 100%;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;pointer-events: none;}.ace_gutter-layer {position: relative;width: auto;text-align: right;pointer-events: auto;}.ace_text-layer {font: inherit !important;}.ace_cjk {display: inline-block;text-align: center;}.ace_cursor-layer {z-index: 4;}.ace_cursor {z-index: 4;position: absolute;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;border-left: 2px solid;transform: translatez(0);}.ace_slim-cursors .ace_cursor {border-left-width: 1px;}.ace_overwrite-cursors .ace_cursor {border-left-width: 0;border-bottom: 1px solid;}.ace_hidden-cursors .ace_cursor {opacity: 0.2;}.ace_smooth-blinking .ace_cursor {-webkit-transition: opacity 0.18s;transition: opacity 0.18s;}.ace_editor.ace_multiselect .ace_cursor {border-left-width: 1px;}.ace_marker-layer .ace_step, .ace_marker-layer .ace_stack {position: absolute;z-index: 3;}.ace_marker-layer .ace_selection {position: absolute;z-index: 5;}.ace_marker-layer .ace_bracket {position: absolute;z-index: 6;}.ace_marker-layer .ace_active-line {position: absolute;z-index: 2;}.ace_marker-layer .ace_selected-word {position: absolute;z-index: 4;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;}.ace_line .ace_fold {-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;display: inline-block;height: 11px;margin-top: -2px;vertical-align: middle;background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAJCAYAAADU6McMAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAJpJREFUeNpi/P//PwOlgAXGYGRklAVSokD8GmjwY1wasKljQpYACtpCFeADcHVQfQyMQAwzwAZI3wJKvCLkfKBaMSClBlR7BOQikCFGQEErIH0VqkabiGCAqwUadAzZJRxQr/0gwiXIal8zQQPnNVTgJ1TdawL0T5gBIP1MUJNhBv2HKoQHHjqNrA4WO4zY0glyNKLT2KIfIMAAQsdgGiXvgnYAAAAASUVORK5CYII="),url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAA3CAYAAADNNiA5AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAACJJREFUeNpi+P//fxgTAwPDBxDxD078RSX+YeEyDFMCIMAAI3INmXiwf2YAAAAASUVORK5CYII=");background-repeat: no-repeat, repeat-x;background-position: center center, top left;color: transparent;border: 1px solid black;border-radius: 2px;cursor: pointer;pointer-events: auto;}.ace_dark .ace_fold {}.ace_fold:hover{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAJCAYAAADU6McMAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAJpJREFUeNpi/P//PwOlgAXGYGRklAVSokD8GmjwY1wasKljQpYACtpCFeADcHVQfQyMQAwzwAZI3wJKvCLkfKBaMSClBlR7BOQikCFGQEErIH0VqkabiGCAqwUadAzZJRxQr/0gwiXIal8zQQPnNVTgJ1TdawL0T5gBIP1MUJNhBv2HKoQHHjqNrA4WO4zY0glyNKLT2KIfIMAAQsdgGiXvgnYAAAAASUVORK5CYII="),url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAA3CAYAAADNNiA5AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAACBJREFUeNpi+P//fz4TAwPDZxDxD5X4i5fLMEwJgAADAEPVDbjNw87ZAAAAAElFTkSuQmCC");}.ace_tooltip {background-color: #FFF;background-image: -webkit-linear-gradient(top, transparent, rgba(0, 0, 0, 0.1));background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.1));border: 1px solid gray;border-radius: 1px;box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);color: black;max-width: 100%;padding: 3px 4px;position: fixed;z-index: 999999;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;cursor: default;white-space: pre;word-wrap: break-word;line-height: normal;font-style: normal;font-weight: normal;letter-spacing: normal;pointer-events: none;}.ace_folding-enabled > .ace_gutter-cell {padding-right: 13px;}.ace_fold-widget {-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;margin: 0 -12px 0 1px;display: none;width: 11px;vertical-align: top;background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAANElEQVR42mWKsQ0AMAzC8ixLlrzQjzmBiEjp0A6WwBCSPgKAXoLkqSot7nN3yMwR7pZ32NzpKkVoDBUxKAAAAABJRU5ErkJggg==");background-repeat: no-repeat;background-position: center;border-radius: 3px;border: 1px solid transparent;cursor: pointer;}.ace_folding-enabled .ace_fold-widget {display: inline-block;   }.ace_fold-widget.ace_end {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAANElEQVR42m3HwQkAMAhD0YzsRchFKI7sAikeWkrxwScEB0nh5e7KTPWimZki4tYfVbX+MNl4pyZXejUO1QAAAABJRU5ErkJggg==");}.ace_fold-widget.ace_closed {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAGCAYAAAAG5SQMAAAAOUlEQVR42jXKwQkAMAgDwKwqKD4EwQ26sSOkVWjgIIHAzPiCgaqiqnJHZnKICBERHN194O5b9vbLuAVRL+l0YWnZAAAAAElFTkSuQmCCXA==");}.ace_fold-widget:hover {border: 1px solid rgba(0, 0, 0, 0.3);background-color: rgba(255, 255, 255, 0.2);box-shadow: 0 1px 1px rgba(255, 255, 255, 0.7);}.ace_fold-widget:active {border: 1px solid rgba(0, 0, 0, 0.4);background-color: rgba(0, 0, 0, 0.05);box-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);}.ace_dark .ace_fold-widget {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHklEQVQIW2P4//8/AzoGEQ7oGCaLLAhWiSwB146BAQCSTPYocqT0AAAAAElFTkSuQmCC");}.ace_dark .ace_fold-widget.ace_end {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAH0lEQVQIW2P4//8/AxQ7wNjIAjDMgC4AxjCVKBirIAAF0kz2rlhxpAAAAABJRU5ErkJggg==");}.ace_dark .ace_fold-widget.ace_closed {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAFCAYAAACAcVaiAAAAHElEQVQIW2P4//+/AxAzgDADlOOAznHAKgPWAwARji8UIDTfQQAAAABJRU5ErkJggg==");}.ace_dark .ace_fold-widget:hover {box-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);background-color: rgba(255, 255, 255, 0.1);}.ace_dark .ace_fold-widget:active {box-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);}.ace_fold-widget.ace_invalid {background-color: #FFB4B4;border-color: #DE5555;}.ace_fade-fold-widgets .ace_fold-widget {-webkit-transition: opacity 0.4s ease 0.05s;transition: opacity 0.4s ease 0.05s;opacity: 0;}.ace_fade-fold-widgets:hover .ace_fold-widget {-webkit-transition: opacity 0.05s ease 0.05s;transition: opacity 0.05s ease 0.05s;opacity:1;}.ace_underline {text-decoration: underline;}.ace_bold {font-weight: bold;}.ace_nobold .ace_bold {font-weight: normal;}.ace_italic {font-style: italic;}.ace_error-marker {background-color: rgba(255, 0, 0,0.2);position: absolute;z-index: 9;}.ace_highlight-marker {background-color: rgba(255, 255, 0,0.2);position: absolute;z-index: 8;}.ace_br1 {border-top-left-radius    : 3px;}.ace_br2 {border-top-right-radius   : 3px;}.ace_br3 {border-top-left-radius    : 3px; border-top-right-radius:    3px;}.ace_br4 {border-bottom-right-radius: 3px;}.ace_br5 {border-top-left-radius    : 3px; border-bottom-right-radius: 3px;}.ace_br6 {border-top-right-radius   : 3px; border-bottom-right-radius: 3px;}.ace_br7 {border-top-left-radius    : 3px; border-top-right-radius:    3px; border-bottom-right-radius: 3px;}.ace_br8 {border-bottom-left-radius : 3px;}.ace_br9 {border-top-left-radius    : 3px; border-bottom-left-radius:  3px;}.ace_br10{border-top-right-radius   : 3px; border-bottom-left-radius:  3px;}.ace_br11{border-top-left-radius    : 3px; border-top-right-radius:    3px; border-bottom-left-radius:  3px;}.ace_br12{border-bottom-right-radius: 3px; border-bottom-left-radius:  3px;}.ace_br13{border-top-left-radius    : 3px; border-bottom-right-radius: 3px; border-bottom-left-radius:  3px;}.ace_br14{border-top-right-radius   : 3px; border-bottom-right-radius: 3px; border-bottom-left-radius:  3px;}.ace_br15{border-top-left-radius    : 3px; border-top-right-radius:    3px; border-bottom-right-radius: 3px; border-bottom-left-radius: 3px;}
+/*# sourceURL=ace/css/ace_editor.css */</style><style id="ace-tm">.ace-tm .ace_gutter {background: #f0f0f0;color: #333;}.ace-tm .ace_print-margin {width: 1px;background: #e8e8e8;}.ace-tm .ace_fold {background-color: #6B72E6;}.ace-tm {background-color: #FFFFFF;color: black;}.ace-tm .ace_cursor {color: black;}.ace-tm .ace_invisible {color: rgb(191, 191, 191);}.ace-tm .ace_storage,.ace-tm .ace_keyword {color: blue;}.ace-tm .ace_constant {color: rgb(197, 6, 11);}.ace-tm .ace_constant.ace_buildin {color: rgb(88, 72, 246);}.ace-tm .ace_constant.ace_language {color: rgb(88, 92, 246);}.ace-tm .ace_constant.ace_library {color: rgb(6, 150, 14);}.ace-tm .ace_invalid {background-color: rgba(255, 0, 0, 0.1);color: red;}.ace-tm .ace_support.ace_function {color: rgb(60, 76, 114);}.ace-tm .ace_support.ace_constant {color: rgb(6, 150, 14);}.ace-tm .ace_support.ace_type,.ace-tm .ace_support.ace_class {color: rgb(109, 121, 222);}.ace-tm .ace_keyword.ace_operator {color: rgb(104, 118, 135);}.ace-tm .ace_string {color: rgb(3, 106, 7);}.ace-tm .ace_comment {color: rgb(76, 136, 107);}.ace-tm .ace_comment.ace_doc {color: rgb(0, 102, 255);}.ace-tm .ace_comment.ace_doc.ace_tag {color: rgb(128, 159, 191);}.ace-tm .ace_constant.ace_numeric {color: rgb(0, 0, 205);}.ace-tm .ace_variable {color: rgb(49, 132, 149);}.ace-tm .ace_xml-pe {color: rgb(104, 104, 91);}.ace-tm .ace_entity.ace_name.ace_function {color: #0000A2;}.ace-tm .ace_heading {color: rgb(12, 7, 255);}.ace-tm .ace_list {color:rgb(185, 6, 144);}.ace-tm .ace_meta.ace_tag {color:rgb(0, 22, 142);}.ace-tm .ace_string.ace_regex {color: rgb(255, 0, 0)}.ace-tm .ace_marker-layer .ace_selection {background: rgb(181, 213, 255);}.ace-tm.ace_multiselect .ace_selection.ace_start {box-shadow: 0 0 3px 0px white;}.ace-tm .ace_marker-layer .ace_step {background: rgb(252, 255, 0);}.ace-tm .ace_marker-layer .ace_stack {background: rgb(164, 229, 101);}.ace-tm .ace_marker-layer .ace_bracket {margin: -1px 0 0 -1px;border: 1px solid rgb(192, 192, 192);}.ace-tm .ace_marker-layer .ace_active-line {background: rgba(0, 0, 0, 0.07);}.ace-tm .ace_gutter-active-line {background-color : #dcdcdc;}.ace-tm .ace_marker-layer .ace_selected-word {background: rgb(250, 250, 255);border: 1px solid rgb(200, 200, 250);}.ace-tm .ace_indent-guide {background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAE0lEQVQImWP4////f4bLly//BwAmVgd1/w11/gAAAABJRU5ErkJggg==") right repeat-y;}
+/*# sourceURL=ace/css/ace-tm */</style><style>    .error_widget_wrapper {        background: inherit;        color: inherit;        border:none    }    .error_widget {        border-top: solid 2px;        border-bottom: solid 2px;        margin: 5px 0;        padding: 10px 40px;        white-space: pre-wrap;    }    .error_widget.ace_error, .error_widget_arrow.ace_error{        border-color: #ff5a5a    }    .error_widget.ace_warning, .error_widget_arrow.ace_warning{        border-color: #F1D817    }    .error_widget.ace_info, .error_widget_arrow.ace_info{        border-color: #5a5a5a    }    .error_widget.ace_ok, .error_widget_arrow.ace_ok{        border-color: #5aaa5a    }    .error_widget_arrow {        position: absolute;        border: solid 5px;        border-top-color: transparent!important;        border-right-color: transparent!important;        border-left-color: transparent!important;        top: -5px;    }</style></head>
+
+<body>
+	
+        
+        
+            
+
+
+
+
+
+
+<nav class="navbar navbar-default navbar-fixed-top header">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-navbar-collapse" aria-expanded="false">
+                <span class="sr-only">实验楼</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://www.shiyanlou.com/">
+                <img src="./Hexo + github page 实现搭建博客 - 实验楼_files/logo_03.png">
+            </a>
+        </div>
+        <div class="collapse navbar-collapse" id="header-navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="dropdown active">
+                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
+                        课程
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="" href="https://www.shiyanlou.com/courses/">全部课程</a></li>
+                        <li><a class="" href="https://www.shiyanlou.com/courses/?status=preview">即将上线</a></li>
+                        <li><a class="" href="https://www.shiyanlou.com/developer">开发者</a></li>
+                    </ul>
+                </li>
+                <li class="">
+                    <a href="https://www.shiyanlou.com/paths/">路径</a>
+                </li>
+                <li class="">
+                    <a href="https://www.shiyanlou.com/questions/">讨论区</a>
+                </li>
+                <li class=" bootcamp new-nav logo-1111">
+                    <a href="https://www.shiyanlou.com/bootcamp/">训练营</a>
+                    
+                </li>
+                <li class=" new-nav logo-1111">
+                    <a href="https://www.shiyanlou.com/vip">会员</a>
+                    
+                </li>
+                
+					
+					<li class=""><a href="https://www.shiyanlou.com/user/235723">我的课程</a></li>
+					
+                
+            </ul>
+
+            
+            <ul class="nav navbar-nav navbar-right user">
+                
+                <li class="dropdown">
+                    <a href="https://www.shiyanlou.com/user/235723" class="dropdown-toggle hidden-xs">
+                        <img class="header-avatar" src="./Hexo + github page 实现搭建博客 - 实验楼_files/gravatarHA954FKT7YJW.jpg" data-toggle="tooltip" data-placement="bottom" data-trigger="manual" title="" data-template="&lt;div class=&quot;tooltip&quot; data-url=&quot;/user/235723/messages&quot; role=&quot;tooltip&quot;&gt;&lt;div class=&quot;tooltip-arrow&quot; style=&quot;border-bottom-color:#f66e6e;&quot;&gt;&lt;/div&gt;&lt;div class=&quot;tooltip-inner&quot; style=&quot;background:#f66e6e;&quot;&gt;&lt;/div&gt;&lt;/div&gt;" data-original-title="新消息">
+                        
+                        <span class="header-msg-count" style="display:none;"></span>
+                        
+    
+    
+    
+    <div class="user-username ">
+        <span class="username" href="/user/235723" target="_blank">
+            whuhan2013
+        </span>
+        <span class="user-level">L1</span>
+    </div>
+
+                        <span class="caret"></span>
+                    </a>
+					<a href="https://www.shiyanlou.com/courses/700/labs/2294/document#" class="dropdown-toggle visible-xs-block" data-toggle="dropdown">
+                        <img class="header-avatar" src="./Hexo + github page 实现搭建博客 - 实验楼_files/gravatarHA954FKT7YJW.jpg">
+                        
+                        <span class="header-msg-count" style="display:none;"></span>
+                        <span class="header-username">whuhan2013</span>
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="https://www.shiyanlou.com/user/235723">主页</a></li>
+                        <li><a href="https://www.shiyanlou.com/user/friends">好友</a></li>
+                        <li><a href="https://www.shiyanlou.com/user/message">
+                            <span class="position-relative"><span class="header-msg-mark" style="display:none;"></span>消息</span>
+                        </a></li>
+                        <li><a href="https://www.shiyanlou.com/user/profile">设置</a></li>
+                        <li rolw="separator" class="divider"></li>
+                        <li><a href="https://www.shiyanlou.com/logout">退出</a></li>
+                    </ul>
+                </li>
+            </ul>
+            
+
+            <form class="navbar-form navbar-right" action="https://www.shiyanlou.com/search" method="get" role="search">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="search" autocomplete="off" placeholder="搜索 课程/问答">
+                </div>
+            </form>
+        </div>
+    </div>
+</nav>
+
+
+
+
+        
+	
+
+
+
+	
+	
+
+	
+
+
+<div class="container layout layout-margin-top">
+    
+<ol class="breadcrumb">
+    <li><a href="https://www.shiyanlou.com/courses/">全部课程</a></li>
+    <li>
+        <a href="https://www.shiyanlou.com/courses/700">使用Github Pages和Hexo搭建独立博客</a>
+    </li>
+    <li class="active">
+        Hexo + github page 实现搭建博客
+    </li>
+</ol>
+
+    <div class="row">
+        <div class="col-md-9 layout-body">
+            
+<div class="mobile-alert alert alert-danger">在线实验，请到PC端体验</div>
+<div id="preview" class="markdown-body"><h1 id="-github-pages-hexo-">使用Github Pages和Hexo搭建独立博客</h1>
+<h2 id="-">一、课程说明</h2>
+<p>本次课程我们将利用 github page 的特性来部署由 Hexo 框架渲染生成的静态博客。并且为博客添加插件以实现评论、七牛实现图床等功能。</p>
+<h2 id="1-1-">1.1 课程知识点</h2>
+<p>本次课程我们将接触到以下知识点：</p>
+<ul>
+<li>git 操作</li>
+<li>github page 的使用</li>
+<li>Hexo 的使用</li>
+<li>NexT 主题配置</li>
+</ul>
+<h2 id="1-2-">1.2 实验步骤</h2>
+<p>实验步骤如下：</p>
+<ul>
+<li>安装 Node.js 与 Git</li>
+<li>搭建博客</li>
+</ul>
+<h2 id="1-3-">1.3 效果截图</h2>
+<p>最终效果如下：</p>
+<p><img src="./Hexo + github page 实现搭建博客 - 实验楼_files/wm" alt="此处输入图片的描述"></p>
+<p><img src="./Hexo + github page 实现搭建博客 - 实验楼_files/wm(1)" alt="此处输入图片的描述"></p>
+<p><img src="./Hexo + github page 实现搭建博客 - 实验楼_files/wm(2)" alt="此处输入图片的描述"></p>
+<h2 id="-node-js-git">二、安装 Node.js 与 Git</h2>
+<p>在下载使用 Hexo 之前需要先安装一些必要的工具。</p>
+<h3 id="2-1-node-js">2.1 安装 Node.js</h3>
+<p>Node.js 是一个开放源代码、跨平台的、可用于服务器端和网络应用的运行环境，该应用由 C++ 语言写成，在 Node.js 运行时运行。Node.js 提供事件驱动和非阻塞 I/O API，可优化应用程序的吞吐量和规模。这些技术通常被用于实时应用程序。并且它是采用 Google 的 V8 引擎来执行代码，它的大部分基本模块都是用 JavaScript 写成的，包含有一系列内置模块，使得程序可以作为独立服务器运行，从而脱离 Apache HTTP Server 或 IIS 运行。</p>
+<p>而 npm 也即 Node包管理器（Node Package Manager），它是一个以 Javascript 编写的软件包管理系统，默认环境为 Node.js 。</p>
+<blockquote>
+<p>参考：</p>
+<ul>
+<li><a href="https://zh.wikipedia.org/wiki/Node.js" target="_blank">wiki--Node.js</a></li>
+<li><a href="https://nodejs.org/en/" target="_blank">nodejs 官网</a></li>
+</ul>
+</blockquote>
+<p>可以通过以下命令下载，不过实验楼提供的虚拟环境已经安装好了 Node.js 和 npm 了，因此可以略过此步。</p>
+<pre><code class="lang-bash hljs">$ sudo apt-get install nodejs
+$ sudo apt-get install npm
+</code></pre>
+<p>然后需要安装 nrm ， nrm 是 npm 的资源管理器，借助各个工具可以方便快捷地对 npm 的源进行管理。另外，由于国内网络环境原因在使用 npm 默认下载源的时候不仅速度非常慢而且常常会超时，因此这里还手动指定了从淘宝源下载。</p>
+<pre><code class="lang-bash hljs">$ sudo npm install nrm -g --registry https://registry.npm.taobao.org
+</code></pre>
+<p>接下来就可以使用 nrm 对 npm 的资源进行管理了，通过 nrm 我们将 npm 的默认下载源设置为淘宝源。</p>
+<pre><code class="lang-bash hljs">$ nrm use taobao
+</code></pre>
+<p><img src="./Hexo + github page 实现搭建博客 - 实验楼_files/wm(3)" alt="此处输入图片的描述"></p>
+<p>接下来就可以使用 npm 下载 Hexo 了。</p>
+<pre><code class="lang-bash hljs">$ sudo npm install hexo-cli -g
+</code></pre>
+<h3 id="2-2-git-">2.2 安装 Git 客户端</h3>
+<p>git 是一个版本控制工具，通常配合着 github 一起使用，进行源代码托管。如果你还没有 github 账户，先去注册一个吧。</p>
+<p><a href="https://github.com/" target="_blank">https://github.com/</a></p>
+<p>注册了 github 账户之后可以通过以下命令安装，不过实验楼提供的虚拟环境已经安装好了 git ，因此也可以略过此步。</p>
+<pre><code class="lang-bash hljs">$ sudo apt-get install git
+</code></pre>
+<p>然后为本地 git 配置全局的 user 与 email 参数。</p>
+<pre><code class="lang-bash hljs">$ git config --global user.name <span class="hljs-string">"your github account name"</span>
+$ git config --global user.email <span class="hljs-string">"your github account email"</span>
+</code></pre>
+<p>为了在后续操作中我们能将本地仓库的代码推送至 github 的仓库上，我们需要在本地生成 SSH 秘钥，并将公钥保存到 github 账户信息中，这样我们在本地提交的时候 github 就能通过本地的私钥与公钥进行校验。</p>
+<pre><code class="lang-bash hljs">$ ssh-keygen -t rsa -C <span class="hljs-string">"your github account email"</span>
+</code></pre>
+<p>生成密钥的过程中会有些提示要求输入，我们一路回车下去即可。</p>
+<p><img src="./Hexo + github page 实现搭建博客 - 实验楼_files/wm(4)" alt="此处输入图片的描述"></p>
+<p>然后我们发现在 <code>/home/shiyanlou/.ssh/</code> 目录底下生成了两个文件，其中 <code>id_rsa</code> 是私钥，<code>id_rsa.pub</code> 是公钥。</p>
+<p><img src="./Hexo + github page 实现搭建博客 - 实验楼_files/wm(5)" alt="此处输入图片的描述"></p>
+<p>我们只需要把公钥的内容提交给 github 即可。</p>
+<p>操作如下图，先进入 <code>setting</code> 界面，选择 <code>SSH and GPG keys</code> ，点击 <code>New SSH key</code> ，在展开的窗口中填写密钥信息，title 可以随意起方便自己管理即可，key 那一栏则把刚刚生成的 <code>id_rsa.pub</code> 的内容复制进去。最后点击按钮添加。</p>
+<p><img src="./Hexo + github page 实现搭建博客 - 实验楼_files/wm(6)" alt="此处输入图片的描述"></p>
+<blockquote>
+<p>补充：如果你对 git 感兴趣，也可以学习课程 <a href="https://www.shiyanlou.com/courses/4" target="_blank">《Git 实战教程》</a>。</p>
+</blockquote>
+<h2 id="-">三、搭建博客</h2>
+<p>Hexo 是一个快速、简洁且高效的博客框架。Hexo 使用 Markdown（或其他渲染引擎）解析文章，在几秒内，即可利用靓丽的主题生成静态网页。接下来我们开始使用 Hexo 搭建博客。</p>
+<blockquote>
+<p>关于 Hexo 框架的更多资料：<a href="https://hexo.io/zh-cn/" target="_blank">https://hexo.io/zh-cn/</a></p>
+</blockquote>
+<p>进入 <code>Code</code> 目录创建并进入目录 <code>Hexo</code> 。</p>
+<pre><code class="lang-bash hljs">$ <span class="hljs-built_in">cd</span> Code
+$ mkdir Hexo &amp;&amp; <span class="hljs-built_in">cd</span> Hexo
+</code></pre>
+<p>使用 hexo 生成博客框架。</p>
+<pre><code class="lang-bash hljs">$ hexo init blog
+$ <span class="hljs-built_in">cd</span> blog
+$ npm install
+$ hexo generate
+$ hexo server
+</code></pre>
+<blockquote>
+<p>温馨提示：在 <code>hexo init blog</code> 过程可能会比较慢，需要耐心等待。</p>
+</blockquote>
+<p><code>hexo generate</code> 为我们生成了静态文件存储于 <code>public</code> 文件夹之下，并且在一开始默认情况下执行这句将会为我们生成一个 <code>Hello World</code> 的页面。</p>
+<p>通过 <code>hexo server</code> 运行起 hexo 内置的服务器。这时候就可以开始在本地访问了，默认地址为 <code>localhost:4000</code> 。</p>
+<p><img src="./Hexo + github page 实现搭建博客 - 实验楼_files/wm(7)" alt="此处输入图片的描述"></p>
+<h3 id="3-1-">3.1 模块介绍</h3>
+<p>到目前为止 <code>/home/shiyanlou/Code/Hexo/blog</code> 目录中的文件结构如下。</p>
+<pre><code class="lang-bash hljs">.
+|-- _config.yml
+|-- db.json
+|-- node_modules/
+|-- package.json
+|-- public/
+|-- scaffolds/
+|   |-- draft.md 
+|   |-- page.md
+|   `-- post.md
+|-- <span class="hljs-built_in">source</span>/
+|   |-- _drafts/
+|   `-- _posts/
+`-- themes/
+</code></pre>
+<p>主要的几个文件和目录的作用分别如下：</p>
+<ul>
+<li><code>_config.yml</code> ：配置文件，可以修改网站的主题、标题、作者等信息。</li>
+<li><code>public</code> ：由 hexo 根据 <code>source</code> 文件夹中的资源进行渲染生成的文件夹，里边存储着最终的静态网页文件。</li>
+<li><code>scaffolds/</code> ：模板文件，当要给博客添加新文章的时候，将根据对应的模板进行创建。</li>
+<li><code>source/</code> ：用于存储用户资源，比如文章与新页面等。其中以 <code>_</code> 开头的文件夹中除了 <code>_posts</code> 文件夹中的 markdown 或 HTML 文件会在执行  <code>generate</code> 操作的时候被渲染添加到 <code>public</code> 文件夹中之外，其他均被忽略。而且在初始化博客的过程中 <code>_posts</code> 目录底会自带一个 <code>hello-world.md</code> 的文件。</li>
+<li><code>themes/</code> ：主题文件，自带默认主题 <code>landscape</code> 。</li>
+</ul>
+<h3 id="3-2-">3.2 主题配置</h3>
+<p>进入目录 <code>/home/shiyanlou/Code/Hexo/blog/themes</code> ，下载并解压缩 NexT 主题。</p>
+<pre><code class="lang-bash hljs">$ wget http://labfile.oss.aliyuncs.com/courses/700/next.zip
+$ unzip next.zip
+</code></pre>
+<p>使用 vim 或者 gedit 编辑 <code>/home/shiyanlou/Code/Hexo/blog/_config.yml</code> 文件。</p>
+<pre><code class="lang-xml hljs">theme: next
+</code></pre>
+<p><img src="./Hexo + github page 实现搭建博客 - 实验楼_files/wm(8)" alt="此处输入图片的描述"></p>
+<p>并且修改一下作者，网页标题等信息。</p>
+<p><img src="./Hexo + github page 实现搭建博客 - 实验楼_files/wm(9)" alt="此处输入图片的描述"></p>
+<p>一定要记得保存！！！然后重新执行 <code>generate</code> 操作。</p>
+<pre><code class="lang-bash hljs">$ hexo g
+$ hexo s
+</code></pre>
+<blockquote>
+<p>补充：这里为大家推荐个偷懒的方法。hexo 中的 <code>generate</code>, <code>server</code>, <code>dpoly</code> 等操作都可以简写为首字母，所以 <code>hexo generate</code> 等同于 <code>hexo g</code> ，<code>hexo server</code> 等同于 <code>hexo s</code>。</p>
+</blockquote>
+<p>再次访问 <code>lcoalhost:4000</code> 。</p>
+<p><img src="./Hexo + github page 实现搭建博客 - 实验楼_files/wm(10)" alt="此处输入图片的描述"></p>
+<p>这会博客就套上了我们的新模板了。但是我们发现博客菜单上的文字是英文的于是我们还要重新配置以下，让主题以中文的方式显示。</p>
+<p>再次编辑 <code>_config.yml</code> 文件，将 <code>language</code> 项设置为 <code>zh-Hans</code> 。</p>
+<p><img src="./Hexo + github page 实现搭建博客 - 实验楼_files/wm(11)" alt="此处输入图片的描述"></p>
+<p><img src="./Hexo + github page 实现搭建博客 - 实验楼_files/wm(12)" alt="此处输入图片的描述"></p>
+<h3 id="3-3-">3.3 文章创建</h3>
+<p>创建新文件的命令是：</p>
+<pre><code class="lang-bash hljs">$ hexo new [layout] &lt;filename&gt;
+</code></pre>
+<p>其中 <code>layout</code> 为可选参数，指定了新创建的文件布局，默认为 <code>post</code> 文件。 <code>filename</code> 为必填参数，指定了文件名，如果文件名中有空格则需要把文件名用引号<code>""</code> 包裹起来。</p>
+<p><code>layout</code> 选项及其对应路径：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">布局</th>
+<th style="text-align:left">路径</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">post</td>
+<td style="text-align:left">source/_posts</td>
+</tr>
+<tr>
+<td style="text-align:left">draft</td>
+<td style="text-align:left">source/_drafts</td>
+</tr>
+<tr>
+<td style="text-align:left">page</td>
+<td style="text-align:left">source</td>
+</tr>
+</tbody>
+</table>
+<p>所以现在我们来新建一片文章。</p>
+<pre><code class="lang-bash hljs">$ hexo new <span class="hljs-string">"实验楼博客开张了！"</span>
+</code></pre>
+<blockquote>
+<p>提示：要在实现环境中输入中文，可以点击桌面右下角的按钮选择拼音输入。</p>
+</blockquote>
+<p><img src="./Hexo + github page 实现搭建博客 - 实验楼_files/wm(13)" alt="此处输入图片的描述"></p>
+<p>这时候我们发现 hexo 在 <code>source/_post</code> 目录之下创建了一个 <code>实验楼博客开张了！.md</code> 的文件。打开该文件进行编辑。</p>
+<p><img src="./Hexo + github page 实现搭建博客 - 实验楼_files/wm(14)" alt="此处输入图片的描述"></p>
+<p>位于 <code>___</code> 之上的部分是根据 <code>scaffolds</code> 文件夹中对应的布局模板自动生成的。默认信息包括标题、创建时间和标签，当然还有其它信息可供添加，比如分类。</p>
+<p>保存之后，调用 <code>generate</code> 操作并启动服务器访问。</p>
+<p><img src="./Hexo + github page 实现搭建博客 - 实验楼_files/wm(15)" alt="此处输入图片的描述"></p>
+<p>但现在这样有个问题，就是这个首页我们一般都用来展示博客的大概内容，如果读者感兴趣再点击进去细看同时也为首页腾出空间。为了实现这点我们需要设置摘要。</p>
+<p>摘要设置方式是：</p>
+<pre><code class="lang-markdown hljs">以上内容为摘要
+<span class="xml"><span class="hljs-comment">&lt;!--more--&gt;</span></span>
+以下内容与摘要共同组成正文
+</code></pre>
+<p><img src="./Hexo + github page 实现搭建博客 - 实验楼_files/wm(16)" alt="此处输入图片的描述"></p>
+<p>这里我还顺便给该篇博文添加了标签与分类。</p>
+<p><img src="./Hexo + github page 实现搭建博客 - 实验楼_files/wm(17)" alt="此处输入图片的描述"></p>
+<h3 id="3-4-">3.4 创建标签页与分类页</h3>
+<p>现在博客已经基本成形了，当你满心欢喜地点击着菜单浏览各个子页面的时候也许会突然发现当试图访问 <code>标签</code> 页面时，页面返回了无法找到。</p>
+<p>那是因为我们还没为标签页创建页面，接下来我们就要来创建。</p>
+<p>要创建标签云页面，首先要创建新的页面。</p>
+<pre><code class="lang-bash hljs">$ hexo new page <span class="hljs-string">"tags"</span>
+</code></pre>
+<p>进入 <code>source/tags/</code> 修改 <code>index.md</code> 。</p>
+<pre><code class="hljs http"><span class="hljs-attribute">title</span>: All tags
+<span class="hljs-attribute">date</span>: 2016-11-06 14:08:58
+<span class="hljs-attribute">type</span>: "tags"
+<span class="hljs-attribute">comments</span>: false
+</code></pre><p>为了避免将来添加评论功能的时候标签云页面出现评论框，将 <code>comments</code> 项设置为 <code>false</code> 。当然如果你希望有评论框则不要设置这一项。</p>
+<p>同时打开 NexT 主题配置文件 <code>/home/shiyanlou/Code/Hexo/themes/next/_config.yml</code> ，配置菜单 <code>menu</code> 中的 <code>tags</code> 路径为 <code>/tags</code> 。</p>
+<blockquote>
+<p>提示：不要把 NexT 的配置文件与 Hexo 的配置文件弄混，虽然它们的名字都一样。</p>
+</blockquote>
+<pre><code class="lang-xml hljs">menu:
+  home: /
+  archives: /archives
+  categories: /categories
+  tags: /tags
+</code></pre>
+<p>这些对于“分类”以及“关于”页面的创建也是相同的道理。</p>
+<p>同时你还可以在 NexT 配置文件的 <code>menu</code> 项中配置菜单栏需要显示的项，不要的项可以通过 <code>#</code> 进行注释，这里我就将 <code>schedule</code> （日程）一项注释。</p>
+<p><img src="./Hexo + github page 实现搭建博客 - 实验楼_files/wm(18)" alt="此处输入图片的描述"></p>
+<p>保存文件，执行 <code>generate</code> 并运行服务器。</p>
+<p><img src="./Hexo + github page 实现搭建博客 - 实验楼_files/wm(19)" alt="此处输入图片的描述"></p>
+<h3 id="3-5-">3.5 实现评论</h3>
+<p>接下来使用多说插件实现评论功能。</p>
+<p>进入<a href="http://duoshuo.com/" target="_blank">多说</a>网站注册登录之后，选择“我要安装”。</p>
+<p><img src="./Hexo + github page 实现搭建博客 - 实验楼_files/wm(20)" alt="此处输入图片的描述"></p>
+<p>填写信息之后进行创建站点。其中“多说域名”那一栏中间填写的部分就为 NeXT 配置文件中的 <code>doushuo_shortname</code> 字段。填写该字段之后就可以使用评论功能了。</p>
+<p><img src="./Hexo + github page 实现搭建博客 - 实验楼_files/wm(21)" alt="此处输入图片的描述"></p>
+<h3 id="3-6-">3.6 评论显示博主标志</h3>
+<p>进入多说<a href="http://dev.duoshuo.com/blog" target="_blank">团队博客</a></p>
+<p><img src="./Hexo + github page 实现搭建博客 - 实验楼_files/wm(22)" alt="此处输入图片的描述"></p>
+<p>进入“我的主页”，获取用户 id </p>
+<p><img src="./Hexo + github page 实现搭建博客 - 实验楼_files/wm(23)" alt="此处输入图片的描述"></p>
+<p>将 id 填入 NexT 配置文件的 <code>duoshuo_info</code> 一项。内容如下：</p>
+<pre><code class="lang-xml hljs">duoshuo_info:
+  ua_enable: true
+  admin_enable: true
+  user_id: [你的用户 id]
+  admin_nickname: [要展示的名字，比如：博主]
+</code></pre>
+<p><img src="./Hexo + github page 实现搭建博客 - 实验楼_files/wm(24)" alt="此处输入图片的描述"></p>
+<h3 id="3-7-">3.7 打赏功能</h3>
+<p>打赏功能在 NexT 主题的配置文件中配置。</p>
+<p>打开 <code>/home/shiyanlou/Code/Hexo/themes/next/_config.yml</code> 文件，在文件的最后边添加以下代码。</p>
+<pre><code class="lang-bash hljs">reward_comment: 您的打赏是对我最大的鼓励！
+wechatpay: /path/to/wechat-reward-image
+alipay: /path/to/alipay-reward-image
+</code></pre>
+<h3 id="3-8-">3.8 七牛实现图床</h3>
+<p>进入<a href="https://portal.qiniu.com/signup/choice" target="_blank">七牛官网</a>，按流程注册个人 账户。</p>
+<p><img src="./Hexo + github page 实现搭建博客 - 实验楼_files/wm(25)" alt="此处输入图片的描述"></p>
+<p>进入个人面板，添加“对象存储”。</p>
+<p><img src="./Hexo + github page 实现搭建博客 - 实验楼_files/wm(26)" alt="此处输入图片的描述"></p>
+<p>填写信息之后，创建。</p>
+<p><img src="./Hexo + github page 实现搭建博客 - 实验楼_files/wm(27)" alt="此处输入图片的描述"></p>
+<p>进入资源存储列表，点击内容管理。</p>
+<p><img src="./Hexo + github page 实现搭建博客 - 实验楼_files/wm(28)" alt="此处输入图片的描述"></p>
+<p>点击上传文件，按提示完成上传之后就可以从文件列表处获取上传文件的外链了。</p>
+<p><img src="./Hexo + github page 实现搭建博客 - 实验楼_files/wm(29)" alt="此处输入图片的描述"></p>
+<h3 id="3-9-github-page">3.9 部署到 github page</h3>
+<p>首先要创建一个新的仓库，注意仓库名格式必须为 <code>你的git账户名.github.io</code> ，这个仓库将作为你的静态博客文件的存放仓库。</p>
+<p><img src="./Hexo + github page 实现搭建博客 - 实验楼_files/wm(30)" alt="此处输入图片的描述"></p>
+<p>然后创建一个新的 <code>readme.md</code> 文件。先随便写些内容。</p>
+<p>进入 <code>/home/shiyanlou/Code/Hexo/</code> 目录，将远程的仓库同步到本地。</p>
+<pre><code class="lang-bash hljs">$ <span class="hljs-built_in">cd</span> /home/shiyanlou/Code/Hexo/
+$ git <span class="hljs-built_in">clone</span> [你的仓库的 url]
+</code></pre>
+<p>仓库 URL 可以在下图位置获得。</p>
+<p><img src="./Hexo + github page 实现搭建博客 - 实验楼_files/wm(31)" alt="此处输入图片的描述"></p>
+<p>然后发现在 <code>/home/shiyanlou/Code/Hexo/blog/</code> 目录下多了你的仓库文件夹。</p>
+<p><img src="./Hexo + github page 实现搭建博客 - 实验楼_files/wm(32)" alt="此处输入图片的描述"></p>
+<p>其实之后所谓的部署要做的事就是把 <code>public</code> 文件目录下的博客文件都复制到你的本地仓库中，并将本地仓库 <code>push</code> 到 github 仓库上。这样当其他人访问你的博客链接的时候 github 将会自动将该仓库中的相应文件展示出来。</p>
+<p>该过程代码如下：</p>
+<pre><code class="lang-bash hljs"><span class="hljs-comment"># /home/shiyanlou/Code/Hexo/blog/</span>
+$ cp -R public/* [你的仓库名]
+$ <span class="hljs-built_in">cd</span> [你的仓库名]
+$ git add .
+$ git commit -m <span class="hljs-string">'update blog'</span>
+$ git push
+</code></pre>
+<h2 id="-">四、总结</h2>
+<p>通过这门课我们学习了如何在 github 上部署静态博客，但是关于 Hexo 还有许多特性没有提到，希望大家课后能够继续积极地深入研究 Hexo ，并将这些新特性添加到自己的博客中去。</p>
+<h2 id="-">五、课后习题</h2>
+<ol>
+<li><p>上述 git 部署方式太过繁琐，你可以尝试将这些写成 shell 脚本来实现一键部署。</p>
+</li>
+<li><p>Hexo 部署的方式不止上边一种，你可以参考官方文档找出另一更快捷的部署的方案。</p>
+</li>
+<li><p>为你的 github 博客绑定独立域名。</p>
+</li>
+</ol>
+<p>习题参考答案：<a href="https://www.shiyanlou.com/questions/6825" target="_blank">https://www.shiyanlou.com/questions/6825</a></p>
+<h2 id="-">六、参考</h2>
+<ul>
+<li><a href="http://theme-next.iissnan.com/" target="_blank">NexT 使用文档</a></li>
+<li><a href="https://hexo.io/zh-cn/" target="_blank">Hexo 主题</a></li>
+<li><a href="https://pages.github.com/" target="_blank">github page</a></li>
+</ul>
+</div>
+
+<textarea id="editor" style="display:none;"># 使用Github Pages和Hexo搭建独立博客
+
+## 一、课程说明
+本次课程我们将利用 github page 的特性来部署由 Hexo 框架渲染生成的静态博客。并且为博客添加插件以实现评论、七牛实现图床等功能。
+
+
+## 1.1 课程知识点
+本次课程我们将接触到以下知识点：
+- git 操作
+- github page 的使用
+- Hexo 的使用
+- NexT 主题配置
+
+
+## 1.2 实验步骤
+实验步骤如下：
+- 安装 Node.js 与 Git
+- 搭建博客
+
+
+## 1.3 效果截图
+最终效果如下：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid242676labid2294timestamp1478853714447.png/wm)
+
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid242676labid2294timestamp1478853760633.png/wm)
+
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid242676labid2294timestamp1478853776685.png/wm)
+
+
+
+## 二、安装 Node.js 与 Git
+
+在下载使用 Hexo 之前需要先安装一些必要的工具。
+
+### 2.1 安装 Node.js
+
+Node.js 是一个开放源代码、跨平台的、可用于服务器端和网络应用的运行环境，该应用由 C++ 语言写成，在 Node.js 运行时运行。Node.js 提供事件驱动和非阻塞 I/O API，可优化应用程序的吞吐量和规模。这些技术通常被用于实时应用程序。并且它是采用 Google 的 V8 引擎来执行代码，它的大部分基本模块都是用 JavaScript 写成的，包含有一系列内置模块，使得程序可以作为独立服务器运行，从而脱离 Apache HTTP Server 或 IIS 运行。
+
+而 npm 也即 Node包管理器（Node Package Manager），它是一个以 Javascript 编写的软件包管理系统，默认环境为 Node.js 。
+
+&gt; 参考：
+&gt; - [wiki--Node.js](https://zh.wikipedia.org/wiki/Node.js)
+&gt; - [nodejs 官网](https://nodejs.org/en/)
+
+可以通过以下命令下载，不过实验楼提供的虚拟环境已经安装好了 Node.js 和 npm 了，因此可以略过此步。
+
+```bash
+$ sudo apt-get install nodejs
+$ sudo apt-get install npm
+```
+
+然后需要安装 nrm ， nrm 是 npm 的资源管理器，借助各个工具可以方便快捷地对 npm 的源进行管理。另外，由于国内网络环境原因在使用 npm 默认下载源的时候不仅速度非常慢而且常常会超时，因此这里还手动指定了从淘宝源下载。
+
+```bash
+$ sudo npm install nrm -g --registry https://registry.npm.taobao.org
+```
+
+接下来就可以使用 nrm 对 npm 的资源进行管理了，通过 nrm 我们将 npm 的默认下载源设置为淘宝源。
+
+```bash
+$ nrm use taobao
+```
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid242676labid2294timestamp1478855006541.png/wm)
+
+接下来就可以使用 npm 下载 Hexo 了。
+
+```bash
+$ sudo npm install hexo-cli -g
+```
+
+### 2.2 安装 Git 客户端
+
+git 是一个版本控制工具，通常配合着 github 一起使用，进行源代码托管。如果你还没有 github 账户，先去注册一个吧。
+
+[https://github.com/](https://github.com/)
+
+注册了 github 账户之后可以通过以下命令安装，不过实验楼提供的虚拟环境已经安装好了 git ，因此也可以略过此步。
+
+```bash
+$ sudo apt-get install git
+```
+
+然后为本地 git 配置全局的 user 与 email 参数。
+
+```bash
+$ git config --global user.name "your github account name"
+$ git config --global user.email "your github account email"
+```
+
+为了在后续操作中我们能将本地仓库的代码推送至 github 的仓库上，我们需要在本地生成 SSH 秘钥，并将公钥保存到 github 账户信息中，这样我们在本地提交的时候 github 就能通过本地的私钥与公钥进行校验。
+
+```bash
+$ ssh-keygen -t rsa -C "your github account email"
+```
+
+生成密钥的过程中会有些提示要求输入，我们一路回车下去即可。
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid242676labid2294timestamp1478853817869.png/wm)
+
+然后我们发现在 `/home/shiyanlou/.ssh/` 目录底下生成了两个文件，其中 `id_rsa` 是私钥，`id_rsa.pub` 是公钥。
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid242676labid2294timestamp1478853827736.png/wm)
+
+我们只需要把公钥的内容提交给 github 即可。
+
+操作如下图，先进入 `setting` 界面，选择 `SSH and GPG keys` ，点击 `New SSH key` ，在展开的窗口中填写密钥信息，title 可以随意起方便自己管理即可，key 那一栏则把刚刚生成的 `id_rsa.pub` 的内容复制进去。最后点击按钮添加。
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid242676labid2294timestamp1478853841537.png/wm)
+
+&gt; 补充：如果你对 git 感兴趣，也可以学习课程 [《Git 实战教程》](https://www.shiyanlou.com/courses/4)。
+
+## 三、搭建博客
+
+Hexo 是一个快速、简洁且高效的博客框架。Hexo 使用 Markdown（或其他渲染引擎）解析文章，在几秒内，即可利用靓丽的主题生成静态网页。接下来我们开始使用 Hexo 搭建博客。
+
+&gt; 关于 Hexo 框架的更多资料：[https://hexo.io/zh-cn/](https://hexo.io/zh-cn/)
+
+进入 `Code` 目录创建并进入目录 `Hexo` 。
+
+```bash
+$ cd Code
+$ mkdir Hexo &amp;&amp; cd Hexo
+```
+
+使用 hexo 生成博客框架。
+
+```bash
+$ hexo init blog
+$ cd blog
+$ npm install
+$ hexo generate
+$ hexo server
+```
+
+&gt; 温馨提示：在 `hexo init blog` 过程可能会比较慢，需要耐心等待。
+
+`hexo generate` 为我们生成了静态文件存储于 `public` 文件夹之下，并且在一开始默认情况下执行这句将会为我们生成一个 `Hello World` 的页面。
+
+通过 `hexo server` 运行起 hexo 内置的服务器。这时候就可以开始在本地访问了，默认地址为 `localhost:4000` 。
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid242676labid2294timestamp1478855062450.png/wm)
+
+### 3.1 模块介绍
+到目前为止 `/home/shiyanlou/Code/Hexo/blog` 目录中的文件结构如下。
+
+```bash
+.
+|-- _config.yml
+|-- db.json
+|-- node_modules/
+|-- package.json
+|-- public/
+|-- scaffolds/
+|   |-- draft.md 
+|   |-- page.md
+|   `-- post.md
+|-- source/
+|   |-- _drafts/
+|   `-- _posts/
+`-- themes/
+```
+
+主要的几个文件和目录的作用分别如下：
+
+- `_config.yml` ：配置文件，可以修改网站的主题、标题、作者等信息。
+- `public` ：由 hexo 根据 `source` 文件夹中的资源进行渲染生成的文件夹，里边存储着最终的静态网页文件。
+- `scaffolds/` ：模板文件，当要给博客添加新文章的时候，将根据对应的模板进行创建。
+- `source/` ：用于存储用户资源，比如文章与新页面等。其中以 `_` 开头的文件夹中除了 `_posts` 文件夹中的 markdown 或 HTML 文件会在执行  `generate` 操作的时候被渲染添加到 `public` 文件夹中之外，其他均被忽略。而且在初始化博客的过程中 `_posts` 目录底会自带一个 `hello-world.md` 的文件。
+- `themes/` ：主题文件，自带默认主题 `landscape` 。
+
+### 3.2 主题配置
+进入目录 `/home/shiyanlou/Code/Hexo/blog/themes` ，下载并解压缩 NexT 主题。
+
+```bash
+$ wget http://labfile.oss.aliyuncs.com/courses/700/next.zip
+$ unzip next.zip
+```
+
+使用 vim 或者 gedit 编辑 `/home/shiyanlou/Code/Hexo/blog/_config.yml` 文件。
+
+```xml
+theme: next
+``` 
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid242676labid2294timestamp1478853864741.png/wm)
+
+并且修改一下作者，网页标题等信息。
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid242676labid2294timestamp1478853879164.png/wm)
+
+一定要记得保存！！！然后重新执行 `generate` 操作。
+
+```bash
+$ hexo g
+$ hexo s
+```
+
+&gt; 补充：这里为大家推荐个偷懒的方法。hexo 中的 `generate`, `server`, `dpoly` 等操作都可以简写为首字母，所以 `hexo generate` 等同于 `hexo g` ，`hexo server` 等同于 `hexo s`。
+
+
+再次访问 `lcoalhost:4000` 。
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid242676labid2294timestamp1478853893416.png/wm)
+
+
+这会博客就套上了我们的新模板了。但是我们发现博客菜单上的文字是英文的于是我们还要重新配置以下，让主题以中文的方式显示。
+
+再次编辑 `_config.yml` 文件，将 `language` 项设置为 `zh-Hans` 。
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid242676labid2294timestamp1478853910964.png/wm)
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid242676labid2294timestamp1478853928539.png/wm)
+
+
+### 3.3 文章创建
+
+创建新文件的命令是：
+
+```bash
+$ hexo new [layout] &lt;filename&gt;
+```
+
+其中 `layout` 为可选参数，指定了新创建的文件布局，默认为 `post` 文件。 `filename` 为必填参数，指定了文件名，如果文件名中有空格则需要把文件名用引号`""` 包裹起来。
+
+`layout` 选项及其对应路径：
+
+| 布局      | 路径   |
+| :-------- | :-------- |
+| post    |  source/_posts |
+| draft | source/_drafts |
+| page | source |
+
+所以现在我们来新建一片文章。
+
+```bash
+$ hexo new "实验楼博客开张了！"
+```
+
+&gt; 提示：要在实现环境中输入中文，可以点击桌面右下角的按钮选择拼音输入。
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid242676labid2294timestamp1478853958645.png/wm)
+
+这时候我们发现 hexo 在 `source/_post` 目录之下创建了一个 `实验楼博客开张了！.md` 的文件。打开该文件进行编辑。
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid242676labid2294timestamp1478853999275.png/wm)
+
+位于 `___` 之上的部分是根据 `scaffolds` 文件夹中对应的布局模板自动生成的。默认信息包括标题、创建时间和标签，当然还有其它信息可供添加，比如分类。
+
+保存之后，调用 `generate` 操作并启动服务器访问。
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid242676labid2294timestamp1478854074793.png/wm)
+
+但现在这样有个问题，就是这个首页我们一般都用来展示博客的大概内容，如果读者感兴趣再点击进去细看同时也为首页腾出空间。为了实现这点我们需要设置摘要。
+
+摘要设置方式是：
+
+```markdown
+以上内容为摘要
+&lt;!--more--&gt;
+以下内容与摘要共同组成正文
+```
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid242676labid2294timestamp1478854123653.png/wm)
+
+这里我还顺便给该篇博文添加了标签与分类。
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid242676labid2294timestamp1478854175355.png/wm)
+
+### 3.4 创建标签页与分类页
+现在博客已经基本成形了，当你满心欢喜地点击着菜单浏览各个子页面的时候也许会突然发现当试图访问 `标签` 页面时，页面返回了无法找到。
+
+那是因为我们还没为标签页创建页面，接下来我们就要来创建。
+
+要创建标签云页面，首先要创建新的页面。
+
+```bash
+$ hexo new page "tags"
+```
+
+进入 `source/tags/` 修改 `index.md` 。
+
+```
+title: All tags
+date: 2016-11-06 14:08:58
+type: "tags"
+comments: false
+```
+
+为了避免将来添加评论功能的时候标签云页面出现评论框，将 `comments` 项设置为 `false` 。当然如果你希望有评论框则不要设置这一项。
+
+同时打开 NexT 主题配置文件 `/home/shiyanlou/Code/Hexo/themes/next/_config.yml` ，配置菜单 `menu` 中的 `tags` 路径为 `/tags` 。
+
+&gt; 提示：不要把 NexT 的配置文件与 Hexo 的配置文件弄混，虽然它们的名字都一样。
+
+```xml
+menu:
+  home: /
+  archives: /archives
+  categories: /categories
+  tags: /tags
+```
+
+这些对于“分类”以及“关于”页面的创建也是相同的道理。
+
+同时你还可以在 NexT 配置文件的 `menu` 项中配置菜单栏需要显示的项，不要的项可以通过 `#` 进行注释，这里我就将 `schedule` （日程）一项注释。
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid242676labid2294timestamp1478854200497.png/wm)
+
+保存文件，执行 `generate` 并运行服务器。
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid242676labid2294timestamp1478854214194.png/wm)
+
+
+### 3.5 实现评论
+
+接下来使用多说插件实现评论功能。
+
+进入[多说](http://duoshuo.com/)网站注册登录之后，选择“我要安装”。
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid242676labid2294timestamp1478854226069.png/wm)
+
+填写信息之后进行创建站点。其中“多说域名”那一栏中间填写的部分就为 NeXT 配置文件中的 `doushuo_shortname` 字段。填写该字段之后就可以使用评论功能了。
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid242676labid2294timestamp1478854258467.png/wm)
+
+
+### 3.6 评论显示博主标志
+
+进入多说[团队博客](http://dev.duoshuo.com/blog)
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid242676labid2294timestamp1478854300114.png/wm)
+
+进入“我的主页”，获取用户 id 
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid242676labid2294timestamp1478854311990.png/wm)
+
+将 id 填入 NexT 配置文件的 `duoshuo_info` 一项。内容如下：
+
+```xml
+duoshuo_info:
+  ua_enable: true
+  admin_enable: true
+  user_id: [你的用户 id]
+  admin_nickname: [要展示的名字，比如：博主]
+```
+ 
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid242676labid2294timestamp1478854323188.png/wm)
+
+
+### 3.7 打赏功能
+打赏功能在 NexT 主题的配置文件中配置。
+
+打开 `/home/shiyanlou/Code/Hexo/themes/next/_config.yml` 文件，在文件的最后边添加以下代码。
+
+```bash
+reward_comment: 您的打赏是对我最大的鼓励！
+wechatpay: /path/to/wechat-reward-image
+alipay: /path/to/alipay-reward-image
+```
+
+
+### 3.8 七牛实现图床
+进入[七牛官网](https://portal.qiniu.com/signup/choice)，按流程注册个人 账户。
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid242676labid2294timestamp1478854563072.png/wm)
+
+进入个人面板，添加“对象存储”。
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid242676labid2294timestamp1478854577663.png/wm)
+
+填写信息之后，创建。
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid242676labid2294timestamp1478854717874.png/wm)
+
+进入资源存储列表，点击内容管理。
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid242676labid2294timestamp1478854735373.png/wm)
+
+点击上传文件，按提示完成上传之后就可以从文件列表处获取上传文件的外链了。
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid242676labid2294timestamp1478854755615.png/wm)
+
+### 3.9 部署到 github page
+
+首先要创建一个新的仓库，注意仓库名格式必须为 `你的git账户名.github.io` ，这个仓库将作为你的静态博客文件的存放仓库。
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid242676labid2294timestamp1478854782019.png/wm)
+
+然后创建一个新的 `readme.md` 文件。先随便写些内容。
+
+进入 `/home/shiyanlou/Code/Hexo/` 目录，将远程的仓库同步到本地。
+
+```bash
+$ cd /home/shiyanlou/Code/Hexo/
+$ git clone [你的仓库的 url]
+```
+仓库 URL 可以在下图位置获得。
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid242676labid2294timestamp1478854814184.png/wm)
+
+然后发现在 `/home/shiyanlou/Code/Hexo/blog/` 目录下多了你的仓库文件夹。
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid242676labid2294timestamp1478854823154.png/wm)
+
+其实之后所谓的部署要做的事就是把 `public` 文件目录下的博客文件都复制到你的本地仓库中，并将本地仓库 `push` 到 github 仓库上。这样当其他人访问你的博客链接的时候 github 将会自动将该仓库中的相应文件展示出来。
+
+该过程代码如下：
+
+```bash
+# /home/shiyanlou/Code/Hexo/blog/
+$ cp -R public/* [你的仓库名]
+$ cd [你的仓库名]
+$ git add .
+$ git commit -m 'update blog'
+$ git push
+```
+
+
+## 四、总结
+通过这门课我们学习了如何在 github 上部署静态博客，但是关于 Hexo 还有许多特性没有提到，希望大家课后能够继续积极地深入研究 Hexo ，并将这些新特性添加到自己的博客中去。
+
+## 五、课后习题
+
+1. 上述 git 部署方式太过繁琐，你可以尝试将这些写成 shell 脚本来实现一键部署。
+
+2. Hexo 部署的方式不止上边一种，你可以参考官方文档找出另一更快捷的部署的方案。
+
+3. 为你的 github 博客绑定独立域名。
+
+习题参考答案：https://www.shiyanlou.com/questions/6825
+
+## 六、参考
+- [NexT 使用文档](http://theme-next.iissnan.com/)
+- [Hexo 主题](https://hexo.io/zh-cn/)
+- [github page](https://pages.github.com/)
+</textarea>
+<nav>
+    <ul class="pager">
+        
+        
+    </ul>
+</nav>
+
+
+    
+    <div class="vip-banner">
+        
+        动手实践是学习 IT 技术最有效的方式！
+        
+        
+
+        
+
+        
+            
+        
+
+        
+        <a class="btn   lab-item-start" data-mobile-url="/courses/document/2294" data-url="/courses/start/2294" data-next="/courses/running">开始实验</a>
+    </div>
+    
+
+
+        </div>
+        <div class="col-md-3 layout-side">
+            
+    <div class="side-image side-image-pc">
+        <img src="./Hexo + github page 实现搭建博客 - 实验楼_files/1479372272182.png">
+    </div>
+    
+    
+
+    
+        
+    
+
+
+    
+        
+<div class="sidebox mooc-teacher">
+    <div class="sidebox-header mooc-header">
+        <h4 class="sidebox-title">课程教师</h4>
+    </div>
+    <div class="sidebox-body mooc-content">
+        <a href="https://www.shiyanlou.com/user/242676" target="_blank">
+            <img src="./Hexo + github page 实现搭建博客 - 实验楼_files/gravatarNTY0MzE5MjU1MzUx.png">
+        </a>
+        <div class="mooc-info">
+            <div class="name"><strong>one_magician</strong> </div>
+            
+            <div class="courses">共发布过<strong>12</strong>门课程</div>
+        </div>
+        <div class="mooc-extra-info">
+            <div class="word long-paragraph">
+                
+            </div>
+        </div>
+    </div>
+    <div class="sidebox-footer mooc-footer">
+        <a href="https://www.shiyanlou.com/teacher/242676" target="_blank">查看老师的所有课程 &gt;</a>
+    </div>
+</div>
+
+    
+    
+    
+    
+    <div class="side-image">
+    <a href="https://www.shiyanlou.com/vip" target="_blank">
+        <img src="./Hexo + github page 实现搭建博客 - 实验楼_files/banner-vip.png">
+    </a>
+</div>
+    
+    
+    
+    
+    
+
+        </div>
+    </div>
+</div>
+
+
+	<div class="modal fade" id="invite-user" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">邀请好友，双方都可获赠实验豆！</h4>
+				</div>
+				<div class="modal-body">
+                    
+					<div class="form-label">
+                        分享专属链接给好友，或粘贴到QQ群/微博/论坛，好友注册后，您和好友将分别获赠3个实验豆！
+                    </div>
+					<input type="text" id="bstext" class="form-invite" value="https://www.shiyanlou.com/register?inviter=NTY0MzE5MjQ4Mzk4">              
+                    
+					<div id="msg-modal"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	
+    
+        
+        
+<div class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 clearfix footer-col">
+                <img src="./Hexo + github page 实现搭建博客 - 实验楼_files/logo_03.png">
+                <div class="footer-slogan">动手做实验，轻松学编程</div>
+                <div class="col-xs-2">
+                    <div class="social-item footer-weixin-item">
+                        <i class="fa fa-weixin"></i>
+                        <div class="footer-weixin">
+                            <img src="./Hexo + github page 实现搭建博客 - 实验楼_files/footer-weixin.png">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-2">
+                    <div class="social-item footer-qq-item" data-original-title="" title="">
+                        <i class="fa fa-qq"></i>
+                    </div>
+                </div>
+                <div class="col-xs-2">
+                    <div class="social-item footer-weibo-item">
+                        <a href="http://weibo.com/shiyanlou2013" target="_blank">
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6 col-sm-3 col-md-2 footer-col">
+                <div class="col-title">公司</div>
+                <a href="https://www.shiyanlou.com/aboutus" target="_blank">关于我们</a><br>
+                <a href="https://www.shiyanlou.com/contact" target="_blank">联系我们</a><br>
+                <a href="http://www.simplecloud.cn/jobs.html" target="_blank">加入我们</a><br>
+                <a href="https://blog.shiyanlou.com/" target="_blank">技术博客</a><br>
+            </div>
+            <div class="col-xs-6 col-sm-3 col-md-2 footer-col">
+                <div class="col-title">合作</div>
+                <a href="https://www.shiyanlou.com/contribute" target="_blank">我要投稿</a><br>
+                <a href="https://www.shiyanlou.com/labs" target="_blank">教师合作</a><br>
+                <a href="https://www.shiyanlou.com/edu/" target="_blank">高校合作</a><br>
+                <a href="https://www.shiyanlou.com/friends" target="_blank">友情链接</a>
+            </div>
+            <div class="col-xs-6 col-sm-3 col-md-2 footer-col">
+                <div class="col-title">服务</div>
+                <a href="https://www.shiyanlou.com/bootcamp/" target="_blank">实战训练营</a><br>
+                <a href="https://www.shiyanlou.com/vip" target="_blank">会员服务</a><br>
+                <a href="https://www.shiyanlou.com/courses/reports" target="_blank">实验报告</a><br>
+                <a href="https://www.shiyanlou.com/questions/?tag=%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98" target="_blank">常见问题</a><br>
+                <a href="https://www.shiyanlou.com/privacy" target="_blank">隐私条款</a>
+            </div>
+            <div class="col-xs-6 col-sm-3 col-md-2 footer-col">
+                <div class="col-title">学习路径</div>
+                <a href="https://www.shiyanlou.com/paths/python" target="_blank">Python学习路径</a><br>
+                <a href="https://www.shiyanlou.com/paths/linuxdev" target="_blank">Linux学习路径</a><br>
+                <a href="https://www.shiyanlou.com/paths/bigdata" target="_blank">大数据学习路径</a><br>
+                <a href="https://www.shiyanlou.com/paths/java" target="_blank">Java学习路径</a><br>
+                <a href="https://www.shiyanlou.com/paths/php" target="_blank">PHP学习路径</a><br>
+                <a href="https://www.shiyanlou.com/paths/" ,="" target="_blank">全部</a>
+            </div>
+        </div>
+    </div>
+    <div class="text-center copyright">
+        <span>Copyright @2013-2016 实验楼在线教育</span>
+        <span class="ver-line"> | </span>
+        <a href="http://www.miibeian.gov.cn/" target="_blank">蜀ICP备13019762号</a>
+        <script charset="utf-8" src="./Hexo + github page 实现搭建博客 - 实验楼_files/v.js"></script><script src="./Hexo + github page 实现搭建博客 - 实验楼_files/hm.js"></script><script type="text/javascript">
+            var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+            document.write(unescape("%3Cspan id='cnzz_stat_icon_5902315'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D5902315' type='text/javascript'%3E%3C/script%3E"));
+        </script><span id="cnzz_stat_icon_5902315"><a href="http://www.cnzz.com/stat/website.php?web_id=5902315" target="_blank" title="站长统计">站长统计</a></span><script src="./Hexo + github page 实现搭建博客 - 实验楼_files/stat.php" type="text/javascript"></script><script src="./Hexo + github page 实现搭建博客 - 实验楼_files/core.php" charset="utf-8" type="text/javascript"></script>
+        <script>
+            var _hmt = _hmt || [];
+            (function() {
+             var hm = document.createElement("script");
+             hm.src = "//hm.baidu.com/hm.js?6eb47a3aeda6ea31fa53985fdfdc78e8";
+             var s = document.getElementsByTagName("script")[0];
+             s.parentNode.insertBefore(hm, s);
+             })();
+        </script>
+    </div>
+</div>
+
+        
+    
+	
+
+	<div class="modal fade" id="flash-message" tabindex="-1" role="dialog">
+		<div class="modal-dialog" rolw="document">
+		</div>
+	</div>
+	<div class="modal fade" id="modal-message" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">注意</h4>
+				</div>
+				<div class="modal-body">
+				</div>
+				<div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary confirm" data-dismiss="modal">确定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+    
+<div class="modal fade" id="start-newlab">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3>开始新实验</h3>
+			</div>
+			<div class="modal-body">
+                <p>一个实验正在进行，是否停止它，开始新实验？</p>
+			</div>
+			<div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+                <a class="btn btn-primary start-newlab-confirm">确定</a>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div>
+<div class="modal fade" id="start-evaluation-course">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3>开始评估课实验</h3>
+			</div>
+			<div class="modal-body">
+                <div>
+                    <p>为了让评估结果更加准确，请注意以下操作：</p>
+                    <ul>
+                        <li>完成实验后点击「停止实验」按钮</li>
+                        <li>将代码提交到代码库</li>
+                        <li>尽可能详尽的撰写实验报告</li>
+                        <li>尽可能在实验操作的关键步骤截图</li>
+                        <li>尽可能减少无用操作</li>
+                        <li>尽可能高效的利用内存/CPU资源</li>
+                    </ul>
+                    <p>评估课还在不断完善中，我们真挚希望你能通过我们提供的这个平台，找到更好的发展机会。</p>
+                </div>
+                <br>
+                <div class="start-newlab"></div>
+			</div>
+			<div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+                <a class="btn btn-primary start-confirm">确定</a>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div>
+<div class="modal fade" id="vip-startlab-modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3>开始实验</h3>
+			</div>
+			<div class="modal-body">
+                <div class="start-newlab"></div>
+                <br>
+                <div class="text-center vip-vm">
+                    <a class="btn btn-default btn-lg newvm">创建新环境</a>
+					
+                </div>
+                <br>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div>
+
+
+	
+		
+			
+		
+	
+
+    
+
+    <div id="base-data" data-flash="false" data-csrf-token="/questions/form" data-is-login="true" data-jwt-token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzaGl5YW5sb3U6d2ViOmFwcCIsInVuYW1lIjoid2h1aGFuMjAxMyIsInVpZCI6IjIzNTcyMyIsImV4cCI6MTQ4MTQyMDcwOSwiaWF0IjoxNDgxMzM0MzA5fQ.v2fvIdue6tR_RW-4jRtgv3OTkGVu_J9hvkhRooZFFcw" data-user-id="235723" data-is-jwt="true" data-socket-url="wss://comet.shiyanlou.com" data-msg-user="" data-msg-system=""></div>
+
+    <script src="./Hexo + github page 实现搭建博客 - 实验楼_files/lib.js"></script>
+    <script src="./Hexo + github page 实现搭建博客 - 实验楼_files/jquery.min.js"></script>
+    <script src="./Hexo + github page 实现搭建博客 - 实验楼_files/ace.js"></script>
+    <script src="./Hexo + github page 实现搭建博客 - 实验楼_files/aliyun-oss-sdk-4.3.0.min.js"></script>
+    <script src="./Hexo + github page 实现搭建博客 - 实验楼_files/highlight.min.js"></script>
+    <script src="./Hexo + github page 实现搭建博客 - 实验楼_files/jspdf.min.js"></script>
+    <script src="./Hexo + github page 实现搭建博客 - 实验楼_files/plupload.full.min.js"></script>
+    <script src="./Hexo + github page 实现搭建博客 - 实验楼_files/ZeroClipboard.min.js"></script>
+    <script src="./Hexo + github page 实现搭建博客 - 实验楼_files/video.min.js"></script>
+    <script src="./Hexo + github page 实现搭建博客 - 实验楼_files/bootstrap-tour.min.js"></script>
+    <script src="./Hexo + github page 实现搭建博客 - 实验楼_files/bootstrap-table.min.js"></script>
+    <script src="./Hexo + github page 实现搭建博客 - 实验楼_files/bootstrap-table-zh-CN.min.js"></script>
+    <script src="./Hexo + github page 实现搭建博客 - 实验楼_files/bootstrap-table-filter-control.min.js"></script>
+
+    <script src="./Hexo + github page 实现搭建博客 - 实验楼_files/raven.min.js"></script>
+    <script>
+    Raven.config('https://bc3878b7ed0a4468a65390bd79e6e73f@sentry.shiyanlou.com/5', {
+        release: '3.11.28'
+    }).install();
+    </script>
+    
+<div id="jinja-data" data-tencent-labid="[662]" data-course-detail="/courses/700" data-left-time="0" data-course-id="700" data-userlab-id="None" data-start-newlab-url="/courses/clear"></div>
+<script src="./Hexo + github page 实现搭建博客 - 实验楼_files/labDoc.js"></script><div style="display: none; position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; background: rgba(0, 0, 0, 0.498039); text-align: center; z-index: 1600;"><i class="fa fa-spinner fa-pulse" style="margin-top: 243.6px; color: rgb(255, 255, 255); font-size: 35px;"></i></div>
+
+
+
+</body></html>

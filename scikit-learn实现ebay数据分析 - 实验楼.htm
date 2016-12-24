@@ -1,0 +1,1872 @@
+<!DOCTYPE html>
+<!-- saved from url=(0056)https://www.shiyanlou.com/courses/714/labs/2376/document -->
+<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style class="vjs-styles-defaults">
+      .video-js {
+        width: 300px;
+        height: 150px;
+      }
+
+      .vjs-fluid {
+        padding-top: 56.25%
+      }
+    </style>
+	
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="author" content="Lei Shi">
+    <meta http-equiv="Cache-Control" content="o-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+	
+		
+        <title>scikit-learn实现ebay数据分析 - 实验楼</title>
+		
+	
+
+    
+    <meta content="实验楼是国内领先的IT技术实训平台，创新的实验驱动教学模式，以就业为导向，为IT相关专业的在校学生及从业者提供编程、运维、测试、云计算、大数据、数据库等全面的IT技术动手实践环境，提供Linux、Python、Java、C语言、Ruby、Android、IOS开发等热门课程。" name="description">
+    <meta content="实验楼,IT培训,IT教育,编程,在线编程,Linux,Linux教程,Linux操作系统,Python,Python教程,Python基础教程,Java,Java编程,C语言,大数据,Node.js,Hadoop,PHP,Docker" name="keywords">
+    
+    <meta content="实验楼,琛石科技" name="author">
+
+	<link rel="shortcut icon" href="https://static.shiyanlou.com/favicon.ico">
+	<link rel="stylesheet" href="./scikit-learn实现ebay数据分析 - 实验楼_files/font-awesome.min.css">
+    <link rel="stylesheet" href="./scikit-learn实现ebay数据分析 - 实验楼_files/monokai-sublime.min.css">
+    <link rel="stylesheet" href="./scikit-learn实现ebay数据分析 - 实验楼_files/bootstrap.min.css">
+    <link rel="stylesheet" href="./scikit-learn实现ebay数据分析 - 实验楼_files/katex.min.css">
+    <link rel="stylesheet" href="./scikit-learn实现ebay数据分析 - 实验楼_files/video-js.min.css">
+	<link rel="stylesheet" href="./scikit-learn实现ebay数据分析 - 实验楼_files/styles.css">
+
+	<style>
+		@font-face {
+			font-family: "lantingxihei";
+			src: url("https://static.shiyanlou.com/fonts/FZLTCXHJW.TTF");
+		}
+
+        /* modal 模态框*/
+        #invite-user .modal-body {
+            overflow: hidden;
+        }
+		#invite-user .modal-body .form-label {
+			margin-bottom: 16px;
+			font-size:14px;
+		}
+		#invite-user .modal-body .form-invite {
+			width: 80%;
+			padding: 6px 12px;
+			background-color: #eeeeee;
+			border: 1px solid #cccccc;
+			border-radius: 5px;
+			float: left;
+			margin-right: 10px;
+		}
+		#invite-user .modal-body .msg-modal-style {
+			background-color: #7dd383;
+			margin-top: 10px;
+			padding: 6px 0;
+			text-align: center;
+			width: 100%;
+		}
+		#invite-user .modal-body .modal-flash {
+			position: absolute;
+			top: 53px;
+			right: 74px;
+			z-index: 999;
+		}
+		/* end modal */
+
+        .en-footer {
+            padding: 30px;
+            text-align: center;
+            font-size: 14px;
+        }
+    </style>
+	
+<style>
+    #editor {
+        width: 0;
+		height: 0;
+		margin: 0;
+		padding: 0;
+		border: none;
+    }
+    #preview {
+        padding: 20px;
+        background: #fff;
+        border: solid 1px #eee;
+    }
+	#preview p,
+	#preview li,
+	#preview span,
+	#preview div,
+	#preview blockquote,
+	#preview blockquote	p {
+		font-size: 15px;
+        font-weight: 100;
+	}
+	#preview blockquote p {
+		line-height: 1.6em;
+	}
+    .mobile-alert {
+        display: none;
+        margin-top: 10px;
+        font-size: 16px;
+        text-align: center;
+    }
+    .breadcrumb {
+        border-bottom: solid 1px #eee;
+    }
+    @media (max-width: 768px) {
+        .mobile-alert {
+            display: block;
+        }
+        #preview p,
+        #preview li,
+        #preview span,
+        #preview div,
+        #preview blockquote,
+        #preview blockquote	p {
+            font-weight: 500;
+        }
+    }
+    .start-lab {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 10px 0;
+        text-align: center;
+        box-shadow: 0 2px 4px 2px #eee;
+        background: #274a59;
+        z-index: 100;
+    }
+    .start-lab span {
+        position: relative;
+        top: 4px;
+        color: #fff;
+        font-size: 16px;
+    }
+    .start-lab .btn {
+        margin-left: 10px;
+        padding: 6px 50px;
+        background: #0c9;
+        font-size: 18px;
+        border-color: #0c9;
+    }
+    @media (max-width: 768px) {
+        .start-lab .btn {
+            margin-top: 10px;
+        }
+    }
+    .course-warning {
+        margin-top: 10px;
+        text-align: center;
+        font-size: 16px;
+    }
+    .course-warning a {
+        padding: 6px 50px;
+        font-size: 16px;
+    }
+
+    .info-panel {
+        position: relative;
+        top: 0;
+        background: cornsilk;
+    }
+    .info-panel div {
+        margin-bottom: 10px;
+        font-size: 16px;
+    }
+    .info-panel .btn {
+        margin-top: 10px;
+        border-radius: 4px;
+    }
+    
+</style>
+
+
+	
+    
+<style id="ace_editor.css">.ace_editor {position: relative;overflow: hidden;font: 12px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;direction: ltr;text-align: left;}.ace_scroller {position: absolute;overflow: hidden;top: 0;bottom: 0;background-color: inherit;-ms-user-select: none;-moz-user-select: none;-webkit-user-select: none;user-select: none;cursor: text;}.ace_content {position: absolute;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;min-width: 100%;}.ace_dragging .ace_scroller:before{position: absolute;top: 0;left: 0;right: 0;bottom: 0;content: '';background: rgba(250, 250, 250, 0.01);z-index: 1000;}.ace_dragging.ace_dark .ace_scroller:before{background: rgba(0, 0, 0, 0.01);}.ace_selecting, .ace_selecting * {cursor: text !important;}.ace_gutter {position: absolute;overflow : hidden;width: auto;top: 0;bottom: 0;left: 0;cursor: default;z-index: 4;-ms-user-select: none;-moz-user-select: none;-webkit-user-select: none;user-select: none;}.ace_gutter-active-line {position: absolute;left: 0;right: 0;}.ace_scroller.ace_scroll-left {box-shadow: 17px 0 16px -16px rgba(0, 0, 0, 0.4) inset;}.ace_gutter-cell {padding-left: 19px;padding-right: 6px;background-repeat: no-repeat;}.ace_gutter-cell.ace_error {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAABOFBMVEX/////////QRswFAb/Ui4wFAYwFAYwFAaWGAfDRymzOSH/PxswFAb/SiUwFAYwFAbUPRvjQiDllog5HhHdRybsTi3/Tyv9Tir+Syj/UC3////XurebMBIwFAb/RSHbPx/gUzfdwL3kzMivKBAwFAbbvbnhPx66NhowFAYwFAaZJg8wFAaxKBDZurf/RB6mMxb/SCMwFAYwFAbxQB3+RB4wFAb/Qhy4Oh+4QifbNRcwFAYwFAYwFAb/QRzdNhgwFAYwFAbav7v/Uy7oaE68MBK5LxLewr/r2NXewLswFAaxJw4wFAbkPRy2PyYwFAaxKhLm1tMwFAazPiQwFAaUGAb/QBrfOx3bvrv/VC/maE4wFAbRPBq6MRO8Qynew8Dp2tjfwb0wFAbx6eju5+by6uns4uH9/f36+vr/GkHjAAAAYnRSTlMAGt+64rnWu/bo8eAA4InH3+DwoN7j4eLi4xP99Nfg4+b+/u9B/eDs1MD1mO7+4PHg2MXa347g7vDizMLN4eG+Pv7i5evs/v79yu7S3/DV7/498Yv24eH+4ufQ3Ozu/v7+y13sRqwAAADLSURBVHjaZc/XDsFgGIBhtDrshlitmk2IrbHFqL2pvXf/+78DPokj7+Fz9qpU/9UXJIlhmPaTaQ6QPaz0mm+5gwkgovcV6GZzd5JtCQwgsxoHOvJO15kleRLAnMgHFIESUEPmawB9ngmelTtipwwfASilxOLyiV5UVUyVAfbG0cCPHig+GBkzAENHS0AstVF6bacZIOzgLmxsHbt2OecNgJC83JERmePUYq8ARGkJx6XtFsdddBQgZE2nPR6CICZhawjA4Fb/chv+399kfR+MMMDGOQAAAABJRU5ErkJggg==");background-repeat: no-repeat;background-position: 2px center;}.ace_gutter-cell.ace_warning {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAmVBMVEX///8AAAD///8AAAAAAABPSzb/5sAAAAB/blH/73z/ulkAAAAAAAD85pkAAAAAAAACAgP/vGz/rkDerGbGrV7/pkQICAf////e0IsAAAD/oED/qTvhrnUAAAD/yHD/njcAAADuv2r/nz//oTj/p064oGf/zHAAAAA9Nir/tFIAAAD/tlTiuWf/tkIAAACynXEAAAAAAAAtIRW7zBpBAAAAM3RSTlMAABR1m7RXO8Ln31Z36zT+neXe5OzooRDfn+TZ4p3h2hTf4t3k3ucyrN1K5+Xaks52Sfs9CXgrAAAAjklEQVR42o3PbQ+CIBQFYEwboPhSYgoYunIqqLn6/z8uYdH8Vmdnu9vz4WwXgN/xTPRD2+sgOcZjsge/whXZgUaYYvT8QnuJaUrjrHUQreGczuEafQCO/SJTufTbroWsPgsllVhq3wJEk2jUSzX3CUEDJC84707djRc5MTAQxoLgupWRwW6UB5fS++NV8AbOZgnsC7BpEAAAAABJRU5ErkJggg==");background-position: 2px center;}.ace_gutter-cell.ace_info {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAAAAAA6mKC9AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAJ0Uk5TAAB2k804AAAAPklEQVQY02NgIB68QuO3tiLznjAwpKTgNyDbMegwisCHZUETUZV0ZqOquBpXj2rtnpSJT1AEnnRmL2OgGgAAIKkRQap2htgAAAAASUVORK5CYII=");background-position: 2px center;}.ace_dark .ace_gutter-cell.ace_info {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAJFBMVEUAAAChoaGAgIAqKiq+vr6tra1ZWVmUlJSbm5s8PDxubm56enrdgzg3AAAAAXRSTlMAQObYZgAAAClJREFUeNpjYMAPdsMYHegyJZFQBlsUlMFVCWUYKkAZMxZAGdxlDMQBAG+TBP4B6RyJAAAAAElFTkSuQmCC");}.ace_scrollbar {position: absolute;right: 0;bottom: 0;z-index: 6;}.ace_scrollbar-inner {position: absolute;cursor: text;left: 0;top: 0;}.ace_scrollbar-v{overflow-x: hidden;overflow-y: scroll;top: 0;}.ace_scrollbar-h {overflow-x: scroll;overflow-y: hidden;left: 0;}.ace_print-margin {position: absolute;height: 100%;}.ace_text-input {position: absolute;z-index: 0;width: 0.5em;height: 1em;opacity: 0;background: transparent;-moz-appearance: none;appearance: none;border: none;resize: none;outline: none;overflow: hidden;font: inherit;padding: 0 1px;margin: 0 -1px;text-indent: -1em;-ms-user-select: text;-moz-user-select: text;-webkit-user-select: text;user-select: text;white-space: pre!important;}.ace_text-input.ace_composition {background: inherit;color: inherit;z-index: 1000;opacity: 1;text-indent: 0;}.ace_layer {z-index: 1;position: absolute;overflow: hidden;word-wrap: normal;white-space: pre;height: 100%;width: 100%;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;pointer-events: none;}.ace_gutter-layer {position: relative;width: auto;text-align: right;pointer-events: auto;}.ace_text-layer {font: inherit !important;}.ace_cjk {display: inline-block;text-align: center;}.ace_cursor-layer {z-index: 4;}.ace_cursor {z-index: 4;position: absolute;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;border-left: 2px solid;transform: translatez(0);}.ace_slim-cursors .ace_cursor {border-left-width: 1px;}.ace_overwrite-cursors .ace_cursor {border-left-width: 0;border-bottom: 1px solid;}.ace_hidden-cursors .ace_cursor {opacity: 0.2;}.ace_smooth-blinking .ace_cursor {-webkit-transition: opacity 0.18s;transition: opacity 0.18s;}.ace_editor.ace_multiselect .ace_cursor {border-left-width: 1px;}.ace_marker-layer .ace_step, .ace_marker-layer .ace_stack {position: absolute;z-index: 3;}.ace_marker-layer .ace_selection {position: absolute;z-index: 5;}.ace_marker-layer .ace_bracket {position: absolute;z-index: 6;}.ace_marker-layer .ace_active-line {position: absolute;z-index: 2;}.ace_marker-layer .ace_selected-word {position: absolute;z-index: 4;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;}.ace_line .ace_fold {-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;display: inline-block;height: 11px;margin-top: -2px;vertical-align: middle;background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAJCAYAAADU6McMAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAJpJREFUeNpi/P//PwOlgAXGYGRklAVSokD8GmjwY1wasKljQpYACtpCFeADcHVQfQyMQAwzwAZI3wJKvCLkfKBaMSClBlR7BOQikCFGQEErIH0VqkabiGCAqwUadAzZJRxQr/0gwiXIal8zQQPnNVTgJ1TdawL0T5gBIP1MUJNhBv2HKoQHHjqNrA4WO4zY0glyNKLT2KIfIMAAQsdgGiXvgnYAAAAASUVORK5CYII="),url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAA3CAYAAADNNiA5AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAACJJREFUeNpi+P//fxgTAwPDBxDxD078RSX+YeEyDFMCIMAAI3INmXiwf2YAAAAASUVORK5CYII=");background-repeat: no-repeat, repeat-x;background-position: center center, top left;color: transparent;border: 1px solid black;border-radius: 2px;cursor: pointer;pointer-events: auto;}.ace_dark .ace_fold {}.ace_fold:hover{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAJCAYAAADU6McMAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAJpJREFUeNpi/P//PwOlgAXGYGRklAVSokD8GmjwY1wasKljQpYACtpCFeADcHVQfQyMQAwzwAZI3wJKvCLkfKBaMSClBlR7BOQikCFGQEErIH0VqkabiGCAqwUadAzZJRxQr/0gwiXIal8zQQPnNVTgJ1TdawL0T5gBIP1MUJNhBv2HKoQHHjqNrA4WO4zY0glyNKLT2KIfIMAAQsdgGiXvgnYAAAAASUVORK5CYII="),url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAA3CAYAAADNNiA5AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAACBJREFUeNpi+P//fz4TAwPDZxDxD5X4i5fLMEwJgAADAEPVDbjNw87ZAAAAAElFTkSuQmCC");}.ace_tooltip {background-color: #FFF;background-image: -webkit-linear-gradient(top, transparent, rgba(0, 0, 0, 0.1));background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.1));border: 1px solid gray;border-radius: 1px;box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);color: black;max-width: 100%;padding: 3px 4px;position: fixed;z-index: 999999;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;cursor: default;white-space: pre;word-wrap: break-word;line-height: normal;font-style: normal;font-weight: normal;letter-spacing: normal;pointer-events: none;}.ace_folding-enabled > .ace_gutter-cell {padding-right: 13px;}.ace_fold-widget {-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;margin: 0 -12px 0 1px;display: none;width: 11px;vertical-align: top;background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAANElEQVR42mWKsQ0AMAzC8ixLlrzQjzmBiEjp0A6WwBCSPgKAXoLkqSot7nN3yMwR7pZ32NzpKkVoDBUxKAAAAABJRU5ErkJggg==");background-repeat: no-repeat;background-position: center;border-radius: 3px;border: 1px solid transparent;cursor: pointer;}.ace_folding-enabled .ace_fold-widget {display: inline-block;   }.ace_fold-widget.ace_end {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAANElEQVR42m3HwQkAMAhD0YzsRchFKI7sAikeWkrxwScEB0nh5e7KTPWimZki4tYfVbX+MNl4pyZXejUO1QAAAABJRU5ErkJggg==");}.ace_fold-widget.ace_closed {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAGCAYAAAAG5SQMAAAAOUlEQVR42jXKwQkAMAgDwKwqKD4EwQ26sSOkVWjgIIHAzPiCgaqiqnJHZnKICBERHN194O5b9vbLuAVRL+l0YWnZAAAAAElFTkSuQmCCXA==");}.ace_fold-widget:hover {border: 1px solid rgba(0, 0, 0, 0.3);background-color: rgba(255, 255, 255, 0.2);box-shadow: 0 1px 1px rgba(255, 255, 255, 0.7);}.ace_fold-widget:active {border: 1px solid rgba(0, 0, 0, 0.4);background-color: rgba(0, 0, 0, 0.05);box-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);}.ace_dark .ace_fold-widget {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHklEQVQIW2P4//8/AzoGEQ7oGCaLLAhWiSwB146BAQCSTPYocqT0AAAAAElFTkSuQmCC");}.ace_dark .ace_fold-widget.ace_end {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAH0lEQVQIW2P4//8/AxQ7wNjIAjDMgC4AxjCVKBirIAAF0kz2rlhxpAAAAABJRU5ErkJggg==");}.ace_dark .ace_fold-widget.ace_closed {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAFCAYAAACAcVaiAAAAHElEQVQIW2P4//+/AxAzgDADlOOAznHAKgPWAwARji8UIDTfQQAAAABJRU5ErkJggg==");}.ace_dark .ace_fold-widget:hover {box-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);background-color: rgba(255, 255, 255, 0.1);}.ace_dark .ace_fold-widget:active {box-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);}.ace_fold-widget.ace_invalid {background-color: #FFB4B4;border-color: #DE5555;}.ace_fade-fold-widgets .ace_fold-widget {-webkit-transition: opacity 0.4s ease 0.05s;transition: opacity 0.4s ease 0.05s;opacity: 0;}.ace_fade-fold-widgets:hover .ace_fold-widget {-webkit-transition: opacity 0.05s ease 0.05s;transition: opacity 0.05s ease 0.05s;opacity:1;}.ace_underline {text-decoration: underline;}.ace_bold {font-weight: bold;}.ace_nobold .ace_bold {font-weight: normal;}.ace_italic {font-style: italic;}.ace_error-marker {background-color: rgba(255, 0, 0,0.2);position: absolute;z-index: 9;}.ace_highlight-marker {background-color: rgba(255, 255, 0,0.2);position: absolute;z-index: 8;}.ace_br1 {border-top-left-radius    : 3px;}.ace_br2 {border-top-right-radius   : 3px;}.ace_br3 {border-top-left-radius    : 3px; border-top-right-radius:    3px;}.ace_br4 {border-bottom-right-radius: 3px;}.ace_br5 {border-top-left-radius    : 3px; border-bottom-right-radius: 3px;}.ace_br6 {border-top-right-radius   : 3px; border-bottom-right-radius: 3px;}.ace_br7 {border-top-left-radius    : 3px; border-top-right-radius:    3px; border-bottom-right-radius: 3px;}.ace_br8 {border-bottom-left-radius : 3px;}.ace_br9 {border-top-left-radius    : 3px; border-bottom-left-radius:  3px;}.ace_br10{border-top-right-radius   : 3px; border-bottom-left-radius:  3px;}.ace_br11{border-top-left-radius    : 3px; border-top-right-radius:    3px; border-bottom-left-radius:  3px;}.ace_br12{border-bottom-right-radius: 3px; border-bottom-left-radius:  3px;}.ace_br13{border-top-left-radius    : 3px; border-bottom-right-radius: 3px; border-bottom-left-radius:  3px;}.ace_br14{border-top-right-radius   : 3px; border-bottom-right-radius: 3px; border-bottom-left-radius:  3px;}.ace_br15{border-top-left-radius    : 3px; border-top-right-radius:    3px; border-bottom-right-radius: 3px; border-bottom-left-radius: 3px;}
+/*# sourceURL=ace/css/ace_editor.css */</style><style id="ace-tm">.ace-tm .ace_gutter {background: #f0f0f0;color: #333;}.ace-tm .ace_print-margin {width: 1px;background: #e8e8e8;}.ace-tm .ace_fold {background-color: #6B72E6;}.ace-tm {background-color: #FFFFFF;color: black;}.ace-tm .ace_cursor {color: black;}.ace-tm .ace_invisible {color: rgb(191, 191, 191);}.ace-tm .ace_storage,.ace-tm .ace_keyword {color: blue;}.ace-tm .ace_constant {color: rgb(197, 6, 11);}.ace-tm .ace_constant.ace_buildin {color: rgb(88, 72, 246);}.ace-tm .ace_constant.ace_language {color: rgb(88, 92, 246);}.ace-tm .ace_constant.ace_library {color: rgb(6, 150, 14);}.ace-tm .ace_invalid {background-color: rgba(255, 0, 0, 0.1);color: red;}.ace-tm .ace_support.ace_function {color: rgb(60, 76, 114);}.ace-tm .ace_support.ace_constant {color: rgb(6, 150, 14);}.ace-tm .ace_support.ace_type,.ace-tm .ace_support.ace_class {color: rgb(109, 121, 222);}.ace-tm .ace_keyword.ace_operator {color: rgb(104, 118, 135);}.ace-tm .ace_string {color: rgb(3, 106, 7);}.ace-tm .ace_comment {color: rgb(76, 136, 107);}.ace-tm .ace_comment.ace_doc {color: rgb(0, 102, 255);}.ace-tm .ace_comment.ace_doc.ace_tag {color: rgb(128, 159, 191);}.ace-tm .ace_constant.ace_numeric {color: rgb(0, 0, 205);}.ace-tm .ace_variable {color: rgb(49, 132, 149);}.ace-tm .ace_xml-pe {color: rgb(104, 104, 91);}.ace-tm .ace_entity.ace_name.ace_function {color: #0000A2;}.ace-tm .ace_heading {color: rgb(12, 7, 255);}.ace-tm .ace_list {color:rgb(185, 6, 144);}.ace-tm .ace_meta.ace_tag {color:rgb(0, 22, 142);}.ace-tm .ace_string.ace_regex {color: rgb(255, 0, 0)}.ace-tm .ace_marker-layer .ace_selection {background: rgb(181, 213, 255);}.ace-tm.ace_multiselect .ace_selection.ace_start {box-shadow: 0 0 3px 0px white;}.ace-tm .ace_marker-layer .ace_step {background: rgb(252, 255, 0);}.ace-tm .ace_marker-layer .ace_stack {background: rgb(164, 229, 101);}.ace-tm .ace_marker-layer .ace_bracket {margin: -1px 0 0 -1px;border: 1px solid rgb(192, 192, 192);}.ace-tm .ace_marker-layer .ace_active-line {background: rgba(0, 0, 0, 0.07);}.ace-tm .ace_gutter-active-line {background-color : #dcdcdc;}.ace-tm .ace_marker-layer .ace_selected-word {background: rgb(250, 250, 255);border: 1px solid rgb(200, 200, 250);}.ace-tm .ace_indent-guide {background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAE0lEQVQImWP4////f4bLly//BwAmVgd1/w11/gAAAABJRU5ErkJggg==") right repeat-y;}
+/*# sourceURL=ace/css/ace-tm */</style><style>    .error_widget_wrapper {        background: inherit;        color: inherit;        border:none    }    .error_widget {        border-top: solid 2px;        border-bottom: solid 2px;        margin: 5px 0;        padding: 10px 40px;        white-space: pre-wrap;    }    .error_widget.ace_error, .error_widget_arrow.ace_error{        border-color: #ff5a5a    }    .error_widget.ace_warning, .error_widget_arrow.ace_warning{        border-color: #F1D817    }    .error_widget.ace_info, .error_widget_arrow.ace_info{        border-color: #5a5a5a    }    .error_widget.ace_ok, .error_widget_arrow.ace_ok{        border-color: #5aaa5a    }    .error_widget_arrow {        position: absolute;        border: solid 5px;        border-top-color: transparent!important;        border-right-color: transparent!important;        border-left-color: transparent!important;        top: -5px;    }</style></head>
+
+<body>
+	
+        
+        
+            
+
+
+
+
+
+
+<nav class="navbar navbar-default navbar-fixed-top header">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-navbar-collapse" aria-expanded="false">
+                <span class="sr-only">实验楼</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://www.shiyanlou.com/">
+                <img src="./scikit-learn实现ebay数据分析 - 实验楼_files/logo_03.png">
+            </a>
+        </div>
+        <div class="collapse navbar-collapse" id="header-navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="dropdown active">
+                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
+                        课程
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="" href="https://www.shiyanlou.com/courses/">全部课程</a></li>
+                        <li><a class="" href="https://www.shiyanlou.com/courses/?status=preview">即将上线</a></li>
+                        <li><a class="" href="https://www.shiyanlou.com/developer">开发者</a></li>
+                    </ul>
+                </li>
+                <li class="">
+                    <a href="https://www.shiyanlou.com/paths/">路径</a>
+                </li>
+                <li class="">
+                    <a href="https://www.shiyanlou.com/questions/">讨论区</a>
+                </li>
+                <li class=" bootcamp new-nav logo-1111">
+                    <a href="https://www.shiyanlou.com/bootcamp/">训练营</a>
+                    
+                </li>
+                <li class=" new-nav logo-1111">
+                    <a href="https://www.shiyanlou.com/vip">会员</a>
+                    
+                </li>
+                
+					
+					<li class=""><a href="https://www.shiyanlou.com/user/235723">我的课程</a></li>
+					
+                
+            </ul>
+
+            
+            <ul class="nav navbar-nav navbar-right user">
+                
+                <li class="dropdown">
+                    <a href="https://www.shiyanlou.com/user/235723" class="dropdown-toggle hidden-xs">
+                        <img class="header-avatar" src="./scikit-learn实现ebay数据分析 - 实验楼_files/gravatarHA954FKT7YJW.jpg" data-toggle="tooltip" data-placement="bottom" data-trigger="manual" title="" data-template="&lt;div class=&quot;tooltip&quot; data-url=&quot;/user/235723/messages&quot; role=&quot;tooltip&quot;&gt;&lt;div class=&quot;tooltip-arrow&quot; style=&quot;border-bottom-color:#f66e6e;&quot;&gt;&lt;/div&gt;&lt;div class=&quot;tooltip-inner&quot; style=&quot;background:#f66e6e;&quot;&gt;&lt;/div&gt;&lt;/div&gt;" data-original-title="新消息">
+                        
+                        <span class="header-msg-count" style="display:none;"></span>
+                        
+    
+    
+    
+    <div class="user-username ">
+        <span class="username" href="/user/235723" target="_blank">
+            
+                whuhan2013
+            
+
+        </span>
+        <span class="user-level">L1</span>
+    </div>
+
+                        <span class="caret"></span>
+                    </a>
+					<a href="https://www.shiyanlou.com/courses/714/labs/2376/document#" class="dropdown-toggle visible-xs-block" data-toggle="dropdown">
+                        <img class="header-avatar" src="./scikit-learn实现ebay数据分析 - 实验楼_files/gravatarHA954FKT7YJW.jpg">
+                        
+                        <span class="header-msg-count" style="display:none;"></span>
+                        <span class="header-username">whuhan2013</span>
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="https://www.shiyanlou.com/user/235723">主页</a></li>
+                        <!-- <li><a href="/user/message">通知</a></li>-->
+                        <li><a href="https://www.shiyanlou.com/user/message">
+                            <span class="position-relative"><span class="header-msg-mark" style="display:none;"></span>通知</span>
+                        </a></li>
+                        <li><a href="https://www.shiyanlou.com/user/profile">设置</a></li>
+                        <li rolw="separator" class="divider"></li>
+                        <li><a href="https://www.shiyanlou.com/logout">退出</a></li>
+                    </ul>
+                </li>
+            </ul>
+            
+
+            <form class="navbar-form navbar-right" action="https://www.shiyanlou.com/search" method="get" role="search">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="search" autocomplete="off" placeholder="搜索 课程/问答">
+                </div>
+            </form>
+        </div>
+    </div>
+</nav>
+
+
+
+
+        
+	
+
+
+
+	
+	
+
+	
+
+
+<div class="container layout layout-margin-top">
+    
+<ol class="breadcrumb">
+    <li><a href="https://www.shiyanlou.com/courses/">全部课程</a></li>
+    <li>
+        <a href="https://www.shiyanlou.com/courses/714">ebay在线拍卖数据分析</a>
+    </li>
+    <li class="active">
+        scikit-learn实现ebay数据分析
+    </li>
+</ol>
+
+    <div class="row">
+        <div class="col-md-9 layout-body">
+            
+<div class="mobile-alert alert alert-danger">在线实验，请到PC端体验</div>
+<div id="preview" class="markdown-body"><h1 id="scikit-learn-ebay-">scikit-learn实现ebay数据分析</h1>
+<h2 id="-">一、课程介绍</h2>
+<h3 id="-">内容简介</h3>
+<p>风风火火的双十一过去了，今年的你又给某宝剁了多少手，拔了多少草呢。本节课程我们将介绍另外一个国际贸易门户--ebay，一个致力于为中国商家开辟海外网络直销渠道的平台。我们可以在这个平台上充当买家或是卖家。与淘宝不同的是，这个平台不是一口价交易，而是设置一个开始竞投的价格后开始拍卖。</p>
+<p>这节课程我们就是要利用<a href="http://www.ebay.com/rpp/haitaoevent" target="_blank">ebay</a>上的历史拍卖数据，用机器学习的方法来训练一个模型，以预测一项拍卖是否会成功，和成功的交易最终的成交价格。</p>
+<h3 id="-">课程知识点</h3>
+<ul>
+<li>学习如何用scikit-learn的机器学习算法</li>
+<li>scikit-learn 做数据分析</li>
+<li>数据分析结果可视化</li>
+</ul>
+<h3 id="-">课程流程</h3>
+<p>本次课程我们将按照下面的流程实现数据分析的任务：</p>
+<ol>
+<li>ebay 在线拍卖数据初步分析</li>
+<li>利用数据预测拍卖是否会成功</li>
+<li>预测拍卖最终成交价格</li>
+</ol>
+<h2 id="-ebay-">二、ebay 在线拍卖数据初步分析</h2>
+<h3 id="2-1-ebay-">2.1 ebay在线拍卖数据</h3>
+<p>此次课程我们运用的<code>ebay 在线拍卖数据</code>数据集为<a href="http://cims.nyu.edu/~munoz/data/" target="_blank">Ebay Data Set</a>，这个数据是由<a href="http://jaygrossman.com/post/2013/06/10/Predicting-eBay-Auction-Sales-with-Machine-Learning.aspx" target="_blank">Jay Grossman</a>提供的。这个数据集是由一个为运动爱好者提供资讯的平台<a href="http://www.sportscollectors.net/" target="_blank">SportsCollector</a></p>
+<p>数据集<code>raw.tar.gz</code>数据中包括<code>TrainingSet.csv</code>, <code>TestSet.csv</code>, <code>TrainingSubset.csv</code> 和<code>TestSubset.csv</code>，下表中列出了这四个文件的内容简介：</p>
+<table>
+<thead>
+<tr>
+<th>数据名</th>
+<th style="text-align:center">数据描述</th>
+<th style="text-align:right">数据量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Training Set</td>
+<td style="text-align:center">2013年4月的所有拍卖</td>
+<td style="text-align:right">25，8588</td>
+</tr>
+<tr>
+<td>Test Set</td>
+<td style="text-align:center">2013年5月第一个周的所有拍卖</td>
+<td style="text-align:right">3，7460</td>
+</tr>
+<tr>
+<td>Training Subset</td>
+<td style="text-align:center">2013年4月成功交易的所有拍卖</td>
+<td style="text-align:right">7,9732</td>
+</tr>
+<tr>
+<td>Test Subset</td>
+<td style="text-align:center">2013年5月第一周成功交易的所有拍卖</td>
+<td style="text-align:right">9392</td>
+</tr>
+</tbody>
+</table>
+<p>表示数据的<code>特征向量</code>中的特征名及其对应性质：</p>
+<table>
+<thead>
+<tr>
+<th>特征名</th>
+<th style="text-align:center">特征描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Price</td>
+<td style="text-align:center">最终交易金额</td>
+</tr>
+<tr>
+<td>StartingBid</td>
+<td style="text-align:center">拍卖的最低交易金额</td>
+</tr>
+<tr>
+<td>BidCount</td>
+<td style="text-align:center">此项拍卖获得的投标数</td>
+</tr>
+<tr>
+<td>Title</td>
+<td style="text-align:center">交易标题</td>
+</tr>
+<tr>
+<td>QuantitySold</td>
+<td style="text-align:center">成功销售的数量 （0或1表示）</td>
+</tr>
+<tr>
+<td>SellerRating</td>
+<td style="text-align:center">卖家在ebay上的评级</td>
+</tr>
+<tr>
+<td>StartDate</td>
+<td style="text-align:center">拍卖开始的日期</td>
+</tr>
+<tr>
+<td>EndDate</td>
+<td style="text-align:center">拍卖结束的日期</td>
+</tr>
+<tr>
+<td>PositiveFeedbackPercent</td>
+<td style="text-align:center">卖方收到的正反馈百分比（占所有反馈）</td>
+</tr>
+<tr>
+<td>HasPicture</td>
+<td style="text-align:center">是否有实物图（0或1）</td>
+</tr>
+<tr>
+<td>MemberSince</td>
+<td style="text-align:center">卖家创建其在ebay上账户的日期</td>
+</tr>
+<tr>
+<td>HasStore</td>
+<td style="text-align:center">卖家是否有ebay店铺（0或1）</td>
+</tr>
+<tr>
+<td>SellerCountry</td>
+<td style="text-align:center">卖家所在的国家</td>
+</tr>
+<tr>
+<td>BuyitNowPrice</td>
+<td style="text-align:center">立即购买该商品的价格</td>
+</tr>
+<tr>
+<td>HighBidderFeedbackRating</td>
+<td style="text-align:center">出价最高的投标者的ebay评级</td>
+</tr>
+<tr>
+<td>ReturnsAccepted</td>
+<td style="text-align:center">是否接受退货 （0或1表示）</td>
+</tr>
+<tr>
+<td>HasFreeShipping</td>
+<td style="text-align:center">是否包邮（0或1表示）</td>
+</tr>
+<tr>
+<td>IsHOF</td>
+<td style="text-align:center">卖家是否是名人堂中的玩家（0或1表示）</td>
+</tr>
+<tr>
+<td>IsAuthenticated</td>
+<td style="text-align:center">是否受到了工会的认证（0或1表示）</td>
+</tr>
+<tr>
+<td>HasInscription</td>
+<td style="text-align:center">拍卖项目是否有登记过（0或1表示）</td>
+</tr>
+<tr>
+<td>AvgPrice</td>
+<td style="text-align:center">库存中关于这款商品的平均价格</td>
+</tr>
+<tr>
+<td>MedianPrice</td>
+<td style="text-align:center">库存中这款商品价格的中位数</td>
+</tr>
+<tr>
+<td>AuctionCount</td>
+<td style="text-align:center">库存中拍卖的总数</td>
+</tr>
+<tr>
+<td>SellerSaleToAveragePriceRatio</td>
+<td style="text-align:center">这项拍卖商品的价格占平均价格的比例</td>
+</tr>
+<tr>
+<td>StateDayOfWeek</td>
+<td style="text-align:center">拍卖开始时是周几</td>
+</tr>
+<tr>
+<td>EndDayOfWeek</td>
+<td style="text-align:center">拍卖结束时是周几</td>
+</tr>
+<tr>
+<td>AuctionDuration</td>
+<td style="text-align:center">拍卖持续的天数</td>
+</tr>
+<tr>
+<td>StartingBidPercent</td>
+<td style="text-align:center">该商品投标底线占平均交易价格的比例</td>
+</tr>
+<tr>
+<td>SellerClosePercent</td>
+<td style="text-align:center">一个卖家成功交易的拍卖数占所有在线拍卖数的比例</td>
+</tr>
+<tr>
+<td>ItemAuctionSellPercent</td>
+<td style="text-align:center">成功交易的拍卖数占所有在线拍卖数的比例</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-2-">2.2 数据准备及环境配置</h3>
+<p>进入<code>Code</code>目录中创建目录<code>shiyanlou_cs714</code>并进入,之后的所有代码及训练文件都在此文件夹下创建，通过<code>wget</code>命令获取本次数据分析的ebay拍卖数据<code>raw.tar.gz</code></p>
+<pre><code class="lang-bash hljs">$ <span class="hljs-built_in">cd</span> Code
+$ mkdir shiyanlou_cs714 &amp;&amp; <span class="hljs-built_in">cd</span> shiyanlou_cs714
+$ wget http://labfile.oss.aliyuncs.com/courses/714/raw.tar.gz
+</code></pre>
+<p>通过<code>tar zxvf</code>命令解压文件<code>raw.tar.gz</code>，并创建文件<code>dataAnalysis.py</code></p>
+<p>安装本次实验所需的Python安装包pandas, matplotlib, numpy, sklearn, seaborn及相关依赖包:</p>
+<pre><code class="lang-bash hljs">$ sudo pip install pandas
+$ sudo pip install matplotlib
+$ sudo pip install numpy
+$ sudo pip install sklearn
+$ sudo pip install seaborn
+$ sudo apt-get install python-tk
+</code></pre>
+<blockquote>
+<p>安装包的官方文档：</p>
+<ul>
+<li><a href="http://pandas.pydata.org/" target="_blank">Pandas API</a></li>
+<li><a href="http://matplotlib.org/" target="_blank">Matplotlib API</a></li>
+<li><a href="http://www.numpy.org/" target="_blank">Numpy API</a></li>
+<li><a href="http://scikit-learn.org/stable/index.html" target="_blank">Scikit-learn</a></li>
+<li><a href="http://seaborn.pydata.org/index.html" target="_blank">seaborn</a></li>
+</ul>
+</blockquote>
+<h3 id="2-3-">2.3 数据可视化</h3>
+<p>编辑源码文件<code>dataAnalysis.py</code>，导入相关的包：</p>
+<pre><code class="lang-python hljs"><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-keyword">from</span> pandas <span class="hljs-keyword">import</span> DataFrame
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+<span class="hljs-keyword">import</span> seaborn <span class="hljs-keyword">as</span> sns
+</code></pre>
+<p>读入数据：</p>
+<pre><code class="lang-python hljs">test_set = pd.read_csv(<span class="hljs-string">'raw/TestSet.csv'</span>)
+train_set = pd.read_csv(<span class="hljs-string">'raw/TrainingSet.csv'</span>)
+test_subset = pd.read_csv(<span class="hljs-string">'raw/TestSubset.csv'</span>)
+train_subset = pd.read_csv(<span class="hljs-string">'raw/TrainingSubset.csv'</span>)
+</code></pre>
+<p>输出查看<code>train_set</code>的数据：</p>
+<pre><code class="lang-python hljs">train_set.info()
+</code></pre>
+<p>可查看到<code>train_set</code>的数据信息：</p>
+<p><img src="./scikit-learn实现ebay数据分析 - 实验楼_files/wm" alt="此处输入图片的描述"></p>
+<p>可看到总共有25,8588条数据，与我们上面的描述相符，在上面的代码中加入<code>print</code>函数。打印出前三条数据，查看属性值</p>
+<pre><code class="lang-python hljs">print(train_set[:<span class="hljs-number">3</span>])
+</code></pre>
+<p><img src="./scikit-learn实现ebay数据分析 - 实验楼_files/wm(1)" alt="此处输入图片的描述"></p>
+<p>第一列属性<code>EbayID</code>为每条拍卖记录的ID号，与预测拍卖是否成功没有联系，因此在模型训练时将该特征去除。<code>QuantitySold</code>属性为1时代表拍卖成功，为0时代表拍卖失败，其中<code>SellerName</code>拍卖卖方的名字与预测拍卖是否成功时没有多大的关系，因此在训练时也将该特征去除</p>
+<pre><code class="lang-python hljs">train = train_set.drop([<span class="hljs-string">'EbayID'</span>,<span class="hljs-string">'QuantitySold'</span>,<span class="hljs-string">'SellerName'</span>], axis=<span class="hljs-number">1</span>)
+train_target = train_set[<span class="hljs-string">'QuantitySold'</span>]
+
+<span class="hljs-comment"># 获取总特征数</span>
+_, n_features = train.shape
+</code></pre>
+<p>可视化数据，取出一部分特征，量量组成对看数据在这个2维平面上的分布情况：</p>
+<pre><code class="lang-python hljs"><span class="hljs-comment"># isSold： 拍卖成功为1， 拍卖失败为0</span>
+df = DataFrame(np.hstack((train,train_target[:, <span class="hljs-keyword">None</span>])), columns=range(n_features) + [<span class="hljs-string">"isSold"</span>])
+_ = sns.pairplot(df[:<span class="hljs-number">50</span>], vars=[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">10</span>,<span class="hljs-number">13</span>], hue=<span class="hljs-string">"isSold"</span>, size=<span class="hljs-number">1.5</span>)
+</code></pre>
+<p><img src="./scikit-learn实现ebay数据分析 - 实验楼_files/wm(2)" alt="此处输入图片的描述"></p>
+<p>从第<code>3,9,12,16</code>维特征的散列图及柱状图可看出，这几个维度并不是有很好地区分度，横纵坐标的值分别代表不同维度之间的正负相关性，为了查看数据特征之间的相关性，及不同特征与类别<code>isSold</code>之间的关系，我们可以利用<code>seaborn</code>中的热度图来显示其两两组队之间的<code>相关性</code></p>
+<pre><code class="lang-python hljs">plt.figure(figsize=(<span class="hljs-number">10</span>,<span class="hljs-number">10</span>))
+
+<span class="hljs-comment"># 计算数据的相关性矩阵</span>
+corr = df.corr()
+
+<span class="hljs-comment"># 产生遮挡出热度图上三角部分的mask，因为这个热度图为对称矩阵，所以只输出下三角部分即可</span>
+mask = np.zeros_like(corr,dtype=np.bool)
+mask[np.triu_indices_from(mask)] = <span class="hljs-keyword">True</span>
+
+<span class="hljs-comment"># 产生热度图中对应的变化的颜色</span>
+cmap = sns.diverging_palette(<span class="hljs-number">220</span>, <span class="hljs-number">10</span>, as_cmap=<span class="hljs-keyword">True</span>)
+
+<span class="hljs-comment"># 调用seanborn中的heat创建热度图</span>
+sns.heatmap(corr, mask=mask, cmap=cmap, vmax = <span class="hljs-number">.3</span>,
+                square=<span class="hljs-keyword">True</span>, xticklabels=<span class="hljs-number">5</span>, yticklabels=<span class="hljs-number">2</span>,
+                linewidths=<span class="hljs-number">.5</span>, cbar_kws={<span class="hljs-string">"shrink"</span>:<span class="hljs-number">.5</span>})
+
+<span class="hljs-comment"># 将yticks旋转至水平方向，方便查看</span>
+plt.yticks(rotation=<span class="hljs-number">0</span>)
+
+plt.show()
+</code></pre>
+<p>运行结果图：</p>
+<p><img src="./scikit-learn实现ebay数据分析 - 实验楼_files/wm(3)" alt="此处输入图片的描述"></p>
+<p>上幅图中，颜色越偏向红色的相关性越大，越偏向蓝色的相关性越小且负相关，白色即两个特征之间没有多大的关联，通过最后一行可看出，不同维的属性与类别<code>isSold</code>之间的关系，其中第<code>3,9,12,16</code>维特征与拍卖是否会成功有很强的 <code>正相关性</code>， 其中<code>3,9,12,16</code>分别对应属性<code>SellerClosePercent</code>，<code>HitCount</code>, <code>SellerSaleAvgPriceRatio</code>和<code>BestOffer</code>，表示当这些属性的值越大时越有可能使拍卖成功，其中第6维特征<code>StartingBid</code>与成功拍卖<code>isSold</code>之间的呈现较大的负相关性，可看出当拍卖投标的底线越高则这项拍卖的成功性就越低。</p>
+<p>通过这幅热度图的第一列我们还可以看出不同特征与价格<code>Price</code>之间的相关性。同样的我们可以根据这些相关性，选出比较有利于我们实现本次课程的第二个任务—— <strong>拍卖价格预测</strong> 的特征。</p>
+<h2 id="-">三、利用数据预测拍卖是否会成功</h2>
+<p>由于我们的数据量比较大，且特征维度也不是特别少，因此我们一开始做<code>baseline</code>时，就不利用<code>SVM 支持向量机</code> 这些较简单的模型，因为当数据量比较大，且维度较高时，有些简单的机器学习算法就并不是很高效，且可能训练到最后都不收敛并耗时。</p>
+<p>根据<code>scikit-learn</code>提供的<code>机器学习算法使用图谱</code>：</p>
+<p><img src="./scikit-learn实现ebay数据分析 - 实验楼_files/drop_shadows_background.png" alt="machine learning cheat sheet"></p>
+<blockquote>
+<p>scikit-learn官方介绍</p>
+<ul>
+<li><a href="https://peekaboo-vision.blogspot.de/2013/01/machine-learning-cheat-sheet-for-scikit.html" target="_blank">机器学习使用图谱</a></li>
+</ul>
+</blockquote>
+<p>我们根据图谱推荐先使用<code>SGDClassifier</code>，其全称为<code>Stochastic Gradient Descent 随机梯度下降</code>，通过<code>梯度下降法</code>在训练过程中优化目标函数使得预测值与真实值之间的<code>误差loss</code>最小化。<code>SGDClassifier</code>每次训练过程没有用到所有的训练样本，而是随机的从训练样本中选取一部分进行训练。而且<code>SGD</code>对特征值的大小比较敏感，而通过上面的数据展示，可以知道在我们的数据集里有数值较大的数据， 如：<code>Category</code>。因此我们可以先用<code>sklearn.preprocessing</code>中提供的<code>StandardScaler</code>对数据进行预处理，使其每个属性的波动幅度不要太大，有助于训练时函数收敛。</p>
+<p>以下就是我们使用<code>sklearn</code>中的<code>SGDClassifier</code>实现拍卖是否成功的模型训练代码 （创建<code>isSold_pred.py</code>文件存放）：</p>
+<pre><code class="lang-python hljs"><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+<span class="hljs-keyword">from</span> sklearn.linear_model <span class="hljs-keyword">import</span> SGDClassifier
+<span class="hljs-keyword">from</span> sklearn.preprocessing <span class="hljs-keyword">import</span> StandardScaler
+
+<span class="hljs-comment"># prepare data</span>
+test_set = pd.read_csv(<span class="hljs-string">'raw/TestSet.csv'</span>)
+train_set = pd.read_csv(<span class="hljs-string">'raw/TrainingSet.csv'</span>)
+
+train = train_set.drop([<span class="hljs-string">'EbayID'</span>,<span class="hljs-string">'QuantitySold'</span>,<span class="hljs-string">'SellerName'</span>], axis=<span class="hljs-number">1</span>)
+train_target = train_set[<span class="hljs-string">'QuantitySold'</span>]
+
+n_trainSamples, n_features = train.shape
+
+<span class="hljs-comment"># 画出训练过程中SGDClassifier利用不同的mini_batch学习的效果</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">plot_learning</span><span class="hljs-params">(clf,title)</span>:</span>
+
+    plt.figure()
+    <span class="hljs-comment"># 记录上一次训练结果在本次batch上的预测情况</span>
+    validationScore = []
+    <span class="hljs-comment"># 记录加上本次batch训练结果后的预测情况</span>
+    trainScore = []
+    <span class="hljs-comment"># 最小训练批数</span>
+    mini_batch = <span class="hljs-number">1000</span>
+
+    <span class="hljs-keyword">for</span> idx <span class="hljs-keyword">in</span> range(int(np.ceil(n_trainSamples / mini_batch))):
+        x_batch = train[idx * mini_batch: min((idx + <span class="hljs-number">1</span>) * mini_batch, n_trainSamples)]
+        y_batch = train_target[idx * mini_batch: min((idx + <span class="hljs-number">1</span>) * mini_batch, n_trainSamples)]
+
+        <span class="hljs-keyword">if</span> idx &gt; <span class="hljs-number">0</span>:
+            validationScore.append(clf.score(x_batch, y_batch))
+        clf.partial_fit(x_batch, y_batch, classes=range(<span class="hljs-number">5</span>))
+        <span class="hljs-keyword">if</span> idx &gt; <span class="hljs-number">0</span>:
+            trainScore.append(clf.score(x_batch, y_batch))
+    plt.plot(trainScore, label=<span class="hljs-string">"train score"</span>)
+    plt.plot(validationScore, label=<span class="hljs-string">"validation socre"</span>)
+    plt.xlabel(<span class="hljs-string">"Mini_batch"</span>)
+    plt.ylabel(<span class="hljs-string">"Score"</span>)
+    plt.legend(loc=<span class="hljs-string">'best'</span>)
+    plt.grid()
+    plt.title(title)
+
+<span class="hljs-comment"># 对数据进行归一化</span>
+scaler = StandardScaler()
+train = scaler.fit_transform(train)
+<span class="hljs-comment"># 创建SGDClassifier</span>
+clf = SGDClassifier(penalty=<span class="hljs-string">'l2'</span>, alpha=<span class="hljs-number">0.001</span>)
+plot_learning(clf,<span class="hljs-string">"SGDClassifier"</span>)
+
+plt.show()
+</code></pre>
+<p>训练结果如下图，由于<code>SGDClassifier</code>是在所有的训练样本中抽取一部分作为本次的训练集，因此在这里不适用<code>交叉验证</code></p>
+<p><img src="./scikit-learn实现ebay数据分析 - 实验楼_files/wm(4)" alt="此处输入图片的描述"></p>
+<p>可看到<code>SGDClassifier</code>的训练效果还不错，我们也可以通过<code>scikit-learn</code>中封装的一些降维方法，将<code>数据可视化</code>,这里我们使用的三种方法进行降维 ———— <code>Random Projection</code>，<code>PCA</code> 和<code>T-SNE embedding</code>。在<code>isSold_pred.py</code>中加入以下代码：</p>
+<pre><code class="lang-python hljs"><span class="hljs-keyword">from</span> sklearn <span class="hljs-keyword">import</span> (manifold, decomposition, random_projection)
+<span class="hljs-keyword">from</span> matplotlib <span class="hljs-keyword">import</span> offsetbox
+<span class="hljs-keyword">from</span> time <span class="hljs-keyword">import</span> time
+
+<span class="hljs-comment"># image[0]为数字0表示某条数据的isSold为0</span>
+images= []
+images.append([[  <span class="hljs-number">0.</span> ,   <span class="hljs-number">0.</span> ,   <span class="hljs-number">5.</span> ,  <span class="hljs-number">13.</span> ,   <span class="hljs-number">9.</span> ,   <span class="hljs-number">1.</span> ,   <span class="hljs-number">0.</span> ,   <span class="hljs-number">0.</span> ],
+ [  <span class="hljs-number">0.</span> ,   <span class="hljs-number">0.</span> ,  <span class="hljs-number">13.</span> ,  <span class="hljs-number">15.</span> ,  <span class="hljs-number">10.</span> ,  <span class="hljs-number">15.</span> ,   <span class="hljs-number">5.</span> ,   <span class="hljs-number">0.</span> ],
+ [  <span class="hljs-number">0.</span> ,   <span class="hljs-number">3.</span> ,  <span class="hljs-number">15.</span> ,   <span class="hljs-number">2.</span> ,   <span class="hljs-number">0.</span> ,  <span class="hljs-number">11.</span> ,   <span class="hljs-number">8.</span> ,   <span class="hljs-number">0.</span> ],
+ [  <span class="hljs-number">0.</span> ,   <span class="hljs-number">4.</span> ,  <span class="hljs-number">12.</span> ,   <span class="hljs-number">0.</span> ,   <span class="hljs-number">0.</span> ,   <span class="hljs-number">8.</span> ,   <span class="hljs-number">8.</span> ,   <span class="hljs-number">0.</span> ],
+ [  <span class="hljs-number">0.</span> ,   <span class="hljs-number">5.</span> ,   <span class="hljs-number">8.</span> ,   <span class="hljs-number">0.</span> ,   <span class="hljs-number">0.</span> ,   <span class="hljs-number">9.</span> ,   <span class="hljs-number">8.</span> ,   <span class="hljs-number">0.</span> ],
+ [  <span class="hljs-number">0.</span> ,   <span class="hljs-number">4.</span> ,  <span class="hljs-number">11.</span> ,   <span class="hljs-number">0.</span> ,   <span class="hljs-number">1.</span> ,  <span class="hljs-number">12.</span> ,   <span class="hljs-number">7.</span> ,   <span class="hljs-number">0.</span> ],
+ [  <span class="hljs-number">0.</span> ,   <span class="hljs-number">2.</span> ,  <span class="hljs-number">14.</span> ,   <span class="hljs-number">5.</span> ,  <span class="hljs-number">10.</span> ,  <span class="hljs-number">12.</span> ,   <span class="hljs-number">0.</span> ,   <span class="hljs-number">0.</span> ],
+ [  <span class="hljs-number">0.</span> ,   <span class="hljs-number">0.</span> ,   <span class="hljs-number">6.</span> ,  <span class="hljs-number">13.</span> ,  <span class="hljs-number">10.</span> ,   <span class="hljs-number">0.</span> ,   <span class="hljs-number">0.</span> ,   <span class="hljs-number">0.</span> ]])
+<span class="hljs-comment"># image[1]为数字1表示某条数据的isSold为1</span>
+images.append([[  <span class="hljs-number">0.</span> ,   <span class="hljs-number">0.</span> ,   <span class="hljs-number">0.</span> ,  <span class="hljs-number">12.</span> ,  <span class="hljs-number">13.</span> ,   <span class="hljs-number">5.</span> ,   <span class="hljs-number">0.</span> ,   <span class="hljs-number">0.</span> ],
+ [  <span class="hljs-number">0.</span> ,   <span class="hljs-number">0.</span> ,   <span class="hljs-number">0.</span> ,  <span class="hljs-number">11.</span> ,  <span class="hljs-number">16.</span> ,   <span class="hljs-number">9.</span> ,   <span class="hljs-number">0.</span> ,   <span class="hljs-number">0.</span> ],
+ [  <span class="hljs-number">0.</span> ,   <span class="hljs-number">0.</span> ,   <span class="hljs-number">3.</span> ,  <span class="hljs-number">15.</span> ,  <span class="hljs-number">16.</span> ,   <span class="hljs-number">6.</span> ,   <span class="hljs-number">0.</span> ,   <span class="hljs-number">0.</span> ],
+ [  <span class="hljs-number">0.</span> ,   <span class="hljs-number">7.</span> ,  <span class="hljs-number">15.</span> ,  <span class="hljs-number">16.</span> ,  <span class="hljs-number">16.</span> ,   <span class="hljs-number">2.</span> ,   <span class="hljs-number">0.</span> ,   <span class="hljs-number">0.</span> ],
+ [  <span class="hljs-number">0.</span> ,   <span class="hljs-number">0.</span> ,   <span class="hljs-number">1.</span> ,  <span class="hljs-number">16.</span> ,  <span class="hljs-number">16.</span> ,   <span class="hljs-number">3.</span> ,   <span class="hljs-number">0.</span> ,   <span class="hljs-number">0.</span> ],
+ [  <span class="hljs-number">0.</span> ,   <span class="hljs-number">0.</span> ,   <span class="hljs-number">1.</span> ,  <span class="hljs-number">16.</span> ,  <span class="hljs-number">16.</span> ,   <span class="hljs-number">6.</span> ,   <span class="hljs-number">0.</span> ,   <span class="hljs-number">0.</span> ],
+ [  <span class="hljs-number">0.</span> ,   <span class="hljs-number">0.</span> ,   <span class="hljs-number">1.</span> ,  <span class="hljs-number">16.</span> ,  <span class="hljs-number">16.</span> ,   <span class="hljs-number">6.</span> ,   <span class="hljs-number">0.</span> ,   <span class="hljs-number">0.</span> ],
+ [  <span class="hljs-number">0.</span> ,   <span class="hljs-number">0.</span> ,   <span class="hljs-number">0.</span> ,  <span class="hljs-number">11.</span> ,  <span class="hljs-number">16.</span> ,  <span class="hljs-number">10.</span> ,   <span class="hljs-number">0.</span> ,   <span class="hljs-number">0.</span> ]])
+
+<span class="hljs-comment"># 这里只选取了1000条数据进行数据可视化展示</span>
+show_instancees = <span class="hljs-number">1000</span>
+<span class="hljs-comment"># define the drawing function</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">plot_embedding</span><span class="hljs-params">(X, title=None)</span>:</span>
+    x_min, x_max = np.min(X, <span class="hljs-number">0</span>), np.max(X, <span class="hljs-number">0</span>)
+    X = (X - x_min) / (x_max - x_min)
+
+    plt.figure()
+    ax = plt.subplot(<span class="hljs-number">111</span>)
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(X.shape[<span class="hljs-number">0</span>]):
+        plt.text(X[i,<span class="hljs-number">0</span>], X[i,<span class="hljs-number">1</span>], str(train_target[i]),
+                 color=plt.cm.Set1(train_target[i] / <span class="hljs-number">2.</span>),
+                 fontdict={<span class="hljs-string">'weight'</span>:<span class="hljs-string">'bold'</span>,<span class="hljs-string">'size'</span>:<span class="hljs-number">9</span>})
+
+    <span class="hljs-keyword">if</span> hasattr(offsetbox, <span class="hljs-string">'AnnotationBbox'</span>):
+        shown_images = np.array([[<span class="hljs-number">1.</span>, <span class="hljs-number">1.</span>]])  <span class="hljs-comment"># just something big</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(show_instancees):
+        dist = np.sum((X[i] - shown_images) ** <span class="hljs-number">2</span>, <span class="hljs-number">1</span>)
+        <span class="hljs-keyword">if</span> np.min(dist) &lt; <span class="hljs-number">4e-3</span>:
+            <span class="hljs-comment"># don't show points that are too close</span>
+            <span class="hljs-keyword">continue</span>
+        shown_images = np.r_[shown_images, [X[i]]]
+        auctionbox = offsetbox.AnnotationBbox(
+            offsetbox.OffsetImage(images[train_target[i]], cmap=plt.cm.gray_r), X[i])
+        ax.add_artist(auctionbox)
+    plt.xticks([]), plt.yticks([])
+    <span class="hljs-keyword">if</span> title <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">None</span>:
+        plt.title(title)
+
+<span class="hljs-comment"># 随机投影 Random Projection</span>
+start_time = time()
+rp = random_projection.SparseRandomProjection(n_components=<span class="hljs-number">2</span>, random_state=<span class="hljs-number">42</span>)
+rp.fit(train[:show_instancees])
+train_projected = rp.transform(train[:show_instancees])
+plot_embedding(train_projected, <span class="hljs-string">"Random Projection of the auction (time: %.3fs"</span> % (time() - start_time))
+
+<span class="hljs-comment"># 主成分提取 PCA</span>
+start_time = time()
+train_pca = decomposition.TruncatedSVD(n_components=<span class="hljs-number">2</span>).fit_transform(train[:show_instancees])
+plot_embedding(train_pca, <span class="hljs-string">"Pricincipal components projection of the auction (time: %.3fs"</span> % (time() - start_time))
+
+<span class="hljs-comment"># t-sne 降维</span>
+start_time = time()
+tsne = manifold.TSNE(n_components=<span class="hljs-number">2</span>, init=<span class="hljs-string">'pca'</span>, random_state=<span class="hljs-number">0</span>)
+train_tsne = tsne.fit_transform(train[:show_instancees])
+plot_embedding(train_tsne, <span class="hljs-string">"T-SNE embedding of the auction (time: %.3fs"</span> % (time() - start_time))
+</code></pre>
+<p>随机投影效果：</p>
+<p><img src="./scikit-learn实现ebay数据分析 - 实验楼_files/wm(5)" alt="此处输入图片的描述"></p>
+<p>PCA降维效果：</p>
+<p><img src="./scikit-learn实现ebay数据分析 - 实验楼_files/wm(6)" alt="此处输入图片的描述"></p>
+<p>t-sne降维效果：</p>
+<p><img src="./scikit-learn实现ebay数据分析 - 实验楼_files/wm(7)" alt="此处输入图片的描述"></p>
+<p>从以上三幅图中，我们可以根据数字0和1的重叠情况，判读出我们的数据可区分度并不是特别大。因此我们的训练效果也没有达到特别好，从这方面也可以看出我们这里用来训练分类器的特征并不是利用得特别好。有兴趣的同学可以多了解下<code>特征工程</code>，或者根据我们上面绘制的热度图挑选一些特征进行分类器训练，查看训练效果。</p>
+<p>分类器训练结束后，可查看分类器在测试集上的测试效果：</p>
+<pre><code class="lang-python hljs"><span class="hljs-comment"># 导入相关包</span>
+<span class="hljs-keyword">from</span> sklearn.metrics <span class="hljs-keyword">import</span> (precision_score, recall_score, f1_score)
+<span class="hljs-comment"># 首先也是准备好测试数据，进行归一化处理</span>
+test = test_set.drop([<span class="hljs-string">'EbayID'</span>,<span class="hljs-string">'QuantitySold'</span>,<span class="hljs-string">'SellerName'</span>],axis=<span class="hljs-number">1</span>)
+test_target = test_set[<span class="hljs-string">'QuantitySold'</span>]
+test = scaler.fit_transform(test)
+
+<span class="hljs-comment"># 利用训练好的分类器进行预测</span>
+test_pred = clf.predict(test) 
+
+print(<span class="hljs-string">"SGDClassifier training performance on testing dataset:"</span> )
+print(<span class="hljs-string">"\tPrecision: %1.3f "</span> % precision_score(test_target, test_pred))
+print(<span class="hljs-string">"\tRecall: %1.3f"</span> % recall_score(test_target, test_pred))
+print(<span class="hljs-string">"\tF1: %1.3f \n"</span> % f1_score(test_target, test_pred))
+</code></pre>
+<p>测试结果：</p>
+<p><img src="./scikit-learn实现ebay数据分析 - 实验楼_files/wm(8)" alt="此处输入图片的描述"></p>
+<h2 id="-">四、预测拍卖最终成交价格</h2>
+<p>由于在价格的分布是在一个连续的区间上，因此这与预测拍卖是否会成功是不同的，预测价格是一个<code>回归</code>预测，而判断拍卖是否会成功是一个<code>分类</code>任务。</p>
+<p>同样根据<code>机器学习算法使用图谱</code>，在这里我们采取<code>SGDRegressor</code>，其他使用情况与预测拍卖是否成功时差不多，创建<code>Price_pred.py</code>, 代码如下：</p>
+<pre><code class="lang-python hljs"><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+<span class="hljs-keyword">from</span> sklearn.linear_model <span class="hljs-keyword">import</span> SGDRegressor
+<span class="hljs-keyword">import</span> random
+<span class="hljs-keyword">from</span> sklearn.preprocessing <span class="hljs-keyword">import</span> MinMaxScaler
+
+<span class="hljs-comment"># prepare data</span>
+test_subset = pd.read_csv(<span class="hljs-string">'raw/TestSubset.csv'</span>)
+train_subset = pd.read_csv(<span class="hljs-string">'raw/TrainingSubset.csv'</span>)
+
+<span class="hljs-comment"># 训练集</span>
+train = train_subset.drop([<span class="hljs-string">'EbayID'</span>,<span class="hljs-string">'Price'</span>,<span class="hljs-string">'SellerName'</span>],axis=<span class="hljs-number">1</span>)
+train_target = train_subset[<span class="hljs-string">'Price'</span>]
+
+scaler = MinMaxScaler()
+train = scaler.fit_transform(train)
+n_trainSamples, n_features = train.shape
+
+<span class="hljs-comment"># ploting example from scikit-learn</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">plot_learning</span><span class="hljs-params">(clf,title)</span>:</span>
+
+    plt.figure()
+    validationScore = []
+    trainScore = []
+    mini_batch = <span class="hljs-number">500</span>
+    <span class="hljs-comment"># define the shuffle index</span>
+    ind = list(range(n_trainSamples))
+    random.shuffle(ind)
+
+    <span class="hljs-keyword">for</span> idx <span class="hljs-keyword">in</span> range(int(np.ceil(n_trainSamples / mini_batch))):
+        x_batch = train[ind[idx * mini_batch: min((idx + <span class="hljs-number">1</span>) * mini_batch, n_trainSamples)]]
+        y_batch = train_target[ind[idx * mini_batch: min((idx + <span class="hljs-number">1</span>) * mini_batch, n_trainSamples)]]
+
+        <span class="hljs-keyword">if</span> idx &gt; <span class="hljs-number">0</span>:
+            validationScore.append(clf.score(x_batch, y_batch))
+        clf.partial_fit(x_batch, y_batch)
+        <span class="hljs-keyword">if</span> idx &gt; <span class="hljs-number">0</span>:
+            trainScore.append(clf.score(x_batch, y_batch))
+
+    plt.plot(trainScore, label=<span class="hljs-string">"train score"</span>)
+    plt.plot(validationScore, label=<span class="hljs-string">"validation socre"</span>)
+    plt.xlabel(<span class="hljs-string">"Mini_batch"</span>)
+    plt.ylabel(<span class="hljs-string">"Score"</span>)
+    plt.legend(loc=<span class="hljs-string">'best'</span>)
+    plt.title(title)
+
+sgd_regresor = SGDRegressor(penalty=<span class="hljs-string">'l2'</span>,alpha=<span class="hljs-number">0.001</span>)
+plot_learning(sgd_regresor,<span class="hljs-string">"SGDRegressor"</span>)
+
+<span class="hljs-comment"># 准备测试集查看测试情况</span>
+test = test_subset.drop([<span class="hljs-string">'EbayID'</span>,<span class="hljs-string">'Price'</span>,<span class="hljs-string">'SellerName'</span>],axis=<span class="hljs-number">1</span>)
+test = scaler.fit_transform(test)
+test_target = test_subset[<span class="hljs-string">'Price'</span>]
+
+print(<span class="hljs-string">"SGD regressor prediction result on testing data: %.3f"</span> % sgd_regresor.score(test,test_target))
+
+plt.show()
+</code></pre>
+<p>训练过程：</p>
+<p><img src="./scikit-learn实现ebay数据分析 - 实验楼_files/wm(9)" alt="此处输入图片的描述"></p>
+<p>在测试集上的测试结果：</p>
+<p><img src="./scikit-learn实现ebay数据分析 - 实验楼_files/wm(10)" alt="此处输入图片的描述"></p>
+<p>由于<code>SGDRegressor</code>的回归效果还不错，因此我们没有在进一步的选择其他的模型进行尝试，有兴趣的同学可以在这方面在多改进参数，或者尝试其他的方法看预测效果如何。</p>
+<h2 id="-">五、总结</h2>
+<p>本次课程我们学习了如何使用<code>scikit-learn</code>进行数据分析，其实在数据分析过程中，运用到<code>机器学习</code>的算法进行模型训练并不是最主要的，很多时候是如何在前期进行数据<code>预处理</code>。这过程中包括数据的筛选，和<code>特征工程</code>等，在进行一项<code>数据挖掘</code>任务时，我们可能会花更多的时间在数据<code>预处理</code>和<code>特征工程</code>上，但是这些准备工作做好后，可使得我们之后的模型训练过程事半功倍。在<code>scikit-learn</code>官方文档中也有许多数据库和算法实现例子，并且有很多<code>数据可视化</code>的例子，运用这些例子也能帮助我们快速入门<code>机器学习</code>这个领域。</p>
+<p>本次课程所有代码可通过以下地址获得：</p>
+<pre><code class="lang-bash hljs">wget http://labfile.oss.aliyuncs.com/courses/714/dataAnalysis.py
+wget http://labfile.oss.aliyuncs.com/courses/714/isSold_pred.py
+wget http://labfile.oss.aliyuncs.com/courses/714/Price_pred.py
+</code></pre>
+<h2 id="-">六、参考阅读</h2>
+<ul>
+<li><a href="https://www.kancloud.cn/digest/machine-learning-dm" target="_blank">机器学习与数据挖掘</a></li>
+<li><a href="http://scikit-learn.org/stable/auto_examples/manifold/plot_lle_digits.html#sphx-glr-auto-examples-manifold-plot-lle-digits-py" target="_blank">scikit-learn 高维数据可视化</a></li>
+</ul>
+</div>
+
+<textarea id="editor" style="display:none;"># scikit-learn实现ebay数据分析
+
+## 一、课程介绍
+
+### 内容简介
+
+风风火火的双十一过去了，今年的你又给某宝剁了多少手，拔了多少草呢。本节课程我们将介绍另外一个国际贸易门户--ebay，一个致力于为中国商家开辟海外网络直销渠道的平台。我们可以在这个平台上充当买家或是卖家。与淘宝不同的是，这个平台不是一口价交易，而是设置一个开始竞投的价格后开始拍卖。
+
+这节课程我们就是要利用[ebay](http://www.ebay.com/rpp/haitaoevent)上的历史拍卖数据，用机器学习的方法来训练一个模型，以预测一项拍卖是否会成功，和成功的交易最终的成交价格。
+
+
+### 课程知识点
+
+- 学习如何用scikit-learn的机器学习算法
+- scikit-learn 做数据分析
+- 数据分析结果可视化
+
+### 课程流程
+
+本次课程我们将按照下面的流程实现数据分析的任务：
+
+1. ebay 在线拍卖数据初步分析
+2. 利用数据预测拍卖是否会成功
+3. 预测拍卖最终成交价格
+
+## 二、ebay 在线拍卖数据初步分析
+
+
+### 2.1 ebay在线拍卖数据
+
+此次课程我们运用的`ebay 在线拍卖数据`数据集为[Ebay Data Set](http://cims.nyu.edu/~munoz/data/)，这个数据是由[Jay Grossman](http://jaygrossman.com/post/2013/06/10/Predicting-eBay-Auction-Sales-with-Machine-Learning.aspx)提供的。这个数据集是由一个为运动爱好者提供资讯的平台[SportsCollector](http://www.sportscollectors.net)
+
+数据集`raw.tar.gz`数据中包括`TrainingSet.csv`, `TestSet.csv`, `TrainingSubset.csv` 和`TestSubset.csv`，下表中列出了这四个文件的内容简介：
+
+
+| 数据名      | 数据描述       | 数据量 |
+| ------------ |:-------------:| -----:|
+| Training Set | 2013年4月的所有拍卖| 25，8588  |
+| Test Set  | 2013年5月第一个周的所有拍卖| 3，7460  |
+| Training Subset |  2013年4月成功交易的所有拍卖 | 7,9732  |
+| Test Subset | 2013年5月第一周成功交易的所有拍卖|9392|
+
+表示数据的`特征向量`中的特征名及其对应性质：
+
+| 特征名      | 特征描述       |
+| ------------ |:-------------:|
+| Price | 最终交易金额 | 
+| StartingBid  | 拍卖的最低交易金额|
+| BidCount |  此项拍卖获得的投标数 |
+| Title | 交易标题|
+|QuantitySold|成功销售的数量 （0或1表示）|
+|SellerRating|卖家在ebay上的评级|
+|StartDate|拍卖开始的日期|
+|EndDate|拍卖结束的日期|
+|PositiveFeedbackPercent|卖方收到的正反馈百分比（占所有反馈）|
+|HasPicture|是否有实物图（0或1）|
+|MemberSince|卖家创建其在ebay上账户的日期|
+|HasStore|卖家是否有ebay店铺（0或1）|
+|SellerCountry|卖家所在的国家|
+|BuyitNowPrice|立即购买该商品的价格|
+|HighBidderFeedbackRating|出价最高的投标者的ebay评级|
+|ReturnsAccepted|是否接受退货 （0或1表示）|
+|HasFreeShipping|是否包邮（0或1表示）|
+|IsHOF|卖家是否是名人堂中的玩家（0或1表示）|
+|IsAuthenticated|是否受到了工会的认证（0或1表示）|
+|HasInscription|拍卖项目是否有登记过（0或1表示）|
+|AvgPrice|库存中关于这款商品的平均价格|
+|MedianPrice|库存中这款商品价格的中位数|
+|AuctionCount|库存中拍卖的总数|
+|SellerSaleToAveragePriceRatio|这项拍卖商品的价格占平均价格的比例|
+|StateDayOfWeek|拍卖开始时是周几|
+|EndDayOfWeek|拍卖结束时是周几|
+|AuctionDuration|拍卖持续的天数|
+|StartingBidPercent|该商品投标底线占平均交易价格的比例|
+|SellerClosePercent|一个卖家成功交易的拍卖数占所有在线拍卖数的比例|
+|ItemAuctionSellPercent|成功交易的拍卖数占所有在线拍卖数的比例|
+
+### 2.2 数据准备及环境配置
+
+进入`Code`目录中创建目录`shiyanlou_cs714`并进入,之后的所有代码及训练文件都在此文件夹下创建，通过`wget`命令获取本次数据分析的ebay拍卖数据`raw.tar.gz`
+
+```bash
+$ cd Code
+$ mkdir shiyanlou_cs714 &amp;&amp; cd shiyanlou_cs714
+$ wget http://labfile.oss.aliyuncs.com/courses/714/raw.tar.gz
+```
+
+通过`tar zxvf `命令解压文件`raw.tar.gz`，并创建文件`dataAnalysis.py`
+
+安装本次实验所需的Python安装包pandas, matplotlib, numpy, sklearn, seaborn及相关依赖包:
+
+```bash
+$ sudo pip install pandas
+$ sudo pip install matplotlib
+$ sudo pip install numpy
+$ sudo pip install sklearn
+$ sudo pip install seaborn
+$ sudo apt-get install python-tk
+```
+
+&gt; 安装包的官方文档：
+&gt; - [Pandas API](http://pandas.pydata.org/)
+&gt; - [Matplotlib API](http://matplotlib.org/)
+&gt; - [Numpy API](http://www.numpy.org/)
+&gt; - [Scikit-learn](http://scikit-learn.org/stable/index.html)
+&gt; - [seaborn](http://seaborn.pydata.org/index.html)
+
+
+### 2.3 数据可视化
+
+编辑源码文件`dataAnalysis.py`，导入相关的包：
+
+```python
+import pandas as pd
+from pandas import DataFrame
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+```
+
+读入数据：
+
+```python
+test_set = pd.read_csv('raw/TestSet.csv')
+train_set = pd.read_csv('raw/TrainingSet.csv')
+test_subset = pd.read_csv('raw/TestSubset.csv')
+train_subset = pd.read_csv('raw/TrainingSubset.csv')
+```
+
+输出查看`train_set`的数据：
+```python
+train_set.info()
+```
+
+可查看到`train_set`的数据信息：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid291340labid2376timestamp1480325690463.png/wm)
+
+可看到总共有25,8588条数据，与我们上面的描述相符，在上面的代码中加入`print`函数。打印出前三条数据，查看属性值
+
+```python
+print(train_set[:3])
+```
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid291340labid2376timestamp1480326132889.png/wm)
+
+第一列属性`EbayID`为每条拍卖记录的ID号，与预测拍卖是否成功没有联系，因此在模型训练时将该特征去除。`QuantitySold`属性为1时代表拍卖成功，为0时代表拍卖失败，其中`SellerName`拍卖卖方的名字与预测拍卖是否成功时没有多大的关系，因此在训练时也将该特征去除
+
+```python
+train = train_set.drop(['EbayID','QuantitySold','SellerName'], axis=1)
+train_target = train_set['QuantitySold']
+
+# 获取总特征数
+_, n_features = train.shape
+```
+
+可视化数据，取出一部分特征，量量组成对看数据在这个2维平面上的分布情况：
+
+```python
+# isSold： 拍卖成功为1， 拍卖失败为0
+df = DataFrame(np.hstack((train,train_target[:, None])), columns=range(n_features) + ["isSold"])
+_ = sns.pairplot(df[:50], vars=[2,3,4,10,13], hue="isSold", size=1.5)
+```
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid291340labid2376timestamp1480328659821.png/wm)
+
+从第`3,9,12,16`维特征的散列图及柱状图可看出，这几个维度并不是有很好地区分度，横纵坐标的值分别代表不同维度之间的正负相关性，为了查看数据特征之间的相关性，及不同特征与类别`isSold`之间的关系，我们可以利用`seaborn`中的热度图来显示其两两组队之间的`相关性`
+
+```python
+plt.figure(figsize=(10,10))
+
+# 计算数据的相关性矩阵
+corr = df.corr()
+
+# 产生遮挡出热度图上三角部分的mask，因为这个热度图为对称矩阵，所以只输出下三角部分即可
+mask = np.zeros_like(corr,dtype=np.bool)
+mask[np.triu_indices_from(mask)] = True
+
+# 产生热度图中对应的变化的颜色
+cmap = sns.diverging_palette(220, 10, as_cmap=True)
+
+# 调用seanborn中的heat创建热度图
+sns.heatmap(corr, mask=mask, cmap=cmap, vmax = .3,
+                square=True, xticklabels=5, yticklabels=2,
+                linewidths=.5, cbar_kws={"shrink":.5})
+                
+# 将yticks旋转至水平方向，方便查看
+plt.yticks(rotation=0)
+
+plt.show()
+```
+
+运行结果图：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid291340labid2376timestamp1480328643847.png/wm)
+
+上幅图中，颜色越偏向红色的相关性越大，越偏向蓝色的相关性越小且负相关，白色即两个特征之间没有多大的关联，通过最后一行可看出，不同维的属性与类别`isSold`之间的关系，其中第`3,9,12,16`维特征与拍卖是否会成功有很强的 `正相关性`， 其中`3,9,12,16`分别对应属性`SellerClosePercent`，`HitCount`, `SellerSaleAvgPriceRatio`和`BestOffer`，表示当这些属性的值越大时越有可能使拍卖成功，其中第6维特征`StartingBid`与成功拍卖`isSold`之间的呈现较大的负相关性，可看出当拍卖投标的底线越高则这项拍卖的成功性就越低。
+
+通过这幅热度图的第一列我们还可以看出不同特征与价格`Price`之间的相关性。同样的我们可以根据这些相关性，选出比较有利于我们实现本次课程的第二个任务—— __拍卖价格预测__ 的特征。
+
+## 三、利用数据预测拍卖是否会成功
+
+由于我们的数据量比较大，且特征维度也不是特别少，因此我们一开始做`baseline`时，就不利用`SVM 支持向量机` 这些较简单的模型，因为当数据量比较大，且维度较高时，有些简单的机器学习算法就并不是很高效，且可能训练到最后都不收敛并耗时。
+
+根据`scikit-learn`提供的`机器学习算法使用图谱`：
+
+![machine learning cheat sheet](http://labfile.oss.aliyuncs.com/courses/714/drop_shadows_background.png)
+
+&gt; scikit-learn官方介绍
+&gt; - [机器学习使用图谱](https://peekaboo-vision.blogspot.de/2013/01/machine-learning-cheat-sheet-for-scikit.html)
+
+我们根据图谱推荐先使用`SGDClassifier`，其全称为`Stochastic Gradient Descent 随机梯度下降`，通过`梯度下降法`在训练过程中优化目标函数使得预测值与真实值之间的`误差loss`最小化。`SGDClassifier`每次训练过程没有用到所有的训练样本，而是随机的从训练样本中选取一部分进行训练。而且`SGD`对特征值的大小比较敏感，而通过上面的数据展示，可以知道在我们的数据集里有数值较大的数据， 如：`Category`。因此我们可以先用`sklearn.preprocessing`中提供的`StandardScaler`对数据进行预处理，使其每个属性的波动幅度不要太大，有助于训练时函数收敛。
+
+以下就是我们使用`sklearn`中的`SGDClassifier`实现拍卖是否成功的模型训练代码 （创建`isSold_pred.py`文件存放）：
+
+```python
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import SGDClassifier
+from sklearn.preprocessing import StandardScaler
+
+# prepare data
+test_set = pd.read_csv('raw/TestSet.csv')
+train_set = pd.read_csv('raw/TrainingSet.csv')
+
+train = train_set.drop(['EbayID','QuantitySold','SellerName'], axis=1)
+train_target = train_set['QuantitySold']
+
+n_trainSamples, n_features = train.shape
+
+# 画出训练过程中SGDClassifier利用不同的mini_batch学习的效果
+def plot_learning(clf,title):
+
+    plt.figure()
+    # 记录上一次训练结果在本次batch上的预测情况
+    validationScore = []
+    # 记录加上本次batch训练结果后的预测情况
+    trainScore = []
+    # 最小训练批数
+    mini_batch = 1000
+
+    for idx in range(int(np.ceil(n_trainSamples / mini_batch))):
+        x_batch = train[idx * mini_batch: min((idx + 1) * mini_batch, n_trainSamples)]
+        y_batch = train_target[idx * mini_batch: min((idx + 1) * mini_batch, n_trainSamples)]
+
+        if idx &gt; 0:
+            validationScore.append(clf.score(x_batch, y_batch))
+        clf.partial_fit(x_batch, y_batch, classes=range(5))
+        if idx &gt; 0:
+            trainScore.append(clf.score(x_batch, y_batch))
+    plt.plot(trainScore, label="train score")
+    plt.plot(validationScore, label="validation socre")
+    plt.xlabel("Mini_batch")
+    plt.ylabel("Score")
+    plt.legend(loc='best')
+    plt.grid()
+    plt.title(title)
+
+# 对数据进行归一化
+scaler = StandardScaler()
+train = scaler.fit_transform(train)
+# 创建SGDClassifier
+clf = SGDClassifier(penalty='l2', alpha=0.001)
+plot_learning(clf,"SGDClassifier")
+
+plt.show()
+```
+
+训练结果如下图，由于`SGDClassifier`是在所有的训练样本中抽取一部分作为本次的训练集，因此在这里不适用`交叉验证`
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid291340labid2376timestamp1480408834448.png/wm)
+
+可看到`SGDClassifier`的训练效果还不错，我们也可以通过`scikit-learn`中封装的一些降维方法，将`数据可视化`,这里我们使用的三种方法进行降维 ———— `Random Projection`，`PCA` 和`T-SNE embedding`。在`isSold_pred.py`中加入以下代码：
+
+```python
+from sklearn import (manifold, decomposition, random_projection)
+from matplotlib import offsetbox
+from time import time
+
+# image[0]为数字0表示某条数据的isSold为0
+images= []
+images.append([[  0. ,   0. ,   5. ,  13. ,   9. ,   1. ,   0. ,   0. ],
+ [  0. ,   0. ,  13. ,  15. ,  10. ,  15. ,   5. ,   0. ],
+ [  0. ,   3. ,  15. ,   2. ,   0. ,  11. ,   8. ,   0. ],
+ [  0. ,   4. ,  12. ,   0. ,   0. ,   8. ,   8. ,   0. ],
+ [  0. ,   5. ,   8. ,   0. ,   0. ,   9. ,   8. ,   0. ],
+ [  0. ,   4. ,  11. ,   0. ,   1. ,  12. ,   7. ,   0. ],
+ [  0. ,   2. ,  14. ,   5. ,  10. ,  12. ,   0. ,   0. ],
+ [  0. ,   0. ,   6. ,  13. ,  10. ,   0. ,   0. ,   0. ]])
+# image[1]为数字1表示某条数据的isSold为1
+images.append([[  0. ,   0. ,   0. ,  12. ,  13. ,   5. ,   0. ,   0. ],
+ [  0. ,   0. ,   0. ,  11. ,  16. ,   9. ,   0. ,   0. ],
+ [  0. ,   0. ,   3. ,  15. ,  16. ,   6. ,   0. ,   0. ],
+ [  0. ,   7. ,  15. ,  16. ,  16. ,   2. ,   0. ,   0. ],
+ [  0. ,   0. ,   1. ,  16. ,  16. ,   3. ,   0. ,   0. ],
+ [  0. ,   0. ,   1. ,  16. ,  16. ,   6. ,   0. ,   0. ],
+ [  0. ,   0. ,   1. ,  16. ,  16. ,   6. ,   0. ,   0. ],
+ [  0. ,   0. ,   0. ,  11. ,  16. ,  10. ,   0. ,   0. ]])
+
+# 这里只选取了1000条数据进行数据可视化展示
+show_instancees = 1000
+# define the drawing function
+def plot_embedding(X, title=None):
+    x_min, x_max = np.min(X, 0), np.max(X, 0)
+    X = (X - x_min) / (x_max - x_min)
+
+    plt.figure()
+    ax = plt.subplot(111)
+    for i in range(X.shape[0]):
+        plt.text(X[i,0], X[i,1], str(train_target[i]),
+                 color=plt.cm.Set1(train_target[i] / 2.),
+                 fontdict={'weight':'bold','size':9})
+
+    if hasattr(offsetbox, 'AnnotationBbox'):
+        shown_images = np.array([[1., 1.]])  # just something big
+    for i in range(show_instancees):
+        dist = np.sum((X[i] - shown_images) ** 2, 1)
+        if np.min(dist) &lt; 4e-3:
+            # don't show points that are too close
+            continue
+        shown_images = np.r_[shown_images, [X[i]]]
+        auctionbox = offsetbox.AnnotationBbox(
+            offsetbox.OffsetImage(images[train_target[i]], cmap=plt.cm.gray_r), X[i])
+        ax.add_artist(auctionbox)
+    plt.xticks([]), plt.yticks([])
+    if title is not None:
+        plt.title(title)
+
+# 随机投影 Random Projection
+start_time = time()
+rp = random_projection.SparseRandomProjection(n_components=2, random_state=42)
+rp.fit(train[:show_instancees])
+train_projected = rp.transform(train[:show_instancees])
+plot_embedding(train_projected, "Random Projection of the auction (time: %.3fs" % (time() - start_time))
+
+# 主成分提取 PCA
+start_time = time()
+train_pca = decomposition.TruncatedSVD(n_components=2).fit_transform(train[:show_instancees])
+plot_embedding(train_pca, "Pricincipal components projection of the auction (time: %.3fs" % (time() - start_time))
+
+# t-sne 降维
+start_time = time()
+tsne = manifold.TSNE(n_components=2, init='pca', random_state=0)
+train_tsne = tsne.fit_transform(train[:show_instancees])
+plot_embedding(train_tsne, "T-SNE embedding of the auction (time: %.3fs" % (time() - start_time))
+```
+
+随机投影效果：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid291340labid2376timestamp1480411342329.png/wm)
+
+PCA降维效果：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid291340labid2376timestamp1480411354307.png/wm)
+
+t-sne降维效果：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid291340labid2376timestamp1480411371275.png/wm)
+
+从以上三幅图中，我们可以根据数字0和1的重叠情况，判读出我们的数据可区分度并不是特别大。因此我们的训练效果也没有达到特别好，从这方面也可以看出我们这里用来训练分类器的特征并不是利用得特别好。有兴趣的同学可以多了解下`特征工程`，或者根据我们上面绘制的热度图挑选一些特征进行分类器训练，查看训练效果。
+
+分类器训练结束后，可查看分类器在测试集上的测试效果：
+
+```python
+# 导入相关包
+from sklearn.metrics import (precision_score, recall_score, f1_score)
+# 首先也是准备好测试数据，进行归一化处理
+test = test_set.drop(['EbayID','QuantitySold','SellerName'],axis=1)
+test_target = test_set['QuantitySold']
+test = scaler.fit_transform(test)
+
+# 利用训练好的分类器进行预测
+test_pred = clf.predict(test) 
+
+print("SGDClassifier training performance on testing dataset:" )
+print("\tPrecision: %1.3f " % precision_score(test_target, test_pred))
+print("\tRecall: %1.3f" % recall_score(test_target, test_pred))
+print("\tF1: %1.3f \n" % f1_score(test_target, test_pred))
+```
+
+测试结果：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid291340labid2376timestamp1480412833285.png/wm)
+
+## 四、预测拍卖最终成交价格
+
+由于在价格的分布是在一个连续的区间上，因此这与预测拍卖是否会成功是不同的，预测价格是一个`回归`预测，而判断拍卖是否会成功是一个`分类`任务。
+
+同样根据`机器学习算法使用图谱`，在这里我们采取`SGDRegressor`，其他使用情况与预测拍卖是否成功时差不多，创建`Price_pred.py`, 代码如下：
+
+```python
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import SGDRegressor
+import random
+from sklearn.preprocessing import MinMaxScaler
+
+# prepare data
+test_subset = pd.read_csv('raw/TestSubset.csv')
+train_subset = pd.read_csv('raw/TrainingSubset.csv')
+
+# 训练集
+train = train_subset.drop(['EbayID','Price','SellerName'],axis=1)
+train_target = train_subset['Price']
+
+scaler = MinMaxScaler()
+train = scaler.fit_transform(train)
+n_trainSamples, n_features = train.shape
+
+# ploting example from scikit-learn
+def plot_learning(clf,title):
+
+    plt.figure()
+    validationScore = []
+    trainScore = []
+    mini_batch = 500
+    # define the shuffle index
+    ind = list(range(n_trainSamples))
+    random.shuffle(ind)
+
+    for idx in range(int(np.ceil(n_trainSamples / mini_batch))):
+        x_batch = train[ind[idx * mini_batch: min((idx + 1) * mini_batch, n_trainSamples)]]
+        y_batch = train_target[ind[idx * mini_batch: min((idx + 1) * mini_batch, n_trainSamples)]]
+
+        if idx &gt; 0:
+            validationScore.append(clf.score(x_batch, y_batch))
+        clf.partial_fit(x_batch, y_batch)
+        if idx &gt; 0:
+            trainScore.append(clf.score(x_batch, y_batch))
+
+    plt.plot(trainScore, label="train score")
+    plt.plot(validationScore, label="validation socre")
+    plt.xlabel("Mini_batch")
+    plt.ylabel("Score")
+    plt.legend(loc='best')
+    plt.title(title)
+
+sgd_regresor = SGDRegressor(penalty='l2',alpha=0.001)
+plot_learning(sgd_regresor,"SGDRegressor")
+
+# 准备测试集查看测试情况
+test = test_subset.drop(['EbayID','Price','SellerName'],axis=1)
+test = scaler.fit_transform(test)
+test_target = test_subset['Price']
+
+print("SGD regressor prediction result on testing data: %.3f" % sgd_regresor.score(test,test_target))
+
+plt.show()
+```
+
+训练过程：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid291340labid2376timestamp1480414859160.png/wm)
+
+在测试集上的测试结果：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid291340labid2376timestamp1480414986932.png/wm)
+
+由于`SGDRegressor`的回归效果还不错，因此我们没有在进一步的选择其他的模型进行尝试，有兴趣的同学可以在这方面在多改进参数，或者尝试其他的方法看预测效果如何。
+
+## 五、总结
+
+本次课程我们学习了如何使用`scikit-learn`进行数据分析，其实在数据分析过程中，运用到`机器学习`的算法进行模型训练并不是最主要的，很多时候是如何在前期进行数据`预处理`。这过程中包括数据的筛选，和`特征工程`等，在进行一项`数据挖掘`任务时，我们可能会花更多的时间在数据`预处理`和`特征工程`上，但是这些准备工作做好后，可使得我们之后的模型训练过程事半功倍。在`scikit-learn`官方文档中也有许多数据库和算法实现例子，并且有很多`数据可视化`的例子，运用这些例子也能帮助我们快速入门`机器学习`这个领域。
+
+本次课程所有代码可通过以下地址获得：
+
+```bash
+wget http://labfile.oss.aliyuncs.com/courses/714/dataAnalysis.py
+wget http://labfile.oss.aliyuncs.com/courses/714/isSold_pred.py
+wget http://labfile.oss.aliyuncs.com/courses/714/Price_pred.py
+```
+
+## 六、参考阅读
+
+- [机器学习与数据挖掘](https://www.kancloud.cn/digest/machine-learning-dm)
+- [scikit-learn 高维数据可视化](http://scikit-learn.org/stable/auto_examples/manifold/plot_lle_digits.html#sphx-glr-auto-examples-manifold-plot-lle-digits-py)</textarea>
+<nav>
+    <ul class="pager">
+        
+        
+    </ul>
+</nav>
+
+
+    
+    <div class="vip-banner">
+        
+        动手实践是学习 IT 技术最有效的方式！
+        
+        
+
+        
+
+        
+            
+        
+
+        
+        <a class="btn   lab-item-start" data-mobile-url="/courses/document/2376" data-url="/courses/start/2376" data-next="/courses/running">开始实验</a>
+    </div>
+    
+
+
+        </div>
+        <div class="col-md-3 layout-side">
+            
+    <div class="side-image side-image-pc">
+        <img src="./scikit-learn实现ebay数据分析 - 实验楼_files/1481512391193.png">
+    </div>
+    
+    
+
+    
+        
+    
+
+
+    
+        
+<div class="sidebox mooc-teacher">
+    <div class="sidebox-header mooc-header">
+        <h4 class="sidebox-title">课程教师</h4>
+    </div>
+    <div class="sidebox-body mooc-content">
+        <a href="https://www.shiyanlou.com/user/291340" target="_blank">
+            <img src="./scikit-learn实现ebay数据分析 - 实验楼_files/gravatar291340.png">
+        </a>
+        <div class="mooc-info">
+            <div class="name"><strong>zyj061</strong> </div>
+            
+            <div class="courses">共发布过<strong>4</strong>门课程</div>
+        </div>
+        <div class="mooc-extra-info">
+            <div class="word long-paragraph">
+                
+            </div>
+        </div>
+    </div>
+    <div class="sidebox-footer mooc-footer">
+        <a href="https://www.shiyanlou.com/teacher/291340" target="_blank">查看老师的所有课程 &gt;</a>
+    </div>
+</div>
+
+    
+    
+    
+    
+    <span class="btn side-btn" data-toggle="modal" data-target="#askquestion" id="askBtn" href="javascript:void(0)" style="position: fixed; top: 61px; width: 283px;">我要提问</span>
+    
+    
+    
+    
+    
+
+        </div>
+    </div>
+</div>
+
+
+	<div class="modal fade" id="invite-user" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">邀请好友，双方都可获赠实验豆！</h4>
+				</div>
+				<div class="modal-body">
+                    
+					<div class="form-label">
+                        分享专属链接给好友，或粘贴到QQ群/微博/论坛，好友注册后，您和好友将分别获赠3个实验豆！
+                    </div>
+					<input type="text" id="bstext" class="form-invite" value="https://www.shiyanlou.com/register?inviter=NTY0MzE5MjQ4Mzk4">              
+                    
+					<div id="msg-modal"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	
+    
+        
+        
+<div class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 clearfix footer-col">
+                <img src="./scikit-learn实现ebay数据分析 - 实验楼_files/logo_03.png">
+                <div class="footer-slogan">动手做实验，轻松学编程</div>
+                <div class="col-xs-2">
+                    <div class="social-item footer-weixin-item">
+                        <i class="fa fa-weixin"></i>
+                        <div class="footer-weixin">
+                            <img src="./scikit-learn实现ebay数据分析 - 实验楼_files/footer-weixin.png">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-2">
+                    <div class="social-item footer-qq-item" data-original-title="" title="">
+                        <i class="fa fa-qq"></i>
+                    </div>
+                </div>
+                <div class="col-xs-2">
+                    <div class="social-item footer-weibo-item">
+                        <a href="http://weibo.com/shiyanlou2013" target="_blank">
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6 col-sm-3 col-md-2 footer-col">
+                <div class="col-title">公司</div>
+                <a href="https://www.shiyanlou.com/aboutus" target="_blank">关于我们</a><br>
+                <a href="https://www.shiyanlou.com/contact" target="_blank">联系我们</a><br>
+                <a href="http://www.simplecloud.cn/jobs.html" target="_blank">加入我们</a><br>
+                <a href="https://blog.shiyanlou.com/" target="_blank">技术博客</a><br>
+            </div>
+            <div class="col-xs-6 col-sm-3 col-md-2 footer-col">
+                <div class="col-title">合作</div>
+                <a href="https://www.shiyanlou.com/contribute" target="_blank">我要投稿</a><br>
+                <a href="https://www.shiyanlou.com/labs" target="_blank">教师合作</a><br>
+                <a href="https://www.shiyanlou.com/edu/" target="_blank">高校合作</a><br>
+                <a href="https://www.shiyanlou.com/friends" target="_blank">友情链接</a>
+            </div>
+            <div class="col-xs-6 col-sm-3 col-md-2 footer-col">
+                <div class="col-title">服务</div>
+                <a href="https://www.shiyanlou.com/bootcamp/" target="_blank">实战训练营</a><br>
+                <a href="https://www.shiyanlou.com/vip" target="_blank">会员服务</a><br>
+                <a href="https://www.shiyanlou.com/courses/reports" target="_blank">实验报告</a><br>
+                <a href="https://www.shiyanlou.com/questions/?tag=%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98" target="_blank">常见问题</a><br>
+                <a href="https://www.shiyanlou.com/privacy" target="_blank">隐私条款</a>
+            </div>
+            <div class="col-xs-6 col-sm-3 col-md-2 footer-col">
+                <div class="col-title">学习路径</div>
+                <a href="https://www.shiyanlou.com/paths/python" target="_blank">Python学习路径</a><br>
+                <a href="https://www.shiyanlou.com/paths/linuxdev" target="_blank">Linux学习路径</a><br>
+                <a href="https://www.shiyanlou.com/paths/bigdata" target="_blank">大数据学习路径</a><br>
+                <a href="https://www.shiyanlou.com/paths/java" target="_blank">Java学习路径</a><br>
+                <a href="https://www.shiyanlou.com/paths/php" target="_blank">PHP学习路径</a><br>
+                <a href="https://www.shiyanlou.com/paths/" ,="" target="_blank">全部</a>
+            </div>
+        </div>
+    </div>
+    <div class="text-center copyright">
+        <span>Copyright @2013-2016 实验楼在线教育</span>
+        <span class="ver-line"> | </span>
+        <a href="http://www.miibeian.gov.cn/" target="_blank">蜀ICP备13019762号</a>
+        <script charset="utf-8" src="./scikit-learn实现ebay数据分析 - 实验楼_files/v.js"></script><script async="" src="./scikit-learn实现ebay数据分析 - 实验楼_files/analytics.js"></script><script src="./scikit-learn实现ebay数据分析 - 实验楼_files/hm.js"></script><script type="text/javascript">
+            var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+            document.write(unescape("%3Cspan id='cnzz_stat_icon_5902315'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D5902315' type='text/javascript'%3E%3C/script%3E"));
+        </script><span id="cnzz_stat_icon_5902315"><a href="http://www.cnzz.com/stat/website.php?web_id=5902315" target="_blank" title="站长统计">站长统计</a></span><script src="./scikit-learn实现ebay数据分析 - 实验楼_files/stat.php" type="text/javascript"></script><script src="./scikit-learn实现ebay数据分析 - 实验楼_files/core.php" charset="utf-8" type="text/javascript"></script>
+        <script>
+            var _hmt = _hmt || [];
+            (function() {
+             var hm = document.createElement("script");
+             hm.src = "//hm.baidu.com/hm.js?6eb47a3aeda6ea31fa53985fdfdc78e8";
+             var s = document.getElementsByTagName("script")[0];
+             s.parentNode.insertBefore(hm, s);
+             })();
+        </script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-89338452-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+    </div>
+</div>
+
+        
+    
+	
+
+	<div class="modal fade" id="flash-message" tabindex="-1" role="dialog">
+		<div class="modal-dialog" rolw="document">
+		</div>
+	</div>
+	<div class="modal fade" id="modal-message" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">注意</h4>
+				</div>
+				<div class="modal-body">
+				</div>
+				<div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary confirm" data-dismiss="modal">确定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+    
+
+    
+<div class="modal fade" id="start-newlab">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3>开始新实验</h3>
+			</div>
+			<div class="modal-body">
+                <p>一个实验正在进行，是否停止它，开始新实验？</p>
+			</div>
+			<div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+                <a class="btn btn-primary start-newlab-confirm">确定</a>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div>
+<div class="modal fade" id="start-evaluation-course">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3>开始评估课实验</h3>
+			</div>
+			<div class="modal-body">
+                <div>
+                    <p>为了让评估结果更加准确，请注意以下操作：</p>
+                    <ul>
+                        <li>完成实验后点击「停止实验」按钮</li>
+                        <li>将代码提交到代码库</li>
+                        <li>尽可能详尽的撰写实验报告</li>
+                        <li>尽可能在实验操作的关键步骤截图</li>
+                        <li>尽可能减少无用操作</li>
+                        <li>尽可能高效的利用内存/CPU资源</li>
+                    </ul>
+                    <p>评估课还在不断完善中，我们真挚希望你能通过我们提供的这个平台，找到更好的发展机会。</p>
+                </div>
+                <br>
+                <div class="start-newlab"></div>
+			</div>
+			<div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+                <a class="btn btn-primary start-confirm">确定</a>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div>
+<div class="modal fade" id="vip-startlab-modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3>开始实验</h3>
+			</div>
+			<div class="modal-body">
+                <div class="start-newlab"></div>
+                <br>
+                <div class="text-center vip-vm">
+                    <a class="btn btn-default btn-lg newvm">创建新环境</a>
+					
+                </div>
+                <br>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade askquestion-modal" id="askquestion" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">发帖</h4>
+            </div>
+            <div class="modal-body words-ctrl">
+                <form class="form-horizontal" action="https://www.shiyanlou.com/questions/">
+                    
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">标题</label>
+                        <div class="col-md-10">
+                            <input type="text" name="title" min="5" max="100" class="form-control" placeholder="至少输入5个字" value="">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">描述</label>
+                        <div class="col-md-10">
+                            
+                            
+                            
+<div class="tabpanel mkeditor">
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active">
+            <a href="https://www.shiyanlou.com/courses/714/labs/2376/document#mkeditor-editor" role="tab" data-toggle="tab">编辑</a>
+        </li>
+        <li role="presentation">
+            <a class="mkeditor-btn-view" href="https://www.shiyanlou.com/courses/714/labs/2376/document#mkeditor-viewer" role="tab" data-toggle="tab">预览</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active mkeditor-editor" id="mkeditor-editor" role="tabpanel">
+            
+            <div class="btn-group" role="group">
+            
+                <button type="button" class="btn btn-default mkeditor-btn-bold">
+                    <i class="fa fa-bold"></i>
+                </button>
+                <button type="button" class="btn btn-default mkeditor-btn-italic">
+                    <i class="fa fa-italic"></i>
+                </button>
+                <button type="button" class="btn btn-default mkeditor-btn-link">
+                    <i class="fa fa-link"></i>
+                </button>
+                <button type="button" class="btn btn-default mkeditor-btn-quote">
+                    <i class="fa fa-quote-left"></i>
+                </button>
+                <button type="button" class="btn btn-default mkeditor-btn-code">
+                    <i class="fa fa-code"></i>
+                </button>
+                <button id="mkeditor-pickfile" type="button" class="btn btn-default mkeditor-btn-img">
+                    <i class="fa fa-image"></i>
+                </button>
+                
+                <button type="button" class="btn btn-default mkeditor-btn-listol">
+                    <i class="fa fa-list-ol"></i>
+                </button>
+                <button type="button" class="btn btn-default mkeditor-btn-listul">
+                    <i class="fa fa-list-ul"></i>
+                </button>
+            </div>
+            <div class="btn-group pull-right" role="group">
+                <a style="font-size:12px; color:#666; text-decoration:underline;" href="https://www.shiyanlou.com/questions/764" target="_blank">
+                    <i class="fa fa-question-circle"></i>Markdown 语法
+                </a>
+            </div>
+            <textarea name="content" class="content" min="0" max="20000" placeholder="推荐使用 Markdown 语法，至少输入 5 个字"></textarea>
+            <div class="help-block"></div>
+        </div>
+        <div class="tab-pane mkeditor-viewer markdown-body" id="mkeditor-viewer" role="tabpanel">
+            <div></div>
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">板块</label>
+                        <div class="col-md-10">
+                            <div class="q-types" data-type="">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="submit-question btn btn-primary" href="https://www.shiyanlou.com/vip" target="_blank" style="background:#FFFFFF;color:#00CC99;border:none;float:left;padding-left:0;"><img src="./scikit-learn实现ebay数据分析 - 实验楼_files/senior-vip-icon.png" alt=""> 加入高级会员获得助教答疑</a>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="submit-question btn btn-primary" data-dismiss="modal">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+	
+		
+			
+		
+	
+
+    <div class="modal fade" id="sign-modal" tabindex="-1" role="dialog" data-csrf-token="1482545979##1e68ecce77ebaa3c0de876146b0dcca70d89e93f">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <button type="button" class="close-modal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <div class="modal-body">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="https://www.shiyanlou.com/courses/714/labs/2376/document#signin-form" aria-controls="signin-form" role="tab" data-toggle="tab">登录</a>
+                    </li>
+                    <li role="presentation">
+                        <a href="https://www.shiyanlou.com/courses/714/labs/2376/document#signup-form" aria-controls="signup-form" role="tab" data-toggle="tab">注册</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="signin-form">
+                        <form action="https://www.shiyanlou.com/login" method="post">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-envelope" style="margin:0;"></i>
+                                    </div>
+                                    <input type="email" name="login" class="form-control" placeholder="请输入邮箱">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-lock" style="margin:0;"></i>
+                                    </div>
+                                    <input type="password" name="password" class="form-control" placeholder="请输入密码">
+                                </div>
+                            </div>
+                            <div class="form-inline verify-code-item" style="display:none;">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" name="captcha_v" class="form-control" placeholder="请输入验证码">
+                                    </div>
+                                </div>
+                                <img class="verify-code" src="./scikit-learn实现ebay数据分析 - 实验楼_files/captcha.gif">
+                            </div>
+                            <div class="form-group remember-login">
+                                <input name="remember" type="checkbox" value="y"> 下次自动登录
+                                <a class="pull-right" href="https://www.shiyanlou.com/reset_password">忘记密码？</a>
+                            </div>
+                            <div class="form-group">
+                                <input class="btn btn-primary" name="submit" type="submit" value="进入实验楼">
+                            </div>
+                            <div class="form-group widget-signin">
+                                <span>快速登录</span>
+                                <a href="https://www.shiyanlou.com/auth/qq?next="><i class="fa fa-qq"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/weibo?next="><i class="fa fa-weibo"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/weixin?next="><i class="fa fa-weixin"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/github?next="><i class="fa fa-github"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/renren?next="><i class="fa fa-renren"></i></a>
+                            </div>
+                            <div class="form-group error-msg">
+                                <div class="alert alert-danger" role="alert"></div>
+                            </div>
+                        </form>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="signup-form">
+                        <form action="https://www.shiyanlou.com/register" method="post">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-envelope" style="margin:0;"></i>
+                                    </div>
+                                    <input type="email" name="email" class="form-control" placeholder="请输入邮箱">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-lock" style="margin:0;"></i>
+                                    </div>
+                                    <input type="password" name="password" class="form-control" placeholder="请输入密码">
+                                </div>
+                            </div>
+                            <div class="form-inline">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" name="captcha_v" class="form-control" placeholder="请输入验证码">
+                                    </div>
+                                </div>
+                                <img class="verify-code" src="./scikit-learn实现ebay数据分析 - 实验楼_files/captcha.gif">
+                            </div>
+                            <div class="form-group">
+                                <input class="btn btn-primary" name="submit" type="submit" value="注册">
+                            </div>
+                            <div class="form-group agree-privacy">
+                                注册表示您已经同意我们的<a href="https://www.shiyanlou.com/privacy" target="_blank">隐私条款</a>
+                            </div>
+                            <div class="form-group widget-signup">
+                                <span>快速注册</span>
+                                <a href="https://www.shiyanlou.com/auth/qq?next="><i class="fa fa-qq"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/weibo?next="><i class="fa fa-weibo"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/weixin?next="><i class="fa fa-weixin"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/github?next="><i class="fa fa-github"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/renren?next="><i class="fa fa-renren"></i></a>
+                            </div>
+                            <div class="form-group error-msg">
+                                <div class="alert alert-danger" role="alert"></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <div id="base-data" data-flash="false" data-csrf-token="/questions/form" data-is-login="true" data-jwt-token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzaGl5YW5sb3U6d2ViOmFwcCIsInVuYW1lIjoid2h1aGFuMjAxMyIsInVpZCI6IjIzNTcyMyIsImV4cCI6MTQ4MjYyODc3OSwiaWF0IjoxNDgyNTQyMzc5fQ.dQqfc5C2lYeLLR0BBs4pvU2vcAjeEC2dUURH6n-azeA" data-user-id="235723" data-is-jwt="true" data-socket-url="wss://comet.shiyanlou.com" data-msg-user="" data-msg-system=""></div>
+
+    <script src="./scikit-learn实现ebay数据分析 - 实验楼_files/lib.js"></script>
+    <script src="./scikit-learn实现ebay数据分析 - 实验楼_files/jquery.min.js"></script>
+    <script src="./scikit-learn实现ebay数据分析 - 实验楼_files/ace.js"></script>
+    <script src="./scikit-learn实现ebay数据分析 - 实验楼_files/aliyun-oss-sdk-4.3.0.min.js"></script>
+    <script src="./scikit-learn实现ebay数据分析 - 实验楼_files/highlight.min.js"></script>
+    <script src="./scikit-learn实现ebay数据分析 - 实验楼_files/jspdf.min.js"></script>
+    <script src="./scikit-learn实现ebay数据分析 - 实验楼_files/plupload.full.min.js"></script>
+    <script src="./scikit-learn实现ebay数据分析 - 实验楼_files/ZeroClipboard.min.js"></script>
+    <script src="./scikit-learn实现ebay数据分析 - 实验楼_files/video.min.js"></script>
+    <script src="./scikit-learn实现ebay数据分析 - 实验楼_files/bootstrap-tour.min.js"></script>
+    <script src="./scikit-learn实现ebay数据分析 - 实验楼_files/bootstrap-table.min.js"></script>
+    <script src="./scikit-learn实现ebay数据分析 - 实验楼_files/bootstrap-table-zh-CN.min.js"></script>
+    <script src="./scikit-learn实现ebay数据分析 - 实验楼_files/bootstrap-table-filter-control.min.js"></script>
+
+    <script src="./scikit-learn实现ebay数据分析 - 实验楼_files/raven.min.js"></script>
+    <script>
+        Raven.config('https://bc3878b7ed0a4468a65390bd79e6e73f@sentry.shiyanlou.com/5', {
+            release: '3.12.13'
+        }).install();
+    </script>
+
+    
+<div id="jinja-data" data-tencent-labid="[662]" data-course-detail="/courses/714" data-left-time="0" data-course-id="714" data-userlab-id="None" data-question-form="/questions/form" data-start-newlab-url="/courses/clear"></div>
+<script src="./scikit-learn实现ebay数据分析 - 实验楼_files/labDoc.js"></script><div style="display: none; position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; background: rgba(0, 0, 0, 0.498039); text-align: center; z-index: 1600;"><i class="fa fa-spinner fa-pulse" style="margin-top: 240.8px; color: rgb(255, 255, 255); font-size: 35px;"></i></div>
+
+
+
+
+</body></html>
