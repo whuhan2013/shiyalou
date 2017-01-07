@@ -6,3 +6,4 @@ shiyalou course
 - [在Github Pages上部署自己的简历 - 实验楼](在Github Pages上部署自己的简历 - 实验楼.htm)
 - [Hexo + github page 实现搭建博客 - 实验楼](Hexo + github page 实现搭建博客 - 实验楼.htm)
 - [scikit-learn实现ebay数据分析 - 实验楼](scikit-learn实现ebay数据分析 - 实验楼.htm)
+- [跟我一起来玩转Makefile - 实验楼](跟我一起来玩转Makefile - 实验楼.htm)

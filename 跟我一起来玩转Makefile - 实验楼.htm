@@ -1,0 +1,2557 @@
+<!DOCTYPE html>
+<!-- saved from url=(0056)https://www.shiyanlou.com/courses/713/labs/2374/document -->
+<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style class="vjs-styles-defaults">
+      .video-js {
+        width: 300px;
+        height: 150px;
+      }
+
+      .vjs-fluid {
+        padding-top: 56.25%
+      }
+    </style>
+	
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="author" content="Lei Shi">
+  <meta http-equiv="Cache-Control" content="o-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="csrf-token" content="1483756811##bfa7167a31c1fbf184a0ce1d49dd6892a3bbd133">
+	
+		
+        <title>跟我一起来玩转Makefile - 实验楼</title>
+		
+	
+
+    
+    <meta content="实验楼是国内领先的IT技术实训平台，创新的实验驱动教学模式，以就业为导向，为IT相关专业的在校学生及从业者提供编程、运维、测试、云计算、大数据、数据库等全面的IT技术动手实践环境，提供Linux、Python、Java、C语言、Ruby、Android、IOS开发等热门课程。" name="description">
+    <meta content="实验楼,IT培训,IT教育,编程,在线编程,Linux,Linux教程,Linux操作系统,Python,Python教程,Python基础教程,Java,Java编程,C语言,大数据,Node.js,Hadoop,PHP,Docker" name="keywords">
+    
+    <meta content="实验楼,琛石科技" name="author">
+
+	<link rel="shortcut icon" href="https://static.shiyanlou.com/favicon.ico">
+	<link rel="stylesheet" href="./跟我一起来玩转Makefile - 实验楼_files/font-awesome.min.css">
+    <link rel="stylesheet" href="./跟我一起来玩转Makefile - 实验楼_files/monokai-sublime.min.css">
+    <link rel="stylesheet" href="./跟我一起来玩转Makefile - 实验楼_files/bootstrap.min.css">
+    <link rel="stylesheet" href="./跟我一起来玩转Makefile - 实验楼_files/katex.min.css">
+    <link rel="stylesheet" href="./跟我一起来玩转Makefile - 实验楼_files/video-js.min.css">
+	<link rel="stylesheet" href="./跟我一起来玩转Makefile - 实验楼_files/styles.css">
+
+	<style>
+		@font-face {
+			font-family: "lantingxihei";
+			src: url("https://static.shiyanlou.com/fonts/FZLTCXHJW.TTF");
+		}
+
+        /* modal 模态框*/
+        #invite-user .modal-body {
+            overflow: hidden;
+        }
+		#invite-user .modal-body .form-label {
+			margin-bottom: 16px;
+			font-size:14px;
+		}
+		#invite-user .modal-body .form-invite {
+			width: 80%;
+			padding: 6px 12px;
+			background-color: #eeeeee;
+			border: 1px solid #cccccc;
+			border-radius: 5px;
+			float: left;
+			margin-right: 10px;
+		}
+		#invite-user .modal-body .msg-modal-style {
+			background-color: #7dd383;
+			margin-top: 10px;
+			padding: 6px 0;
+			text-align: center;
+			width: 100%;
+		}
+		#invite-user .modal-body .modal-flash {
+			position: absolute;
+			top: 53px;
+			right: 74px;
+			z-index: 999;
+		}
+		/* end modal */
+
+        .en-footer {
+            padding: 30px;
+            text-align: center;
+            font-size: 14px;
+        }
+    </style>
+	
+<style>
+    #editor {
+        width: 0;
+		height: 0;
+		margin: 0;
+		padding: 0;
+		border: none;
+    }
+    #preview {
+        padding: 20px;
+        background: #fff;
+        border: solid 1px #eee;
+    }
+	#preview p,
+	#preview li,
+	#preview span,
+	#preview div,
+	#preview blockquote,
+	#preview blockquote	p {
+		font-size: 15px;
+        font-weight: 100;
+	}
+	#preview blockquote p {
+		line-height: 1.6em;
+	}
+    .mobile-alert {
+        display: none;
+        margin-top: 10px;
+        font-size: 16px;
+        text-align: center;
+    }
+    .breadcrumb {
+        border-bottom: solid 1px #eee;
+    }
+    @media (max-width: 768px) {
+        .mobile-alert {
+            display: block;
+        }
+        #preview p,
+        #preview li,
+        #preview span,
+        #preview div,
+        #preview blockquote,
+        #preview blockquote	p {
+            font-weight: 500;
+        }
+    }
+    .start-lab {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 10px 0;
+        text-align: center;
+        box-shadow: 0 2px 4px 2px #eee;
+        background: #274a59;
+        z-index: 100;
+    }
+    .start-lab span {
+        position: relative;
+        top: 4px;
+        color: #fff;
+        font-size: 16px;
+    }
+    .start-lab .btn {
+        margin-left: 10px;
+        padding: 6px 50px;
+        background: #0c9;
+        font-size: 18px;
+        border-color: #0c9;
+    }
+    @media (max-width: 768px) {
+        .start-lab .btn {
+            margin-top: 10px;
+        }
+    }
+    .course-warning {
+        margin-top: 10px;
+        text-align: center;
+        font-size: 16px;
+    }
+    .course-warning a {
+        padding: 6px 50px;
+        font-size: 16px;
+    }
+
+    .info-panel {
+        position: relative;
+        top: 0;
+        background: cornsilk;
+    }
+    .info-panel div {
+        margin-bottom: 10px;
+        font-size: 16px;
+    }
+    .info-panel .btn {
+        margin-top: 10px;
+        border-radius: 4px;
+    }
+    
+</style>
+
+
+	
+    
+<style id="ace_editor.css">.ace_editor {position: relative;overflow: hidden;font: 12px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;direction: ltr;text-align: left;}.ace_scroller {position: absolute;overflow: hidden;top: 0;bottom: 0;background-color: inherit;-ms-user-select: none;-moz-user-select: none;-webkit-user-select: none;user-select: none;cursor: text;}.ace_content {position: absolute;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;min-width: 100%;}.ace_dragging .ace_scroller:before{position: absolute;top: 0;left: 0;right: 0;bottom: 0;content: '';background: rgba(250, 250, 250, 0.01);z-index: 1000;}.ace_dragging.ace_dark .ace_scroller:before{background: rgba(0, 0, 0, 0.01);}.ace_selecting, .ace_selecting * {cursor: text !important;}.ace_gutter {position: absolute;overflow : hidden;width: auto;top: 0;bottom: 0;left: 0;cursor: default;z-index: 4;-ms-user-select: none;-moz-user-select: none;-webkit-user-select: none;user-select: none;}.ace_gutter-active-line {position: absolute;left: 0;right: 0;}.ace_scroller.ace_scroll-left {box-shadow: 17px 0 16px -16px rgba(0, 0, 0, 0.4) inset;}.ace_gutter-cell {padding-left: 19px;padding-right: 6px;background-repeat: no-repeat;}.ace_gutter-cell.ace_error {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAABOFBMVEX/////////QRswFAb/Ui4wFAYwFAYwFAaWGAfDRymzOSH/PxswFAb/SiUwFAYwFAbUPRvjQiDllog5HhHdRybsTi3/Tyv9Tir+Syj/UC3////XurebMBIwFAb/RSHbPx/gUzfdwL3kzMivKBAwFAbbvbnhPx66NhowFAYwFAaZJg8wFAaxKBDZurf/RB6mMxb/SCMwFAYwFAbxQB3+RB4wFAb/Qhy4Oh+4QifbNRcwFAYwFAYwFAb/QRzdNhgwFAYwFAbav7v/Uy7oaE68MBK5LxLewr/r2NXewLswFAaxJw4wFAbkPRy2PyYwFAaxKhLm1tMwFAazPiQwFAaUGAb/QBrfOx3bvrv/VC/maE4wFAbRPBq6MRO8Qynew8Dp2tjfwb0wFAbx6eju5+by6uns4uH9/f36+vr/GkHjAAAAYnRSTlMAGt+64rnWu/bo8eAA4InH3+DwoN7j4eLi4xP99Nfg4+b+/u9B/eDs1MD1mO7+4PHg2MXa347g7vDizMLN4eG+Pv7i5evs/v79yu7S3/DV7/498Yv24eH+4ufQ3Ozu/v7+y13sRqwAAADLSURBVHjaZc/XDsFgGIBhtDrshlitmk2IrbHFqL2pvXf/+78DPokj7+Fz9qpU/9UXJIlhmPaTaQ6QPaz0mm+5gwkgovcV6GZzd5JtCQwgsxoHOvJO15kleRLAnMgHFIESUEPmawB9ngmelTtipwwfASilxOLyiV5UVUyVAfbG0cCPHig+GBkzAENHS0AstVF6bacZIOzgLmxsHbt2OecNgJC83JERmePUYq8ARGkJx6XtFsdddBQgZE2nPR6CICZhawjA4Fb/chv+399kfR+MMMDGOQAAAABJRU5ErkJggg==");background-repeat: no-repeat;background-position: 2px center;}.ace_gutter-cell.ace_warning {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAmVBMVEX///8AAAD///8AAAAAAABPSzb/5sAAAAB/blH/73z/ulkAAAAAAAD85pkAAAAAAAACAgP/vGz/rkDerGbGrV7/pkQICAf////e0IsAAAD/oED/qTvhrnUAAAD/yHD/njcAAADuv2r/nz//oTj/p064oGf/zHAAAAA9Nir/tFIAAAD/tlTiuWf/tkIAAACynXEAAAAAAAAtIRW7zBpBAAAAM3RSTlMAABR1m7RXO8Ln31Z36zT+neXe5OzooRDfn+TZ4p3h2hTf4t3k3ucyrN1K5+Xaks52Sfs9CXgrAAAAjklEQVR42o3PbQ+CIBQFYEwboPhSYgoYunIqqLn6/z8uYdH8Vmdnu9vz4WwXgN/xTPRD2+sgOcZjsge/whXZgUaYYvT8QnuJaUrjrHUQreGczuEafQCO/SJTufTbroWsPgsllVhq3wJEk2jUSzX3CUEDJC84707djRc5MTAQxoLgupWRwW6UB5fS++NV8AbOZgnsC7BpEAAAAABJRU5ErkJggg==");background-position: 2px center;}.ace_gutter-cell.ace_info {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAAAAAA6mKC9AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAJ0Uk5TAAB2k804AAAAPklEQVQY02NgIB68QuO3tiLznjAwpKTgNyDbMegwisCHZUETUZV0ZqOquBpXj2rtnpSJT1AEnnRmL2OgGgAAIKkRQap2htgAAAAASUVORK5CYII=");background-position: 2px center;}.ace_dark .ace_gutter-cell.ace_info {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAJFBMVEUAAAChoaGAgIAqKiq+vr6tra1ZWVmUlJSbm5s8PDxubm56enrdgzg3AAAAAXRSTlMAQObYZgAAAClJREFUeNpjYMAPdsMYHegyJZFQBlsUlMFVCWUYKkAZMxZAGdxlDMQBAG+TBP4B6RyJAAAAAElFTkSuQmCC");}.ace_scrollbar {position: absolute;right: 0;bottom: 0;z-index: 6;}.ace_scrollbar-inner {position: absolute;cursor: text;left: 0;top: 0;}.ace_scrollbar-v{overflow-x: hidden;overflow-y: scroll;top: 0;}.ace_scrollbar-h {overflow-x: scroll;overflow-y: hidden;left: 0;}.ace_print-margin {position: absolute;height: 100%;}.ace_text-input {position: absolute;z-index: 0;width: 0.5em;height: 1em;opacity: 0;background: transparent;-moz-appearance: none;appearance: none;border: none;resize: none;outline: none;overflow: hidden;font: inherit;padding: 0 1px;margin: 0 -1px;text-indent: -1em;-ms-user-select: text;-moz-user-select: text;-webkit-user-select: text;user-select: text;white-space: pre!important;}.ace_text-input.ace_composition {background: inherit;color: inherit;z-index: 1000;opacity: 1;text-indent: 0;}.ace_layer {z-index: 1;position: absolute;overflow: hidden;word-wrap: normal;white-space: pre;height: 100%;width: 100%;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;pointer-events: none;}.ace_gutter-layer {position: relative;width: auto;text-align: right;pointer-events: auto;}.ace_text-layer {font: inherit !important;}.ace_cjk {display: inline-block;text-align: center;}.ace_cursor-layer {z-index: 4;}.ace_cursor {z-index: 4;position: absolute;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;border-left: 2px solid;transform: translatez(0);}.ace_slim-cursors .ace_cursor {border-left-width: 1px;}.ace_overwrite-cursors .ace_cursor {border-left-width: 0;border-bottom: 1px solid;}.ace_hidden-cursors .ace_cursor {opacity: 0.2;}.ace_smooth-blinking .ace_cursor {-webkit-transition: opacity 0.18s;transition: opacity 0.18s;}.ace_editor.ace_multiselect .ace_cursor {border-left-width: 1px;}.ace_marker-layer .ace_step, .ace_marker-layer .ace_stack {position: absolute;z-index: 3;}.ace_marker-layer .ace_selection {position: absolute;z-index: 5;}.ace_marker-layer .ace_bracket {position: absolute;z-index: 6;}.ace_marker-layer .ace_active-line {position: absolute;z-index: 2;}.ace_marker-layer .ace_selected-word {position: absolute;z-index: 4;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;}.ace_line .ace_fold {-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;display: inline-block;height: 11px;margin-top: -2px;vertical-align: middle;background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAJCAYAAADU6McMAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAJpJREFUeNpi/P//PwOlgAXGYGRklAVSokD8GmjwY1wasKljQpYACtpCFeADcHVQfQyMQAwzwAZI3wJKvCLkfKBaMSClBlR7BOQikCFGQEErIH0VqkabiGCAqwUadAzZJRxQr/0gwiXIal8zQQPnNVTgJ1TdawL0T5gBIP1MUJNhBv2HKoQHHjqNrA4WO4zY0glyNKLT2KIfIMAAQsdgGiXvgnYAAAAASUVORK5CYII="),url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAA3CAYAAADNNiA5AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAACJJREFUeNpi+P//fxgTAwPDBxDxD078RSX+YeEyDFMCIMAAI3INmXiwf2YAAAAASUVORK5CYII=");background-repeat: no-repeat, repeat-x;background-position: center center, top left;color: transparent;border: 1px solid black;border-radius: 2px;cursor: pointer;pointer-events: auto;}.ace_dark .ace_fold {}.ace_fold:hover{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAJCAYAAADU6McMAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAJpJREFUeNpi/P//PwOlgAXGYGRklAVSokD8GmjwY1wasKljQpYACtpCFeADcHVQfQyMQAwzwAZI3wJKvCLkfKBaMSClBlR7BOQikCFGQEErIH0VqkabiGCAqwUadAzZJRxQr/0gwiXIal8zQQPnNVTgJ1TdawL0T5gBIP1MUJNhBv2HKoQHHjqNrA4WO4zY0glyNKLT2KIfIMAAQsdgGiXvgnYAAAAASUVORK5CYII="),url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAA3CAYAAADNNiA5AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAACBJREFUeNpi+P//fz4TAwPDZxDxD5X4i5fLMEwJgAADAEPVDbjNw87ZAAAAAElFTkSuQmCC");}.ace_tooltip {background-color: #FFF;background-image: -webkit-linear-gradient(top, transparent, rgba(0, 0, 0, 0.1));background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.1));border: 1px solid gray;border-radius: 1px;box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);color: black;max-width: 100%;padding: 3px 4px;position: fixed;z-index: 999999;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;cursor: default;white-space: pre;word-wrap: break-word;line-height: normal;font-style: normal;font-weight: normal;letter-spacing: normal;pointer-events: none;}.ace_folding-enabled > .ace_gutter-cell {padding-right: 13px;}.ace_fold-widget {-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;margin: 0 -12px 0 1px;display: none;width: 11px;vertical-align: top;background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAANElEQVR42mWKsQ0AMAzC8ixLlrzQjzmBiEjp0A6WwBCSPgKAXoLkqSot7nN3yMwR7pZ32NzpKkVoDBUxKAAAAABJRU5ErkJggg==");background-repeat: no-repeat;background-position: center;border-radius: 3px;border: 1px solid transparent;cursor: pointer;}.ace_folding-enabled .ace_fold-widget {display: inline-block;   }.ace_fold-widget.ace_end {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAANElEQVR42m3HwQkAMAhD0YzsRchFKI7sAikeWkrxwScEB0nh5e7KTPWimZki4tYfVbX+MNl4pyZXejUO1QAAAABJRU5ErkJggg==");}.ace_fold-widget.ace_closed {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAGCAYAAAAG5SQMAAAAOUlEQVR42jXKwQkAMAgDwKwqKD4EwQ26sSOkVWjgIIHAzPiCgaqiqnJHZnKICBERHN194O5b9vbLuAVRL+l0YWnZAAAAAElFTkSuQmCCXA==");}.ace_fold-widget:hover {border: 1px solid rgba(0, 0, 0, 0.3);background-color: rgba(255, 255, 255, 0.2);box-shadow: 0 1px 1px rgba(255, 255, 255, 0.7);}.ace_fold-widget:active {border: 1px solid rgba(0, 0, 0, 0.4);background-color: rgba(0, 0, 0, 0.05);box-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);}.ace_dark .ace_fold-widget {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHklEQVQIW2P4//8/AzoGEQ7oGCaLLAhWiSwB146BAQCSTPYocqT0AAAAAElFTkSuQmCC");}.ace_dark .ace_fold-widget.ace_end {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAH0lEQVQIW2P4//8/AxQ7wNjIAjDMgC4AxjCVKBirIAAF0kz2rlhxpAAAAABJRU5ErkJggg==");}.ace_dark .ace_fold-widget.ace_closed {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAFCAYAAACAcVaiAAAAHElEQVQIW2P4//+/AxAzgDADlOOAznHAKgPWAwARji8UIDTfQQAAAABJRU5ErkJggg==");}.ace_dark .ace_fold-widget:hover {box-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);background-color: rgba(255, 255, 255, 0.1);}.ace_dark .ace_fold-widget:active {box-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);}.ace_fold-widget.ace_invalid {background-color: #FFB4B4;border-color: #DE5555;}.ace_fade-fold-widgets .ace_fold-widget {-webkit-transition: opacity 0.4s ease 0.05s;transition: opacity 0.4s ease 0.05s;opacity: 0;}.ace_fade-fold-widgets:hover .ace_fold-widget {-webkit-transition: opacity 0.05s ease 0.05s;transition: opacity 0.05s ease 0.05s;opacity:1;}.ace_underline {text-decoration: underline;}.ace_bold {font-weight: bold;}.ace_nobold .ace_bold {font-weight: normal;}.ace_italic {font-style: italic;}.ace_error-marker {background-color: rgba(255, 0, 0,0.2);position: absolute;z-index: 9;}.ace_highlight-marker {background-color: rgba(255, 255, 0,0.2);position: absolute;z-index: 8;}.ace_br1 {border-top-left-radius    : 3px;}.ace_br2 {border-top-right-radius   : 3px;}.ace_br3 {border-top-left-radius    : 3px; border-top-right-radius:    3px;}.ace_br4 {border-bottom-right-radius: 3px;}.ace_br5 {border-top-left-radius    : 3px; border-bottom-right-radius: 3px;}.ace_br6 {border-top-right-radius   : 3px; border-bottom-right-radius: 3px;}.ace_br7 {border-top-left-radius    : 3px; border-top-right-radius:    3px; border-bottom-right-radius: 3px;}.ace_br8 {border-bottom-left-radius : 3px;}.ace_br9 {border-top-left-radius    : 3px; border-bottom-left-radius:  3px;}.ace_br10{border-top-right-radius   : 3px; border-bottom-left-radius:  3px;}.ace_br11{border-top-left-radius    : 3px; border-top-right-radius:    3px; border-bottom-left-radius:  3px;}.ace_br12{border-bottom-right-radius: 3px; border-bottom-left-radius:  3px;}.ace_br13{border-top-left-radius    : 3px; border-bottom-right-radius: 3px; border-bottom-left-radius:  3px;}.ace_br14{border-top-right-radius   : 3px; border-bottom-right-radius: 3px; border-bottom-left-radius:  3px;}.ace_br15{border-top-left-radius    : 3px; border-top-right-radius:    3px; border-bottom-right-radius: 3px; border-bottom-left-radius: 3px;}
+/*# sourceURL=ace/css/ace_editor.css */</style><style id="ace-tm">.ace-tm .ace_gutter {background: #f0f0f0;color: #333;}.ace-tm .ace_print-margin {width: 1px;background: #e8e8e8;}.ace-tm .ace_fold {background-color: #6B72E6;}.ace-tm {background-color: #FFFFFF;color: black;}.ace-tm .ace_cursor {color: black;}.ace-tm .ace_invisible {color: rgb(191, 191, 191);}.ace-tm .ace_storage,.ace-tm .ace_keyword {color: blue;}.ace-tm .ace_constant {color: rgb(197, 6, 11);}.ace-tm .ace_constant.ace_buildin {color: rgb(88, 72, 246);}.ace-tm .ace_constant.ace_language {color: rgb(88, 92, 246);}.ace-tm .ace_constant.ace_library {color: rgb(6, 150, 14);}.ace-tm .ace_invalid {background-color: rgba(255, 0, 0, 0.1);color: red;}.ace-tm .ace_support.ace_function {color: rgb(60, 76, 114);}.ace-tm .ace_support.ace_constant {color: rgb(6, 150, 14);}.ace-tm .ace_support.ace_type,.ace-tm .ace_support.ace_class {color: rgb(109, 121, 222);}.ace-tm .ace_keyword.ace_operator {color: rgb(104, 118, 135);}.ace-tm .ace_string {color: rgb(3, 106, 7);}.ace-tm .ace_comment {color: rgb(76, 136, 107);}.ace-tm .ace_comment.ace_doc {color: rgb(0, 102, 255);}.ace-tm .ace_comment.ace_doc.ace_tag {color: rgb(128, 159, 191);}.ace-tm .ace_constant.ace_numeric {color: rgb(0, 0, 205);}.ace-tm .ace_variable {color: rgb(49, 132, 149);}.ace-tm .ace_xml-pe {color: rgb(104, 104, 91);}.ace-tm .ace_entity.ace_name.ace_function {color: #0000A2;}.ace-tm .ace_heading {color: rgb(12, 7, 255);}.ace-tm .ace_list {color:rgb(185, 6, 144);}.ace-tm .ace_meta.ace_tag {color:rgb(0, 22, 142);}.ace-tm .ace_string.ace_regex {color: rgb(255, 0, 0)}.ace-tm .ace_marker-layer .ace_selection {background: rgb(181, 213, 255);}.ace-tm.ace_multiselect .ace_selection.ace_start {box-shadow: 0 0 3px 0px white;}.ace-tm .ace_marker-layer .ace_step {background: rgb(252, 255, 0);}.ace-tm .ace_marker-layer .ace_stack {background: rgb(164, 229, 101);}.ace-tm .ace_marker-layer .ace_bracket {margin: -1px 0 0 -1px;border: 1px solid rgb(192, 192, 192);}.ace-tm .ace_marker-layer .ace_active-line {background: rgba(0, 0, 0, 0.07);}.ace-tm .ace_gutter-active-line {background-color : #dcdcdc;}.ace-tm .ace_marker-layer .ace_selected-word {background: rgb(250, 250, 255);border: 1px solid rgb(200, 200, 250);}.ace-tm .ace_indent-guide {background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAE0lEQVQImWP4////f4bLly//BwAmVgd1/w11/gAAAABJRU5ErkJggg==") right repeat-y;}
+/*# sourceURL=ace/css/ace-tm */</style><style>    .error_widget_wrapper {        background: inherit;        color: inherit;        border:none    }    .error_widget {        border-top: solid 2px;        border-bottom: solid 2px;        margin: 5px 0;        padding: 10px 40px;        white-space: pre-wrap;    }    .error_widget.ace_error, .error_widget_arrow.ace_error{        border-color: #ff5a5a    }    .error_widget.ace_warning, .error_widget_arrow.ace_warning{        border-color: #F1D817    }    .error_widget.ace_info, .error_widget_arrow.ace_info{        border-color: #5a5a5a    }    .error_widget.ace_ok, .error_widget_arrow.ace_ok{        border-color: #5aaa5a    }    .error_widget_arrow {        position: absolute;        border: solid 5px;        border-top-color: transparent!important;        border-right-color: transparent!important;        border-left-color: transparent!important;        top: -5px;    }</style></head>
+
+<body>
+	
+        
+        
+            
+
+
+
+
+
+
+<nav class="navbar navbar-default navbar-fixed-top header">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-navbar-collapse" aria-expanded="false">
+                <span class="sr-only">实验楼</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://www.shiyanlou.com/">
+                <img src="./跟我一起来玩转Makefile - 实验楼_files/logo_03.png">
+            </a>
+        </div>
+        <div class="collapse navbar-collapse" id="header-navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="dropdown active">
+                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
+                        课程
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="" href="https://www.shiyanlou.com/courses/">全部课程</a></li>
+                        <li><a class="" href="https://www.shiyanlou.com/courses/?status=preview">即将上线</a></li>
+                        <li><a class="" href="https://www.shiyanlou.com/developer">开发者</a></li>
+                    </ul>
+                </li>
+                <li class="">
+                    <a href="https://www.shiyanlou.com/paths/">路径</a>
+                </li>
+                <li class="">
+                    <a href="https://www.shiyanlou.com/questions/">讨论区</a>
+                </li>
+                <li class=" bootcamp new-nav logo-1111">
+                    <a href="https://www.shiyanlou.com/bootcamp/">训练营</a>
+                    
+                </li>
+                <li class=" new-nav logo-1111">
+                    <a href="https://www.shiyanlou.com/vip">会员</a>
+                    
+                </li>
+                
+					
+					<li class=""><a href="https://www.shiyanlou.com/user/235723">我的课程</a></li>
+					
+                
+            </ul>
+
+            
+            <ul class="nav navbar-nav navbar-right user">
+                
+                <li class="dropdown">
+                    <a href="https://www.shiyanlou.com/user/235723" class="dropdown-toggle hidden-xs">
+                        <img class="header-avatar" src="./跟我一起来玩转Makefile - 实验楼_files/gravatarHA954FKT7YJW.jpg" data-toggle="tooltip" data-placement="bottom" data-trigger="manual" title="" data-template="&lt;div class=&quot;tooltip&quot; data-url=&quot;/user/235723/messages&quot; role=&quot;tooltip&quot;&gt;&lt;div class=&quot;tooltip-arrow&quot; style=&quot;border-bottom-color:#f66e6e;&quot;&gt;&lt;/div&gt;&lt;div class=&quot;tooltip-inner&quot; style=&quot;background:#f66e6e;&quot;&gt;&lt;/div&gt;&lt;/div&gt;" data-original-title="新消息">
+                        
+                        <span class="header-msg-count" style="display:none;"></span>
+                        
+    
+    
+    
+    <div class="user-username ">
+        <span class="username" href="/user/235723" target="_blank">
+            
+                whuhan2013
+            
+
+        </span>
+        <span class="user-level">L1</span>
+    </div>
+
+                        <span class="caret"></span>
+                    </a>
+					<a href="https://www.shiyanlou.com/courses/713/labs/2374/document#" class="dropdown-toggle visible-xs-block" data-toggle="dropdown">
+                        <img class="header-avatar" src="./跟我一起来玩转Makefile - 实验楼_files/gravatarHA954FKT7YJW.jpg">
+                        
+                        <span class="header-msg-count" style="display:none;"></span>
+                        <span class="header-username">whuhan2013</span>
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="https://www.shiyanlou.com/user/235723">主页</a></li>
+                        <!-- <li><a href="/user/message">通知</a></li>-->
+                        <li><a href="https://www.shiyanlou.com/user/message">
+                            <span class="position-relative"><span class="header-msg-mark" style="display:none;"></span>通知</span>
+                        </a></li>
+                        <li><a href="https://www.shiyanlou.com/user/profile">设置</a></li>
+                        <li rolw="separator" class="divider"></li>
+                        <li><a href="https://www.shiyanlou.com/logout">退出</a></li>
+                    </ul>
+                </li>
+            </ul>
+            
+
+            <form class="navbar-form navbar-right" action="https://www.shiyanlou.com/search" method="get" role="search">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="search" autocomplete="off" placeholder="搜索 课程/问答">
+                </div>
+            </form>
+        </div>
+    </div>
+</nav>
+
+
+
+
+        
+	
+
+
+
+	
+	
+
+	
+
+
+<div class="container layout layout-margin-top">
+    
+<ol class="breadcrumb">
+    <li><a href="https://www.shiyanlou.com/courses/">全部课程</a></li>
+    <li>
+        <a href="https://www.shiyanlou.com/courses/713">跟我一起来玩转Makefile</a>
+    </li>
+    <li class="active">
+        跟我一起来玩转Makefile
+    </li>
+</ol>
+
+    <div class="row">
+        <div class="col-md-9 layout-body">
+            
+<div class="mobile-alert alert alert-danger">在线实验，请到PC端体验</div>
+<div id="preview" class="markdown-body"><h2 id="-">一、课程简介</h2>
+<p>本课程通过以实例构建软件项目编译环境的工程，从这个过程中学习make命令的使用及makefile的相关编写技巧。</p>
+<h3 id="-">课程知识点</h3>
+<p>通过本课程的学习，可以学习到以下知识点：</p>
+<ol>
+<li>make工具的使用</li>
+<li>makefile规则的概念</li>
+<li>makefile变量的使用</li>
+<li>makefile函数的使用</li>
+<li>makefile自动生成依赖</li>
+</ol>
+<h2 id="-makefile-make-">二、makefile及make简介</h2>
+<h3 id="-">概念引入</h3>
+<p>在介绍makefile和make的具体概念前，我们先通过一个例子来说明makefile和make到底是为解决什么问题而存在的。</p>
+<p>假设有一个如图所示的C工程：</p>
+<p><img src="./跟我一起来玩转Makefile - 实验楼_files/wm" alt="此处输入图片的描述"></p>
+<p>那么要编译出我们的可执行程序project_demo，必须执行以下命令：</p>
+<pre><code class="hljs ruby"><span class="hljs-comment"># 步骤1：编译主程序模块</span>
+$ gcc -o &lt;<span class="hljs-number">100</span>个主程序模块的o文件&gt; -c &lt;<span class="hljs-number">100</span>个主程序模块的c文件&gt;
+
+<span class="hljs-comment"># 步骤2：编译功能模块a</span>
+$ gcc -o &lt;<span class="hljs-number">1000</span>个功能模块a的o文件&gt; &lt;<span class="hljs-number">1000</span>个功能模块a的c文件&gt;
+$ ar rcs liba.o &lt;<span class="hljs-number">1000</span>个功能模块a的o文件&gt;
+
+<span class="hljs-comment"># 步骤3：编译功能模块b</span>
+$ gcc -o &lt;<span class="hljs-number">1000</span>个功能模块b的o文件&gt; &lt;<span class="hljs-number">1000</span>个功能模块b的c文件&gt;
+$ ar rcs libb.a &lt;<span class="hljs-number">1000</span>个功能模块b的o文件&gt;
+
+<span class="hljs-comment"># 步骤4：生成可执行文件demo</span>
+$ gcc -o demo &lt;<span class="hljs-number">100</span>个主程序模块的o文件&gt; -L. -la -lb
+</code></pre><p>上述例子反映了两个问题：</p>
+<ol>
+<li>上述4个编译步骤中，几乎每个步骤都有亢长的文件名列表需要输入而且有些还是重复的，这种工作枯燥而又费时，且极易因人为疏忽而出现错误；</li>
+<li>假设我们的demo项目每次编译所需的时间都比较长，那么如果我们之前已经成功编译过了我们的demo项目，而此后当我们修改了某些源文件需要更新的demo文件时，理论上我们是不希望也不需要去重新编译整个项目的，我们只需要仅分析其中的依赖关系，仅执行需要重新编译链接的命令，以节省编译时间，但是对于依赖关系非常复杂的工程而言，分析源文件涉及到的依赖关系是个非常复杂且容易出错的过程。</li>
+</ol>
+<p>make和makefile的存在正是为了解决上述两个问题的：</p>
+<ol>
+<li>makefile文件帮助我们记录了整个项目工程的所有需要编译的文件列表，这样我们在编译时仅需要输入简单的make命令就能编译出我们期望的结果</li>
+<li>makefile文件反映了整个项目中各个模块的依赖关系，这样我们改动了某些源文件后，仅需简单的输入make命令，make工具就会根据makefile文件里描述的依赖关系帮助我们分析哪些模块需要重新编译，并执行相应的操作。</li>
+</ol>
+<p>在linux/unix开发环境中，makefile文件则是描述了一个特定编译系统所需要的策略，而make工具则是通过解析makefile文件并执行相应的命令来帮助我们构建其编译系统。</p>
+<p>下面我们就带着这样两个问题来认识makefile和make工具：</p>
+<ol>
+<li>makefile如何记录整个项目工程的所有需要编译的文件列表及如何反映整个项目中各个模块的依赖关系？</li>
+<li>提供了makefile策略描述后，make工具又是是如何解析makefile文件来帮助我们构建其编译系统的？</li>
+</ol>
+<h3 id="makefile-">makefile简介</h3>
+<p>makefile就是一个简单的文本文件，它基本上就是由一条条的规则构成。下面，我们就来看一下makefile里的最基本的语法单元，<strong>规则</strong>。</p>
+<p>一条makefile的规则构成如下：</p>
+<pre><code class="hljs bash">target:prerequisites
+&lt;tab&gt; <span class="hljs-built_in">command</span>1
+&lt;tab&gt; <span class="hljs-built_in">command</span>2
+.....
+&lt;tab&gt; <span class="hljs-built_in">command</span>N
+</code></pre><ul>
+<li>target：规则的目标，可以简单理解为这条规则存在的目的是什么。通常是程序中间或者最后需要生成的文件名，也可以不对应具体的文件，而仅仅就是个概念上的规则目标。</li>
+</ul>
+<ul>
+<li>prerequisites：规则的依赖列表，可以简单的理解为要达到本条规则的目标所需要的先决条件是什么。可以是文件名，也可以是其他规则的目标；</li>
+</ul>
+<ul>
+<li>command：规则的命令，可以简单的理解为当目标所需要的先决条件的满足了之后，需要执行什么动作来达成规则的目标。规则的命令其实就是shell命令。一条规则中可以有多行命令，<strong>特别注意：每行命令都必须以tab键开始！</strong></li>
+</ul>
+<p>下面我们就立马来感性的认识一下makefile文件，先来一个"hello world"吧：</p>
+<pre><code class="hljs bash"><span class="hljs-comment"># 最简单的makefile文件</span>
+all: 
+    <span class="hljs-built_in">echo</span> <span class="hljs-string">"Hello world!"</span>  <span class="hljs-comment">#注意：每行命令都必须以tab键开始！</span>
+</code></pre><p>这个简单的makefile文件，只有一条规则，规则的目标是all，没有任何依赖(<strong>规则不可以没有目标但是可以没有依赖</strong>)，以及一条命令(其实规则也是可以不需要任何命令的)。</p>
+<p>怎么用这个makefile呢？</p>
+<p>打开Xcfe通过vim将上述内容写入一个叫makefile的文件中，并执行make：</p>
+<p><img src="./跟我一起来玩转Makefile - 实验楼_files/wm(1)" alt="此处输入图片的描述"></p>
+<p>那make工具又到底是如何工作的呢？且看下节分解。</p>
+<h3 id="make-">make命令工作机理</h3>
+<p>解释make的工作机理，需分别回答以下3个问题：</p>
+<ol>
+<li>make命令如何使用 ；</li>
+<li>make从哪读取makefile；</li>
+<li>make如何解析执行makefile文件的规则。</li>
+</ol>
+<p>make命令的基本使用范式如下：</p>
+<pre><code class="hljs css"><span class="hljs-selector-tag">make</span> <span class="hljs-selector-attr">[ -f makefile ]</span> <span class="hljs-selector-attr">[ options ]</span> ... <span class="hljs-selector-attr">[ targets ]</span> ...
+</code></pre><p>使用make命令的最简单的方式主要有以下四种形式：</p>
+<p>1.简单粗暴，不带任何参数，直接执行make：</p>
+<pre><code class="hljs ruby">$ make
+</code></pre><p>2.指定makefile文件：</p>
+<pre><code class="hljs bash">$ make <span class="hljs-_">-f</span> &lt;makefile_name&gt;
+</code></pre><p>3.指定makefile 目标：</p>
+<pre><code class="hljs xml">$ make <span class="hljs-tag">&lt;<span class="hljs-name">target</span>&gt;</span>
+</code></pre><p>4.到指定目录下执行make：</p>
+<pre><code class="hljs xml">$ make -C <span class="hljs-tag">&lt;<span class="hljs-name">subdir</span>&gt;</span> <span class="hljs-tag">&lt;<span class="hljs-name">target</span>&gt;</span>
+</code></pre><p>在执行make的时候，我们可以带上<code>-f &lt;文件名&gt;</code>参数，来指定make命令从哪里读取makefile文件；而如果我们不显式指定，则make就会在当前目录下依次查找名字为<strong>GNUmakefile, makefile,和 Makefile</strong>的文件来作为其makefile文件。</p>
+<p>在读取完makefile的内容后，make工具并不是逐条去执行makefile里的规则，而是以某条规则为突破口，多米诺骨牌效应式的去执行makefile里的规则。而这条作为突破口的规则的目标，称为<strong>终极目标</strong> ，我们可以在执行make时以参数的形式指定终极目标，从而执行作为突破口的规则，如果我们不显式指定终极目标，make一般情况下将选择makefile的第一条规则的目标作为终极目标。</p>
+<p>一般情况下，make执行一条规则的具体过程是这样的：</p>
+<p><img src="./跟我一起来玩转Makefile - 实验楼_files/wm(2)" alt="此处输入图片的描述"></p>
+<p>make解析makefile的流程如下：</p>
+<p>假设有mekefile内容如下：</p>
+<pre><code class="hljs">终极目标：依赖A  依赖B 依赖C
+    终极目标命令
+
+依赖A：子依赖A1 子依赖A2 
+    依赖A命令
+
+依赖B：子依赖B1 子依赖B2 
+    依赖B命令
+
+依赖C：子依赖C1 子依赖C2 
+    依赖C命令
+</code></pre><p>过程一，以终极目标为树根，解析出整颗依赖树：</p>
+<p><img src="./跟我一起来玩转Makefile - 实验楼_files/wm(3)" alt="此处输入图片的描述"></p>
+<p>过程二，对整颗依赖树以从底到上，从左到右的顺序，解析执行每一条规则：</p>
+<p><img src="./跟我一起来玩转Makefile - 实验楼_files/wm(4)" alt="此处输入图片的描述"></p>
+<h2 id="-makefile-">三、通过实例理解makefile的基本概念</h2>
+<p>本节我们将通过构建一个简单的c语言项目工程(我们命名为project_simple)来理解makefile的基本概念。</p>
+<p>先来看一下project_simple的整体目录结构：</p>
+<p><img src="./跟我一起来玩转Makefile - 实验楼_files/wm(5)" alt="此处输入图片的描述"></p>
+<p>下面，我们先来一步步构建我们的项目：</p>
+<p>创建工程目录：</p>
+<pre><code class="hljs bash">$ <span class="hljs-built_in">cd</span> ~/Code
+$ mkdir project_simple
+$ <span class="hljs-built_in">cd</span> project_simple
+</code></pre><p>结果如下：</p>
+<p><img src="./跟我一起来玩转Makefile - 实验楼_files/wm(6)" alt="此处输入图片的描述"></p>
+<p>创建main.c文件：</p>
+<pre><code class="hljs cpp">$ cat &gt; main.c &lt;&lt;<span class="hljs-function">EOF
+<span class="hljs-keyword">extern</span> <span class="hljs-keyword">void</span> <span class="hljs-title">simple</span><span class="hljs-params">()</span></span>;
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>
+</span>{
+    simple();
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+EOF
+</code></pre><p>结果如下：</p>
+<p><img src="./跟我一起来玩转Makefile - 实验楼_files/wm(7)" alt="此处输入图片的描述"></p>
+<p>创建simple.c：</p>
+<pre><code class="hljs cpp">$ cat &gt;simple.c &lt;&lt;EOF
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdio.h&gt;</span></span>
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">simple</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"This is simple project!\n"</span>);
+}
+EOF
+</code></pre><p>结果如下：</p>
+<p><img src="./跟我一起来玩转Makefile - 实验楼_files/wm(8)" alt="此处输入图片的描述"></p>
+<p>最后就是要编写我们的makefile了，一般在编写makefile之前都需要先分析清楚整个工程各个模块的依赖关系，及相应的生成命令。我们的project_simple工程最终生产的是一个叫simple的可执行文件，而该可执行文件是使用gcc命令编译main.c和simple.c生成的，因此我们的整个工程的关系依赖图，如下：</p>
+<p><img src="./跟我一起来玩转Makefile - 实验楼_files/wm(9)" alt="此处输入图片的描述"></p>
+<p>因此我们的makefile可以这么写：</p>
+<pre><code class="hljs css"><span class="hljs-selector-tag">simple</span>: <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.c</span> <span class="hljs-selector-tag">simple</span><span class="hljs-selector-class">.c</span>
+    <span class="hljs-selector-tag">gcc</span> <span class="hljs-selector-tag">-o</span> <span class="hljs-selector-tag">simple</span> <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.c</span> <span class="hljs-selector-tag">simple</span><span class="hljs-selector-class">.c</span>
+</code></pre><p>接下来，我们来创建makefile文件：</p>
+<pre><code class="hljs ruby">$ cat &gt; Makefile <span class="hljs-string">&lt;&lt;EOF
+simple: main.c simple.c
+    gcc -o simple main.c simple.c
+EOF</span>
+</code></pre><p>下面我们分三个步骤来验证一下我们的simple项目的编译系统：</p>
+<p>1.能否编译出可执行的simple</p>
+<pre><code class="hljs ruby">   $pwd        <span class="hljs-comment">#查看当前路径</span>
+   $ls         <span class="hljs-comment">#查看编译前当前目录</span>
+   $make       <span class="hljs-comment">#编译simple项目</span>
+   $ls         <span class="hljs-comment">#查看编译结果</span>
+   $./simple   <span class="hljs-comment">#执行simple可执行文件</span>
+</code></pre><p>过程及结果如下：</p>
+<p><img src="./跟我一起来玩转Makefile - 实验楼_files/wm(10)" alt="此处输入图片的描述"></p>
+<p>2.已经编译出simple后，不改变任何源文件再次执行编译，是否不再执行任何操作</p>
+<pre><code class="hljs ruby">   $ ls -lt <span class="hljs-comment">#查看当前项目中各文件时间戳</span>
+   $ make   <span class="hljs-comment">#再次执行编译，查看是否会执行编译命令</span>
+</code></pre><p>过程及结果如下：</p>
+<p><img src="./跟我一起来玩转Makefile - 实验楼_files/wm(11)" alt="此处输入图片的描述"></p>
+<p>3.已经编译出simple后，修改任一源文件是否能再次生成新的simple可执行文件</p>
+<pre><code class="hljs ruby">   $ ls -lt       <span class="hljs-comment">#对比当前项目各文件时间戳</span>
+   $ touch main.c <span class="hljs-comment">#将main.c文件的时间戳修改至最新</span>
+   $ ls -lt       <span class="hljs-comment">#查看main.c的时间戳是否最新</span>
+   $ make         <span class="hljs-comment">#执行编译命令</span>
+   $ ls -lt       <span class="hljs-comment">#查看simple的时间戳是否被更新至最新</span>
+</code></pre><p>过程及结果如下：</p>
+<p><img src="./跟我一起来玩转Makefile - 实验楼_files/wm(12)" alt="此处输入图片的描述"></p>
+<h2 id="-makefile-">四、丰富我们的makefile语法工具箱</h2>
+<p>在第二章中，我们了解到makefile中最主要的语法单元是规则。本章我们将学习makefile中为了帮助我们更高效的编写出更加实用灵活的makefile而存在的帮助性语法。</p>
+<p>以下是一般情况下一个完整的makefile所包含的语法模块：</p>
+<p><img src="./跟我一起来玩转Makefile - 实验楼_files/wm(13)" alt="此处输入图片的描述"></p>
+<h3 id="complicated-">complicated项目构建</h3>
+<p>我们仿照project_simple项目，构建一个名为project_complicated的项目工程，目录结构如下：</p>
+<p><img src="./跟我一起来玩转Makefile - 实验楼_files/wm(14)" alt="此处输入图片的描述"></p>
+<p>代码内容:</p>
+<pre><code class="lang-c++ hljs cpp"><span class="hljs-comment">// ---------------------------------------------</span>
+<span class="hljs-comment">// main.c</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdio.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">"complicated.h"</span></span>
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"%s\n"</span>, HELLO_STRING);
+    complicated();
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+<span class="hljs-comment">// ---------------------------------------------</span>
+<span class="hljs-comment">// complicated.h</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">ifndef</span> __COMPLICATED_H__</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> __COMPLICATED_H__</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> HELLO_STRING <span class="hljs-meta-string">"Hello !"</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> PROJECT_NAME <span class="hljs-meta-string">"complicated"</span></span>
+<span class="hljs-function"><span class="hljs-keyword">extern</span> <span class="hljs-keyword">void</span> <span class="hljs-title">complicated</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span></span>;
+<span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span>
+<span class="hljs-comment">// ---------------------------------------------</span>
+<span class="hljs-comment">// complicated.c</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdio.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">"complicated.h"</span></span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">complicated</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span>
+</span>{
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"This is a %s porject!\n"</span>, PROJECT_NAME);
+}
+</code></pre>
+<p>项目的依赖关系：</p>
+<p><img src="./跟我一起来玩转Makefile - 实验楼_files/wm(15)" alt="此处输入图片的描述"></p>
+<p>对比simple项目，我们的complicated项目貌似只是多了一个头文件，但是我们的依赖关系图却多了一层.o文件，这是为何？熟悉gcc编译过程的朋友应该知道，其实我们在用gcc 编译出可执行文件的过程中是包含两个阶段的：编译阶段和链接阶段。我们上述的依赖关系图更加准确的反映出了整个项目的构建过程，这样我们据此写出来的makefile才能更加灵活及更具可扩展性，记住：<strong>精确的分析清楚项目的依赖关系，是编写一个好的makefile的关键。</strong></p>
+<p>至此，我们也就可以轻易的写出complicated项目的makefile了：</p>
+<pre><code class="hljs css"><span class="hljs-selector-tag">complicated</span>: <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.o</span> <span class="hljs-selector-tag">complicated</span><span class="hljs-selector-class">.o</span>
+    <span class="hljs-selector-tag">gcc</span> <span class="hljs-selector-tag">-o</span> <span class="hljs-selector-tag">complicated</span> <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.o</span> <span class="hljs-selector-tag">complicated</span><span class="hljs-selector-class">.o</span>
+
+<span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.o</span>: <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.c</span>
+    <span class="hljs-selector-tag">gcc</span> <span class="hljs-selector-tag">-o</span> <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.o</span> <span class="hljs-selector-tag">-c</span> <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.c</span>
+
+<span class="hljs-selector-tag">complicated</span><span class="hljs-selector-class">.o</span>: <span class="hljs-selector-tag">complicated</span><span class="hljs-selector-class">.c</span>
+    <span class="hljs-selector-tag">gcc</span> <span class="hljs-selector-tag">-o</span> <span class="hljs-selector-tag">complicated</span><span class="hljs-selector-class">.o</span> <span class="hljs-selector-tag">-c</span> <span class="hljs-selector-tag">complicated</span><span class="hljs-selector-class">.c</span>
+</code></pre><p>验证过程及结果如下：</p>
+<p><img src="./跟我一起来玩转Makefile - 实验楼_files/wm(16)" alt="此处输入图片的描述"></p>
+<h3 id="-makefile-">使用<code>注释</code>提升makefile的可维护性</h3>
+<p>在计算机编程界，有这么一句谚语：代码的目的是给人阅读的,只是顺便能让机器运行而已。</p>
+<p>虽然这话听起来有点夸张，但它其实是在强调，编写可维护代码的重要性。而一段代码可维护性强的一个重要标志就是要有<strong>恰到好处的注释</strong>，所谓恰到好处是指注释要控制到“多一分嫌胖，少一分则显瘦”的境界。</p>
+<p>makefile中<code>“#”</code>字符后的内容被作为是注释内容（和shell脚本一样）处理。如果此行的第一个非空字符为<code>“#”</code>，那么此行为注释行。注释行的结尾如果存在反斜线（<code>\</code>），那么下一行也被作为注释行。当在makefile中如果需要使用字符“#”时，可以使用反斜线加“#”（<code>\#</code>）来实现，其表示将“#”作为一字符而不是注释的开始标志。</p>
+<p>例子如下：</p>
+<pre><code class="hljs bash"><span class="hljs-comment"># 这是一个演示注释语法的makefile</span>
+all: <span class="hljs-built_in">test</span> <span class="hljs-comment">#关于依赖的注释</span>
+<span class="hljs-comment">#    echo "Makefile for comment 1"   这里是注释，不是命令</span>
+    <span class="hljs-built_in">echo</span> <span class="hljs-string">"Makefile for comment 2"</span> 
+<span class="hljs-comment"># 这是一个关于test规则的 \</span>
+  多行注释
+<span class="hljs-built_in">test</span>:
+<span class="hljs-comment"># 没有反斜线\, #被当作注释的开始</span>
+    <span class="hljs-built_in">echo</span> this is a <span class="hljs-comment"># test rule1 </span>
+<span class="hljs-comment"># 加上反斜线\, #被当作普通字符</span>
+    <span class="hljs-built_in">echo</span> this is a \<span class="hljs-comment"># test rule2</span>
+</code></pre><p>一般在书写makefile时推荐将注释作为一个独立的行，而不要和makefile的有效行放在一行中书写。</p>
+<p>我们来演示一下上述的makefile，使用<code>vim</code>命令以上述内容为输入创建一个名为comment.mk的makefile文件。</p>
+<p>使用命令<code>make -f comment.mk</code>执行该makefile，过程及结果如下：</p>
+<p><img src="./跟我一起来玩转Makefile - 实验楼_files/wm(17)" alt="此处输入图片的描述"></p>
+<p>可见make在执行时一般情况下对于makefile中以<code>#</code>开始到行尾的内容都是直接忽略不做任何处理的。</p>
+<p>更新complicated项目的makefile版本，我们定上一节的makefile版本为v1.0，这个版本为v1.1：</p>
+<pre><code class="hljs css"># 描述：<span class="hljs-selector-tag">complicated</span> 项目 <span class="hljs-selector-tag">makefile</span>文件
+# 版本：<span class="hljs-selector-tag">v1</span><span class="hljs-selector-class">.1</span>
+# 修改记录：
+# 1. 为<span class="hljs-selector-tag">complicated</span>项目<span class="hljs-selector-tag">makefile</span>添加注释
+
+# 终极目标规则，生成<span class="hljs-selector-tag">complicated</span>可执行文件
+<span class="hljs-selector-tag">complicated</span>: <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.o</span> <span class="hljs-selector-tag">complicated</span><span class="hljs-selector-class">.o</span>
+    <span class="hljs-selector-tag">gcc</span> <span class="hljs-selector-tag">-o</span> <span class="hljs-selector-tag">complicated</span> <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.o</span> <span class="hljs-selector-tag">complicated</span><span class="hljs-selector-class">.o</span>
+
+# 子规则1, <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.o</span>的生成规则
+<span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.o</span>: <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.c</span>
+    <span class="hljs-selector-tag">gcc</span> <span class="hljs-selector-tag">-o</span> <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.o</span> <span class="hljs-selector-tag">-c</span> <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.c</span>
+
+# 子规则2，<span class="hljs-selector-tag">complicated</span><span class="hljs-selector-class">.o</span>的生成规则
+<span class="hljs-selector-tag">complicated</span><span class="hljs-selector-class">.o</span>: <span class="hljs-selector-tag">complicated</span><span class="hljs-selector-class">.c</span>
+    <span class="hljs-selector-tag">gcc</span> <span class="hljs-selector-tag">-o</span> <span class="hljs-selector-tag">complicated</span><span class="hljs-selector-class">.o</span> <span class="hljs-selector-tag">-c</span> <span class="hljs-selector-tag">complicated</span><span class="hljs-selector-class">.c</span>
+</code></pre><p>v1.1版本相对于v1.0仅仅添加了相关的注释，对makefile描述的实际功能没有任何影响，读者可依照上节的例子自行验证v1.1版本。</p>
+<h3 id="-makefile-">使用<code>变量</code>让makefile更灵活</h3>
+<h4 id="-">变量的定义</h4>
+<p>makefile中的变量，与C语言中的宏类似，它为一个文本字符串（变量的值，其类型只能是字符串类型）提供了一个名字(变量名)。</p>
+<p>变量定义的基本格式：</p>
+<pre><code class="hljs">变量名 赋值符 变量值
+</code></pre><ul>
+<li>变量名指的就是该变量的名字，是不包括“:”、“#”、“=”、前置空白和尾空白的任何字符串。需要注意的是，尽管在GNU make中没有对变量的命名有其它的限制，但定义一个包含除字母、数字和下划线以外的变量的做法也是不可取的，因为除字母、数字和下划线以外的其它字符可能会在以后的make版本中被赋予特殊含义，并且这样命名的变量对于一些shell来说不能作为环境变量使用。变量名是大小写敏感的。变量“foo”、“Foo”和“FOO”指的是三个不同的变量。Makefile传统做法是变量名是全采用大写的方式。推荐的做法是在对于内部定义定义的一般变量（例如：目标文件列表objects）使用小写方式，而对于一些参数列表（例如：编译选项CFLAGS）采用大写方式。</li>
+</ul>
+<ul>
+<li>变量值，指的是变量所代表的内容，可以是一个文件名列表、编译选项列表、程序运行的选项参数列表、搜索源文件的目录列表、编译输出的目录列表和所有我们能够想到的事物。变量的值，其本质就是一个字符串。</li>
+</ul>
+<ul>
+<li>赋值符，有<code>=</code> 、 <code>:=</code> 、 <code>?=</code>和 <code>+=</code>四种格式，其中<code>=</code> 和 <code>:=</code> 为基本定义类型， <code>?=</code>和 <code>+=</code>为基于<code>=</code>的扩展定义类型。</li>
+</ul>
+<p>一个在makefile中定义变量的例子：</p>
+<pre><code class="hljs ini"><span class="hljs-attr">objects</span> = program.o foo.o utils.o
+</code></pre><h4 id="-">变量的引用</h4>
+<p>当我们定义了一个变量之后，我们就可以在makfile中的<strong>目标</strong>、<strong>依赖</strong>、<strong>命令</strong>中引用我们的变量；而所谓的变量引用，就是在引用变量名的地方，用变量所代表的内容，执行一个严格的文本替换过程(该过程也称为变量<strong>被展开的过程</strong> )，替换掉变量的名字。</p>
+<p>变量的引用有以下几种方式：</p>
+<ol>
+<li><code>${变量名}</code></li>
+<li><code>$（变量名）</code></li>
+<li><code>$单字符变量名</code> ，变量名仅包含一个字符，如<code>$@</code> 、<code>$^</code>等</li>
+</ol>
+<p>一个在makefile中引用变量的例子：</p>
+<pre><code class="hljs ruby"><span class="hljs-comment"># 变量定义</span>
+objects = program.o foo.o utils.o
+
+program : $(objects)          <span class="hljs-comment">#在依赖中引用变量</span>
+    gcc -o program ${objects} <span class="hljs-comment">#在命令中引用变量</span>
+
+$(objects) : defs.h           <span class="hljs-comment">#在目标中引用变量</span>
+</code></pre><h4 id="-">变量的分类与赋值</h4>
+<p>根据变量定义时所使用的赋值操作符的不同，可以将变量分成两种类型(或者说是两种风格)：<code>递归展开式变量</code>和<code>直接展开式变量</code>；使用赋值操作符<code>=</code> 、 <code>+=</code> 和 <code>?=</code>定义的变量都是<strong>递归展开式变量</strong>，使用赋值操作符 <code>:=</code>定义的变量为<strong>直接展开式变量</strong> 。两种变量类型的的最根本区别在于：<strong>变量值的求值时机</strong>，递归式变量的求值时机在于<strong>变量被引用时</strong>，直接展开式的求值时机在于<strong>变量被定义时</strong>。</p>
+<p>看以下的例子：</p>
+<pre><code class="hljs makefile">foo1 = <span class="hljs-variable">$(bar)</span>   #递归展开式变量
+foo2 := <span class="hljs-variable">$(bar)</span>  #直接展开式变量
+bar = <span class="hljs-variable">$(ugh)</span>
+ugh = Huh?
+
+<span class="hljs-section">all:</span>
+    echo "foo1 is $(foo1), foo2 is $(foo2)"
+</code></pre><p>我们来演示一下上述的makefile，使用<code>vim</code>命令以上述内容为输入创建一个名为variabletype.mk的makefile文件。</p>
+<p>然后，使用make执行variabletype.mk：</p>
+<pre><code class="hljs bash">$ make <span class="hljs-_">-f</span> variabletype.mk
+</code></pre><p>演示及结果如下：</p>
+<p><img src="./跟我一起来玩转Makefile - 实验楼_files/wm(18)" alt="此处输入图片的描述"></p>
+<p>由于变量<code>foo1</code>的变量值是在执行<code>echo</code>命令时才求的值，所以<code>foo1</code>的值被递归的展开为<code>Huh?</code>； 而变量<code>foo2</code>的变量值在定义时就被求值了，此时由于变量<code>bar</code>的值为空，因此<code>foo2</code>的值也为空。</p>
+<blockquote>
+<p><strong>注意：使用递归展开式的变量定义，可能会由于出现变量的递归定义而导致make陷入到无限的变量展开过程中，最终使make执行失败</strong></p>
+</blockquote>
+<p> <code>+=</code> 和 <code>?=</code>是基于<code>=</code>扩展而来的两种变量赋值操作符； </p>
+<p><code>+=</code> 称为追加赋值操作符，它实现对于一个已经存在定义的变量进行追加赋值，如下例子：</p>
+<pre><code class="hljs makefile">bar = foo1   
+bar += foo2  #追加赋值，bar的值将为 foo1 foo2
+
+<span class="hljs-section">all:</span>
+    echo $(bar)
+</code></pre><p><code>?=</code>称为条件赋值的赋值操作符，被称为条件赋值为：只有此变量在之前没有赋值的情况下才会对这个变量进行赋值。看一下例子：</p>
+<pre><code class="hljs bash">bar1 = foo1
+bar1 ?= foo2  <span class="hljs-comment"># bar1 的值还是foo1</span>
+bar2 ?= foo2  <span class="hljs-comment"># bar2 的值为foo2</span>
+
+all:  
+    <span class="hljs-built_in">echo</span> <span class="hljs-string">"bar1 is <span class="hljs-variable">$(bar1)</span>, bar2 is <span class="hljs-variable">$(bar2)</span>"</span>
+</code></pre><h4 id="-">特殊的变量</h4>
+<p>在makefile 中用户除了可以自定义变量外，还可以使用make工具为我们提供的一些特殊的变量及用法。</p>
+<h5 id="-">自动化变量</h5>
+<p>所谓自动化变量，就是在每条规则中，make自动为我们提供的用于指定规则各个组成部分的变量，一般情况下常用的有以下几个自动化变量：</p>
+<p><code>$@</code> -- 代表规则中的目标文件名</p>
+<p><code>$&lt;</code> -- 代表规则的第一个依赖的文件名</p>
+<p><code>$^</code> -- 代表规则中所有依赖文件的列表，文件名用空格分割</p>
+<p>看例子：</p>
+<pre><code class="hljs bash">all: first second third
+    <span class="hljs-built_in">echo</span> <span class="hljs-string">"\$<span class="hljs-variable">$@</span> = <span class="hljs-variable">$@</span>"</span>
+    <span class="hljs-built_in">echo</span> <span class="hljs-string">"$$&lt; = $&lt;"</span>
+    <span class="hljs-built_in">echo</span> <span class="hljs-string">"$$^ = $^"</span>
+
+first second third:
+</code></pre><p>这里有几点需要说明一下：</p>
+<ol>
+<li><code>$</code>字符在makefile中有特殊用途，因此如果要取消其特殊用途当成一个普通字符传递给<code>echo</code>命令执行，需要使用<code>$$</code></li>
+<li><code>$@</code>在bash shell中也有特殊用途，因此如果希望<code>echo</code>命令在bash中正常输出<code>$@</code>， 需要加上<code>\</code>字符</li>
+<li>该makefile的最后一行<code>first second third:</code> 看起来有点奇怪，这是一条<strong>没有依赖和命令的多目标规则</strong>，读者可自行将它删除看有什么效果，并思考原因。</li>
+</ol>
+<p>演示及结果如下：</p>
+<p><img src="./跟我一起来玩转Makefile - 实验楼_files/wm(19)" alt="此处输入图片的描述"></p>
+<h4 id="-">变量的替换引用</h4>
+<p>变量的分类与赋值
+对于一个已经定义的变量，可以使用“替换引用”将其值使用指定的字符（字符串）进行替换。格式为<code>$(VAR:A=B)</code>或者<code>${VAR:A=B}</code>，意思是，将变量“VAR”所表示的值中所有字符串“A”结尾的字符替换为“B”的字。“结尾”的含义是空格之前（变量值的多个字以空格分开）。而对于变量其它部分的“A”字符不进行替换。例如：</p>
+<pre><code class="hljs makefile">sources := a.c b.c c.c o.d
+objects := <span class="hljs-variable">$(sources:.c=.o)</span>
+<span class="hljs-section">all:</span>
+    echo "objects = $(objects)"
+</code></pre><p>在这个定义中，变量“objects”的值就为“a.c b.c c.c d.d”。使用变量的替换引用将变量“sources”以空格分开的值中的所有的字的尾字符“o”替换为“c”，其他部分不变，注意这里的<code>o.d</code>并不会被替换。</p>
+<p>使用变量改进我们complicated项目的makefile(v1.2)：</p>
+<pre><code class="hljs ruby"><span class="hljs-comment"># 描述：complicated 项目 makefile文件</span>
+<span class="hljs-comment"># 版本：v1.2</span>
+<span class="hljs-comment"># 修改记录：</span>
+<span class="hljs-comment"># 1. 为complicated项目makefile添加注释</span>
+<span class="hljs-comment"># 2. 使用变量改进我们complicated项目的makefile</span>
+
+<span class="hljs-comment"># 定义可执行文件变量</span>
+executbale <span class="hljs-symbol">:</span>= complicated
+<span class="hljs-comment"># 定义源文件列表变量</span>
+sources <span class="hljs-symbol">:</span>= main.c complicated.c
+<span class="hljs-comment"># 使用变量的引用替换，定义object文件列表</span>
+objects <span class="hljs-symbol">:</span>= $(<span class="hljs-symbol">sources:</span>.c=.o)
+<span class="hljs-comment"># 定义编译命令变量</span>
+CC <span class="hljs-symbol">:</span>= gcc
+
+<span class="hljs-comment"># 终极目标规则，生成complicated可执行文件</span>
+$(executbale): $(objects)
+<span class="hljs-comment">#  使用自动化变量改造我们的编译命令</span>
+    $(CC) -o $@ $^
+
+<span class="hljs-comment"># 子规则1, main.o的生成规则</span>
+main.<span class="hljs-symbol">o:</span> main.c
+    $(CC) -o $@  -c $&lt;
+
+<span class="hljs-comment"># 子规则2，complicated.o的生成规则</span>
+complicated.<span class="hljs-symbol">o:</span> complicated.c
+    $(CC) -o $@  -c $&lt;
+</code></pre><h3 id="-makefile-">更加深入的认识makefile的规则</h3>
+<h4 id="-">多目标规则与多规则目标</h4>
+<h5 id="-">多目标规则</h5>
+<p>多目标规则，可以简单的理解为是一种将多条具有<strong>1)相同依赖</strong>和<strong>2)相同生成命令</strong>的规则，合并成一条规则的语法，其基本格式为：</p>
+<pre><code class="hljs">targets...: prerequisites...
+    commands
+    ...
+</code></pre><p>假设我们有以下makefile：</p>
+<pre><code class="hljs bash">all: target1 target2
+    <span class="hljs-built_in">echo</span> <span class="hljs-string">"This is a rule for <span class="hljs-variable">$@</span>"</span>
+
+target1: dep
+    <span class="hljs-built_in">echo</span> <span class="hljs-string">"This is a rule for <span class="hljs-variable">$@</span>"</span>
+
+target2: dep
+    <span class="hljs-built_in">echo</span> <span class="hljs-string">"This is a rule for <span class="hljs-variable">$@</span>"</span>
+
+dep:
+</code></pre><p>利用多目标规则，可以将makefile改写成：</p>
+<pre><code class="hljs bash">all: target1 target2
+    <span class="hljs-built_in">echo</span> <span class="hljs-string">"This is a rule for <span class="hljs-variable">$@</span>"</span>
+
+<span class="hljs-comment"># 利用多目标规则合并 target1 和target2的规则</span>
+target1 target2: dep
+    <span class="hljs-built_in">echo</span> <span class="hljs-string">"This is a rule for <span class="hljs-variable">$@</span>"</span>
+
+dep:
+</code></pre><p>例子演示：</p>
+<p><img src="./跟我一起来玩转Makefile - 实验楼_files/wm(20)" alt="此处输入图片的描述"></p>
+<p>这里我们可以观察到，虽然多目标规则中要求命令必须相同，但是配合上自动化变量的使用，就是可以针对不同的目标有不同的执行结果。</p>
+<h5 id="-">多规则目标</h5>
+<p>Makefile中，一个目标可以同时出现在多条规则中。这种情况下，此目标文件的所有依赖文件将会被合并成此目标一个依赖文件列表，其中任何一个依赖文件比目标更新（比较目标文件和依赖文件的时间戳）时，make将会执行特定的命令来重建这个目标。对于一个多规则的目标，<strong>重建此目标的命令只能出现在一个规则中</strong>（可以是多条命令）。如果多个规则同时给出重建此目标的命令，make将使用最后一个规则的命令，同时提示错误信息。</p>
+<h4 id="-">静态模式规则</h4>
+<p>仔细观察我们的complicated项目中的两条子规则：</p>
+<pre><code class="hljs ruby"><span class="hljs-comment"># 子规则1, main.o的生成规则</span>
+main.<span class="hljs-symbol">o:</span> main.c
+    $(CC) -o $@  -c $&lt;
+
+<span class="hljs-comment"># 子规则2，complicated.o的生成规则</span>
+complicated.<span class="hljs-symbol">o:</span> complicated.c
+    $(CC) -o $@  -c $&lt;
+</code></pre><p>我们发现它们长得很像，好像一个模子里印出来的，首先<strong>它们的命令是一样的</strong>，其次它们目标依赖关系有点相似(目标都是以.o结尾的文件，依赖都是以.c结尾的文件)。对于这种长得很像的规则，makefile提供了一种称为<strong>静态模式规则</strong>的规则来帮助我们简化规则的编写。</p>
+<p>静态模式规则，可以理解为一种特殊的多目标规则，它仅要求多条规则具有相同的命令，而依赖可以不完全一样。</p>
+<p>静态模式规则，其基本语法：</p>
+<pre><code class="hljs nginx"><span class="hljs-attribute">TARGETS</span> ...: TARGET-PATTERN: PREREQ-PATTERNS ...
+    COMMANDS
+    ...
+</code></pre><p> 其大致意思就是，用<code>TARGET-PATTERN: PREREQ-PATTERNS ...</code>描述的模式，从<code>TARGETS ...</code>取值来形成一条条规则，所有规则的命令都用<code>COMMANDS</code>。 </p>
+<p><code>TARGETS ...</code>代表具有相同模式的规则的目标列表，在我们的项目中就是main.o和complicated.o，我们可以直接引用我们先前定义的objects变量。</p>
+<p><code>TARGET-PATTERN: PREREQ-PATTERNS ...</code>部分定义了，如何为目标列表中的目标，生成依赖；<code>TARGET-PATTERN</code>称为目标模式，<code>PREREQ-PATTERNS</code>称为依赖模式；目标模式和依赖模式中，一般需要包含模式字符<code>%</code>。 </p>
+<p>目标模式的作用就是从目标列表中的目标匹配过滤出需要的值，目标模式中的字符<code>%</code>表示在匹配过滤的过程中不做过滤的部分，目标模式中的其他字符表示要与目标列表中的目标精确匹配，例如，目标模式<code>%.o</code>， 表示从目标列表的目标中匹配所有已<code>.o</code>结尾的目标，然后过滤掉匹配目标的<code>.o</code>部分， 因此目标<code>main.o</code>经过目标模式<code>%.o</code>匹配过滤后，得到的输出就是<code>main</code>。 </p>
+<p>依赖模式的作用就是表示要如何生成依赖文件。具体的生成过程，就是使用目标模式过滤出来的值，替换依赖模式字符<code>%</code>所表示的位置。因此，如果依赖模式为<code>%.c</code>， 则使用上述例子过滤出来的<code>main</code>来替换字符<code>%</code>， 最终得到依赖文件<code>main.c</code></p>
+<p>因此，我们可以这么用静态模式规则来简化我们的complicated项目：</p>
+<pre><code class="hljs ruby"><span class="hljs-comment"># 静态模式规则简化complicated makefile</span>
+$(objects): %.<span class="hljs-symbol">o:</span> %.c
+    $(CC) -o $@  -c $&lt;
+</code></pre><h4 id="-">伪目标</h4>
+<p>我们的complicated项目编译完成后，会有可执行文件及中间目标文件，有时出于某些需求，需要将编译生成的文件都删除，让整个项目回到最初的状态。我们可以在该项目makefile定义添加一条目标为<code>clean</code>的规则，如下：</p>
+<pre><code class="hljs css"># <span class="hljs-selector-tag">complicated</span>项目添加<span class="hljs-selector-tag">clean</span> 规则
+<span class="hljs-selector-tag">clean</span>:
+    <span class="hljs-selector-tag">rm</span> <span class="hljs-selector-tag">-rf</span> <span class="hljs-selector-tag">complicated</span> <span class="hljs-selector-tag">complicated</span><span class="hljs-selector-class">.o</span> <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.o</span>
+</code></pre><p>演示如下：
+<img src="./跟我一起来玩转Makefile - 实验楼_files/wm(21)" alt="此处输入图片的描述"></p>
+<p>上述的clean规则，貌似能正常工作，但其实是存在bug的，当我们的目录下刚好存在一个叫做clean的文件时，事情就没那么顺利了：</p>
+<p><img src="./跟我一起来玩转Makefile - 实验楼_files/wm(22)" alt="此处输入图片的描述"></p>
+<p>出现以上问题的原因是，当编译目录下存在clean文件时，由于clean规则没有依赖，所以clean文件的时间戳永远显得都是最新的，故其命令也无法被执行，这时我们就得请伪目标出手帮助了。</p>
+<p>当我们将一个目标定义成伪目标时，意味着它不代表一个真正的文件名，在执行make时可以指定这个目标来执行其所在规则定义的命令。</p>
+<p>定义一个为目标的基本语法：</p>
+<pre><code class="hljs makefile"><span class="hljs-meta"><span class="hljs-meta-keyword">.PHONY</span>: &lt;伪目标&gt;</span>
+</code></pre><p>因此我们以定义complicated项目的clean目标，为伪目标，如下：</p>
+<pre><code class="hljs makefile"><span class="hljs-comment"># complicated项目添加clean 规则</span>
+<span class="hljs-meta"><span class="hljs-meta-keyword">.PHONY</span>: clean</span>
+<span class="hljs-section">clean:</span>
+    rm -rf complicated complicated.o main.o
+</code></pre><p>这样目标<code>clean</code>就是一个伪目标，无论当前目录下是否存在<code>clean</code>这个文件。我们输入<code>make clean</code>之后。<code>rm</code>命令都会被执行。</p>
+<p>演示如下：
+<img src="./跟我一起来玩转Makefile - 实验楼_files/wm(23)" alt="此处输入图片的描述"></p>
+<h4 id="-">命令</h4>
+<h5 id="-">命令的回显</h5>
+<p>通常，make在执行命令行之前会把要执行的命令行进行输出，如以下makefile：</p>
+<pre><code class="hljs bash">all:
+    <span class="hljs-built_in">echo</span> <span class="hljs-string">"Hello world!"</span>
+</code></pre><p>在执行make时，其输出：</p>
+<pre><code class="hljs bash">$ make
+  <span class="hljs-built_in">echo</span> <span class="hljs-string">"Hello world!"</span>
+  Hello world!
+</code></pre><p>关闭命令回显有以下几种方式：</p>
+<ol>
+<li><p>每个需要关闭回显的命令行前加上"@"字符，上述例子关闭回显：</p>
+<pre><code class="hljs bash">all:
+   @<span class="hljs-built_in">echo</span> <span class="hljs-string">"Hello world!"</span>
+</code></pre></li>
+<li><p>执行make时带上参数<code>-s</code>或<code>--slient</code>禁止所有执行命令的显示</p>
+</li>
+<li><p>在Makefile中使用没有依赖的特殊目标<code>.SILENT</code>也可以禁止所有命令的回显</p>
+</li>
+</ol>
+<h5 id="-">命令的执行</h5>
+<p>在Makefile中<strong>书写在同一行中的多个命令属于一个完整的shell命令行</strong>，<strong>书写在独立行的一条命令是一个独立的shell命令行</strong>。所以需要注意：在一个规则的命令中，命令行<code>cd</code>改变目录不会对其后的命令的执行产生影响。就是说其后的命令执行的工作目录不会是之前使用<code>cd</code>进入的那个目录。如果要实现这个目的<strong>，</strong>就不能把<code>cd</code>和其后的命令放在两行来书写。而应该把这两条命令写在一行上，用分号分隔。这样它们才是一个完整的shell命令行。</p>
+<p>对比以下例子两个规则的输出：</p>
+<pre><code class="hljs bash">target1:
+    @<span class="hljs-built_in">echo</span> <span class="hljs-string">"target1"</span>
+    @<span class="hljs-built_in">cd</span> ~
+    @<span class="hljs-built_in">pwd</span>
+
+target2:
+    @<span class="hljs-built_in">echo</span> <span class="hljs-string">"target2"</span>
+    @<span class="hljs-built_in">cd</span> ~; <span class="hljs-built_in">pwd</span>
+</code></pre><p>例子演示：
+<img src="./跟我一起来玩转Makefile - 实验楼_files/wm(24)" alt="此处输入图片的描述"></p>
+<h5 id="-">命令执行的错误处理</h5>
+<p>通常情况下，规则中的每一条命令在运行结束后，make都会检测命令执行的返回状态，如果返回成功，就执行下一条命令；命令出错（返回状态非0），make就会放弃对当前规则的执行，或者终止对当前makefile的解析执行。</p>
+<p>在一些情况下，规则中的一个命令的执行失败并不代表规则执行的错误。为了忽略一些无关紧要的命令执行失败的情况，我们可以在命令之前加一个减号<code>-</code>，来告诉make忽略此命令的执行失败检查。</p>
+<p>在更加深入的认识了makefile的规则后，我们complicated项目的makefile(v1.3)就可以这样写了：</p>
+<pre><code class="hljs ruby"><span class="hljs-comment"># 描述：complicated 项目 makefile文件</span>
+<span class="hljs-comment"># 版本：v1.3</span>
+<span class="hljs-comment"># 修改记录：</span>
+<span class="hljs-comment"># 1. 为complicated项目makefile添加注释</span>
+<span class="hljs-comment"># 2. 使用变量改进我们complicated项目的makefile</span>
+<span class="hljs-comment"># 3. 使用静态模式规则，简化makefile</span>
+<span class="hljs-comment"># 4. 使用伪目标，加上clean规则</span>
+
+<span class="hljs-comment"># 定义可执行文件变量</span>
+executbale <span class="hljs-symbol">:</span>= complicated
+<span class="hljs-comment"># 定义源文件列表变量</span>
+sources <span class="hljs-symbol">:</span>= main.c complicated.c
+<span class="hljs-comment"># 使用变量的引用替换，定义object文件列表</span>
+objects <span class="hljs-symbol">:</span>= $(<span class="hljs-symbol">sources:</span>.c=.o)
+<span class="hljs-comment"># 定义编译命令变量</span>
+CC <span class="hljs-symbol">:</span>= gcc
+RM <span class="hljs-symbol">:</span>= rm -rf
+
+<span class="hljs-comment"># 终极目标规则，生成complicated可执行文件</span>
+$(executbale): $(objects)
+<span class="hljs-comment">#  使用自动化变量改造我们的编译命令</span>
+    $(CC) -o $@ $^
+
+<span class="hljs-comment"># 子规则, main.o和complicated.o的生成规则，使用静态模式规则</span>
+$(objects)<span class="hljs-symbol">:%</span>.<span class="hljs-symbol">o:</span>%.c
+    $(CC) -o $@  -c $&lt;
+
+<span class="hljs-comment"># clean规则</span>
+.<span class="hljs-symbol">PHONY:</span> clean
+<span class="hljs-symbol">clean:</span>
+    $(RM) $(executbale) $(objects)
+</code></pre><h3 id="-">内嵌函数</h3>
+<p>make的内嵌函数为我们提供了处理文件名、变量、文本和命令的方法。使我们的Makefile更为灵活和健壮。我们可以在需要的地方地调用函数来处理指定的文本（参数），函数的在调用它的地方被替换为它的处理结果。函数调用（引用）的展开和变量引用的展开方式类似：</p>
+<p>函数调用方式1：</p>
+<pre><code class="hljs javascript">$(FUNCTION ARGUMENTS)
+</code></pre><p>函数调用方式2：</p>
+<pre><code class="hljs bash"><span class="hljs-variable">${FUNCTION ARGUMENTS}</span>
+</code></pre><h4 id="-">内嵌函数的分类</h4>
+<p><img src="./跟我一起来玩转Makefile - 实验楼_files/wm(25)" alt="此处输入图片的描述"></p>
+<h4 id="-wildcard-complicated-makefile">使用wildcard函数改进complicated项目makefile</h4>
+<p>wildcard函数，其使用范式：</p>
+<pre><code class="hljs javascript">$(wildcard PATTERN)
+</code></pre><p>函数名称：wildcard</p>
+<p>函数功能：列出当前目录下所有符合模式“PATTERN”格式的文件名。</p>
+<p>返回值：空格分割的、存在当前目录下的所有符合模式“PATTERN”的文件名。</p>
+<p>函数说明：“PATTERN”使用shell可识别的通配符，包括<code>?</code>（单字符）、<code>*</code>（多字符）等。 </p>
+<p>示例： </p>
+<pre><code class="hljs javascript">$(wildcard *.c)
+</code></pre><p>返回值为当前目录下所有.c源文件列表。</p>
+<p>我们可以引进wildcard函数，改进complicated项目的makefile，使其能够<strong>自动扫描当前目录下的源文件</strong>：</p>
+<pre><code class="hljs ruby"><span class="hljs-comment"># 描述：complicated 项目 makefile文件</span>
+<span class="hljs-comment"># 版本：v1.4</span>
+<span class="hljs-comment"># 修改记录：</span>
+<span class="hljs-comment"># 1. 为complicated项目makefile添加注释</span>
+<span class="hljs-comment"># 2. 使用变量改进我们complicated项目的makefile</span>
+<span class="hljs-comment"># 3. 使用静态模式规则，简化makefile</span>
+<span class="hljs-comment"># 4. 使用伪目标，加上clean规则</span>
+<span class="hljs-comment"># 5. 引进wildcard函数，自动扫描当前目录下的源文件</span>
+
+<span class="hljs-comment"># 定义可执行文件变量</span>
+executbale <span class="hljs-symbol">:</span>= complicated
+<span class="hljs-comment"># 引进wildcard函数扫描源文件，定义列表变量</span>
+sources <span class="hljs-symbol">:</span>= $(wildcard *.c)
+<span class="hljs-comment"># 使用变量的引用替换，定义object文件列表</span>
+objects <span class="hljs-symbol">:</span>= $(<span class="hljs-symbol">sources:</span>.c=.o)
+<span class="hljs-comment"># 定义编译命令变量</span>
+CC <span class="hljs-symbol">:</span>= gcc
+RM <span class="hljs-symbol">:</span>= rm -rf
+
+<span class="hljs-comment"># 终极目标规则，生成complicated可执行文件</span>
+$(executbale): $(objects)
+<span class="hljs-comment">#  使用自动化变量改造我们的编译命令</span>
+    $(CC) -o $@ $^
+
+<span class="hljs-comment"># 子规则, main.o和complicated.o的生成规则，使用静态模式规则</span>
+$(objects)<span class="hljs-symbol">:%</span>.<span class="hljs-symbol">o:</span>%.c
+    $(CC) -o $@ -c $&lt;
+
+<span class="hljs-comment"># clean规则</span>
+.<span class="hljs-symbol">PHONY:</span> clean
+<span class="hljs-symbol">clean:</span>
+    $(RM) $(executbale) $(objects)
+</code></pre><p>演示如下：</p>
+<p><img src="./跟我一起来玩转Makefile - 实验楼_files/wm(26)" alt="此处输入图片的描述"></p>
+<h3 id="-">自动生成依赖关系</h3>
+<p>至此，我们complicated项目的makefile已经完成的比较完善了，但还存在一个问题，当我们更新头文件complicated.h的内容后，执行make时，项目并不会重新编译，看演示：
+<img src="./跟我一起来玩转Makefile - 实验楼_files/wm(27)" alt="此处输入图片的描述"></p>
+<p>出现以上问题的根本原因是，我们的makefile还没能精确的反映整个项目工程的依赖关系！很明显，项目的依赖关系应该加入对于头文件的依赖，即如下图：</p>
+<p><img src="./跟我一起来玩转Makefile - 实验楼_files/wm(28)" alt="此处输入图片的描述"></p>
+<p>根据上述依赖关系，我们可以在makefile加上如下规则：</p>
+<pre><code class="hljs javascript">$(objects): complicated.h
+</code></pre><p>上述新增规则，是一条多目标规则，它与之前的静态模式规则，又组成了多规则目标，读者可自行思考其工作原理。</p>
+<p>上述规则加入虽然能解决我们的问题，但是对于大型复杂的项目，这种需要我们逐个去分析头文件被依赖的关系，几乎是不可能的。所以我们需要工具来帮我们做这个事。下面我们来介绍如何实现自动生成依赖关系。</p>
+<p>gcc为我们提供了这样的功能，帮助我们分析一个文件对其他文件的依赖关系列表。当我们在执行gcc时带上<code>-MM</code>选项时，gcc工具就会为我们列出指定文件对其他文件的依赖关系列表。直接来看例子：</p>
+<p><img src="./跟我一起来玩转Makefile - 实验楼_files/wm(29)" alt="此处输入图片的描述"></p>
+<p>接下来要考虑的问题就是如何将gcc的输出导入到我们的makefile中了。</p>
+<p>makefile支持使用<code>sinclude</code>关键字将指定文件导入到当前的makefile当中，它的作用与C语言的<code>#inlucde</code>预处理命令是一样的。使用方式<code>sinclude &lt;other_makefiles&gt;</code>。因此，我们可以将gcc对于源文件的依赖关系分析输出到某个文件(我们可以称为依赖描述文件，一般命名为与源文件同名但以.d结尾的文件)当中，然后再将依赖描述文件导入到makefile中。</p>
+<pre><code class="hljs makefile"><span class="hljs-comment"># 使用变量的引用替换，定义依赖描述文件列表</span>
+deps := <span class="hljs-variable">$(sources:.c=.d)</span>
+
+<span class="hljs-comment"># 导入依赖描述文件列表</span>
+sinclude $(deps)
+</code></pre><p>当我们使用<code>sinclude</code>关键字向当前makefile导入文件时，如果所导入的文件不存在，make会试图去执行可以生产导入文件的规则去生产被导入的文件，然后再执行导入。因此我们可以使用静态模式规则，让make在执行时，去调用gcc生成依赖关系文件，我们可以这么写：</p>
+<pre><code class="hljs ruby">$(deps)<span class="hljs-symbol">:%</span>.<span class="hljs-symbol">d:</span>%.c
+    gcc -MM $&lt; &gt; $@
+</code></pre><p>因此，我们complicated项目的最终makefile可以这么写：</p>
+<pre><code class="hljs ruby"><span class="hljs-comment"># 描述：complicated 项目 makefile文件</span>
+<span class="hljs-comment"># 版本：v1.5</span>
+<span class="hljs-comment"># 修改记录：</span>
+<span class="hljs-comment"># 1. 为complicated项目makefile添加注释</span>
+<span class="hljs-comment"># 2. 使用变量改进我们complicated项目的makefile</span>
+<span class="hljs-comment"># 3. 使用静态模式规则，简化makefile</span>
+<span class="hljs-comment"># 4. 使用伪目标，加上clean规则</span>
+<span class="hljs-comment"># 5. 引进wildcard函数，自动扫描当前目录下的源文件</span>
+<span class="hljs-comment"># 6. 加入自动规则依赖</span>
+
+<span class="hljs-comment"># 定义可执行文件变量</span>
+executbale <span class="hljs-symbol">:</span>= complicated
+<span class="hljs-comment"># wildcard函数扫描源文件，定义列表变量</span>
+sources <span class="hljs-symbol">:</span>= $(wildcard *.c)
+<span class="hljs-comment"># 使用变量的引用替换，定义object文件列表</span>
+objects <span class="hljs-symbol">:</span>= $(<span class="hljs-symbol">sources:</span>.c=.o)
+<span class="hljs-comment"># 使用变量的引用替换，定义依赖描述文件列表</span>
+deps <span class="hljs-symbol">:</span>= $(<span class="hljs-symbol">sources:</span>.c=.d)
+
+<span class="hljs-comment"># 定义编译命令变量</span>
+CC <span class="hljs-symbol">:</span>= gcc
+RM <span class="hljs-symbol">:</span>= rm -rf
+
+<span class="hljs-comment"># 终极目标规则，生成complicated可执行文件</span>
+$(executbale): $(objects)
+<span class="hljs-comment">#  使用自动化变量改造我们的编译命令</span>
+    $(CC) -o $@ $^
+
+<span class="hljs-comment"># 子规则, main.o和complicated.o的生成规则，使用静态模式规则</span>
+$(objects)<span class="hljs-symbol">:%</span>.<span class="hljs-symbol">o:</span>%.c
+    $(CC) -o $@  -c $&lt;
+
+<span class="hljs-comment"># clean规则</span>
+.<span class="hljs-symbol">PHONY:</span> clean
+<span class="hljs-symbol">clean:</span>
+    $(RM) $(executbale) $(objects) $(deps)
+
+<span class="hljs-comment"># 自动规则依赖</span>
+sinclude $(deps)
+
+$(deps)<span class="hljs-symbol">:%</span>.<span class="hljs-symbol">d:</span>%.c
+    $(CC) -MM $&lt; &gt; $@
+</code></pre><p>演示如下：</p>
+<p><img src="./跟我一起来玩转Makefile - 实验楼_files/wm(30)" alt="此处输入图片的描述"></p>
+<h2 id="-">五、参考资料</h2>
+<ul>
+<li><a href="https://book.douban.com/subject/6966320/" target="_blank">专业嵌入式软件开发</a></li>
+</ul>
+<ul>
+<li><a href="http://211.162.82.85:9011/hacker-yhj.github.io/c3pr90ntc0td/resources/gun_make.pdf" target="_blank">Gnu make 中文手册</a></li>
+</ul>
+</div>
+
+<textarea id="editor" style="display:none;">## 一、课程简介
+
+本课程通过以实例构建软件项目编译环境的工程，从这个过程中学习make命令的使用及makefile的相关编写技巧。
+
+### 课程知识点
+
+通过本课程的学习，可以学习到以下知识点：
+
+1. make工具的使用
+2. makefile规则的概念
+3. makefile变量的使用
+4. makefile函数的使用
+5. makefile自动生成依赖
+
+## 二、makefile及make简介
+
+### 概念引入
+
+在介绍makefile和make的具体概念前，我们先通过一个例子来说明makefile和make到底是为解决什么问题而存在的。
+
+假设有一个如图所示的C工程：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid298389labid2374timestamp1481542407132.png/wm)
+
+那么要编译出我们的可执行程序project_demo，必须执行以下命令：
+
+```
+# 步骤1：编译主程序模块
+$ gcc -o &lt;100个主程序模块的o文件&gt; -c &lt;100个主程序模块的c文件&gt;
+
+# 步骤2：编译功能模块a
+$ gcc -o &lt;1000个功能模块a的o文件&gt; &lt;1000个功能模块a的c文件&gt;
+$ ar rcs liba.o &lt;1000个功能模块a的o文件&gt;
+
+# 步骤3：编译功能模块b
+$ gcc -o &lt;1000个功能模块b的o文件&gt; &lt;1000个功能模块b的c文件&gt;
+$ ar rcs libb.a &lt;1000个功能模块b的o文件&gt;
+
+# 步骤4：生成可执行文件demo
+$ gcc -o demo &lt;100个主程序模块的o文件&gt; -L. -la -lb
+```
+
+上述例子反映了两个问题：
+
+1. 上述4个编译步骤中，几乎每个步骤都有亢长的文件名列表需要输入而且有些还是重复的，这种工作枯燥而又费时，且极易因人为疏忽而出现错误；
+2. 假设我们的demo项目每次编译所需的时间都比较长，那么如果我们之前已经成功编译过了我们的demo项目，而此后当我们修改了某些源文件需要更新的demo文件时，理论上我们是不希望也不需要去重新编译整个项目的，我们只需要仅分析其中的依赖关系，仅执行需要重新编译链接的命令，以节省编译时间，但是对于依赖关系非常复杂的工程而言，分析源文件涉及到的依赖关系是个非常复杂且容易出错的过程。
+
+make和makefile的存在正是为了解决上述两个问题的：
+
+1. makefile文件帮助我们记录了整个项目工程的所有需要编译的文件列表，这样我们在编译时仅需要输入简单的make命令就能编译出我们期望的结果
+2. makefile文件反映了整个项目中各个模块的依赖关系，这样我们改动了某些源文件后，仅需简单的输入make命令，make工具就会根据makefile文件里描述的依赖关系帮助我们分析哪些模块需要重新编译，并执行相应的操作。
+
+
+在linux/unix开发环境中，makefile文件则是描述了一个特定编译系统所需要的策略，而make工具则是通过解析makefile文件并执行相应的命令来帮助我们构建其编译系统。
+
+下面我们就带着这样两个问题来认识makefile和make工具：
+
+1. makefile如何记录整个项目工程的所有需要编译的文件列表及如何反映整个项目中各个模块的依赖关系？
+2. 提供了makefile策略描述后，make工具又是是如何解析makefile文件来帮助我们构建其编译系统的？
+
+### makefile简介
+
+makefile就是一个简单的文本文件，它基本上就是由一条条的规则构成。下面，我们就来看一下makefile里的最基本的语法单元，**规则**。
+
+一条makefile的规则构成如下：
+
+```
+target:prerequisites
+&lt;tab&gt; command1
+&lt;tab&gt; command2
+.....
+&lt;tab&gt; commandN
+```
+
+- target：规则的目标，可以简单理解为这条规则存在的目的是什么。通常是程序中间或者最后需要生成的文件名，也可以不对应具体的文件，而仅仅就是个概念上的规则目标。
+
+
+- prerequisites：规则的依赖列表，可以简单的理解为要达到本条规则的目标所需要的先决条件是什么。可以是文件名，也可以是其他规则的目标；
+
+
+- command：规则的命令，可以简单的理解为当目标所需要的先决条件的满足了之后，需要执行什么动作来达成规则的目标。规则的命令其实就是shell命令。一条规则中可以有多行命令，**特别注意：每行命令都必须以tab键开始！**
+
+下面我们就立马来感性的认识一下makefile文件，先来一个"hello world"吧：
+
+```
+# 最简单的makefile文件
+all: 
+	echo "Hello world!"  #注意：每行命令都必须以tab键开始！
+```
+
+这个简单的makefile文件，只有一条规则，规则的目标是all，没有任何依赖(**规则不可以没有目标但是可以没有依赖**)，以及一条命令(其实规则也是可以不需要任何命令的)。
+
+怎么用这个makefile呢？
+
+打开Xcfe通过vim将上述内容写入一个叫makefile的文件中，并执行make：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid298389labid2374timestamp1481542465547.png/wm)
+
+那make工具又到底是如何工作的呢？且看下节分解。
+
+### make命令工作机理
+
+解释make的工作机理，需分别回答以下3个问题：
+
+1. make命令如何使用 ；
+2. make从哪读取makefile；
+3. make如何解析执行makefile文件的规则。
+
+make命令的基本使用范式如下：
+
+```
+make [ -f makefile ] [ options ] ... [ targets ] ...
+```
+
+使用make命令的最简单的方式主要有以下四种形式：
+
+1.简单粗暴，不带任何参数，直接执行make：
+
+```
+$ make
+```
+
+2.指定makefile文件：
+
+```
+$ make -f &lt;makefile_name&gt;
+```
+
+3.指定makefile 目标：
+
+```
+$ make &lt;target&gt;
+```
+
+4.到指定目录下执行make：
+
+```
+$ make -C &lt;subdir&gt; &lt;target&gt;
+```
+
+在执行make的时候，我们可以带上`-f &lt;文件名&gt;`参数，来指定make命令从哪里读取makefile文件；而如果我们不显式指定，则make就会在当前目录下依次查找名字为**GNUmakefile, makefile,和 Makefile**的文件来作为其makefile文件。
+
+在读取完makefile的内容后，make工具并不是逐条去执行makefile里的规则，而是以某条规则为突破口，多米诺骨牌效应式的去执行makefile里的规则。而这条作为突破口的规则的目标，称为**终极目标** ，我们可以在执行make时以参数的形式指定终极目标，从而执行作为突破口的规则，如果我们不显式指定终极目标，make一般情况下将选择makefile的第一条规则的目标作为终极目标。
+
+一般情况下，make执行一条规则的具体过程是这样的：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid298389labid2374timestamp1481542499635.png/wm)
+
+make解析makefile的流程如下：
+
+假设有mekefile内容如下：
+
+```
+终极目标：依赖A  依赖B 依赖C
+	终极目标命令
+	
+依赖A：子依赖A1 子依赖A2 
+	依赖A命令
+	
+依赖B：子依赖B1 子依赖B2 
+	依赖B命令
+
+依赖C：子依赖C1 子依赖C2 
+	依赖C命令
+```
+
+过程一，以终极目标为树根，解析出整颗依赖树：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid298389labid2374timestamp1481542541280.png/wm)
+
+过程二，对整颗依赖树以从底到上，从左到右的顺序，解析执行每一条规则：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid298389labid2374timestamp1481542553598.png/wm)
+## 三、通过实例理解makefile的基本概念
+
+本节我们将通过构建一个简单的c语言项目工程(我们命名为project_simple)来理解makefile的基本概念。
+
+先来看一下project_simple的整体目录结构：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid298389labid2374timestamp1481542575689.png/wm)
+
+下面，我们先来一步步构建我们的项目：
+
+创建工程目录：
+
+```
+$ cd ~/Code
+$ mkdir project_simple
+$ cd project_simple
+```
+
+结果如下：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid298389labid2374timestamp1481542591153.png/wm)
+
+创建main.c文件：
+
+```
+$ cat &gt; main.c &lt;&lt;EOF
+extern void simple();
+
+int main()
+{
+    simple();
+    return 0;
+}
+EOF
+```
+
+结果如下：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid298389labid2374timestamp1481542602869.png/wm)
+
+创建simple.c：
+
+```
+$ cat &gt;simple.c &lt;&lt;EOF
+#include &lt;stdio.h&gt;
+
+void simple()
+{
+    printf("This is simple project!\n");
+}
+EOF
+```
+
+结果如下：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid298389labid2374timestamp1481542612758.png/wm)
+
+最后就是要编写我们的makefile了，一般在编写makefile之前都需要先分析清楚整个工程各个模块的依赖关系，及相应的生成命令。我们的project_simple工程最终生产的是一个叫simple的可执行文件，而该可执行文件是使用gcc命令编译main.c和simple.c生成的，因此我们的整个工程的关系依赖图，如下：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid298389labid2374timestamp1481542626991.png/wm)
+
+因此我们的makefile可以这么写：
+
+```
+simple: main.c simple.c
+	gcc -o simple main.c simple.c
+```
+
+接下来，我们来创建makefile文件：
+
+```
+$ cat &gt; Makefile &lt;&lt;EOF
+simple: main.c simple.c
+	gcc -o simple main.c simple.c
+EOF
+```
+
+下面我们分三个步骤来验证一下我们的simple项目的编译系统：
+
+1.能否编译出可执行的simple
+   ```
+   $pwd        #查看当前路径
+   $ls         #查看编译前当前目录
+   $make       #编译simple项目
+   $ls         #查看编译结果
+   $./simple   #执行simple可执行文件
+   ```
+过程及结果如下：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid298389labid2374timestamp1481542649906.png/wm)
+
+2.已经编译出simple后，不改变任何源文件再次执行编译，是否不再执行任何操作
+
+   ```
+   $ ls -lt #查看当前项目中各文件时间戳
+   $ make   #再次执行编译，查看是否会执行编译命令
+   ```
+
+过程及结果如下：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid298389labid2374timestamp1481542661055.png/wm)
+
+3.已经编译出simple后，修改任一源文件是否能再次生成新的simple可执行文件
+
+   ```
+   $ ls -lt       #对比当前项目各文件时间戳
+   $ touch main.c #将main.c文件的时间戳修改至最新
+   $ ls -lt       #查看main.c的时间戳是否最新
+   $ make         #执行编译命令
+   $ ls -lt       #查看simple的时间戳是否被更新至最新
+   ```
+
+过程及结果如下：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid298389labid2374timestamp1481542670884.png/wm)
+
+
+## 四、丰富我们的makefile语法工具箱
+
+在第二章中，我们了解到makefile中最主要的语法单元是规则。本章我们将学习makefile中为了帮助我们更高效的编写出更加实用灵活的makefile而存在的帮助性语法。
+
+以下是一般情况下一个完整的makefile所包含的语法模块：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid298389labid2374timestamp1481542688710.png/wm)
+
+### complicated项目构建
+
+我们仿照project_simple项目，构建一个名为project_complicated的项目工程，目录结构如下：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid298389labid2374timestamp1481542725973.png/wm)
+
+代码内容:
+
+```c++
+// ---------------------------------------------
+// main.c
+#include &lt;stdio.h&gt;
+#include "complicated.h"
+int main()
+{
+    printf("%s\n", HELLO_STRING);
+    complicated();
+	return 0;
+}
+// ---------------------------------------------
+// complicated.h
+#ifndef __COMPLICATED_H__
+#define __COMPLICATED_H__
+#define HELLO_STRING "Hello !"
+#define PROJECT_NAME "complicated"
+extern void complicated(void);
+#endif
+// ---------------------------------------------
+// complicated.c
+#include &lt;stdio.h&gt;
+#include "complicated.h"
+void complicated(void)
+{
+    printf("This is a %s porject!\n", PROJECT_NAME);
+}
+```
+
+项目的依赖关系：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid298389labid2374timestamp1481542738231.png/wm)
+
+对比simple项目，我们的complicated项目貌似只是多了一个头文件，但是我们的依赖关系图却多了一层.o文件，这是为何？熟悉gcc编译过程的朋友应该知道，其实我们在用gcc 编译出可执行文件的过程中是包含两个阶段的：编译阶段和链接阶段。我们上述的依赖关系图更加准确的反映出了整个项目的构建过程，这样我们据此写出来的makefile才能更加灵活及更具可扩展性，记住：**精确的分析清楚项目的依赖关系，是编写一个好的makefile的关键。**
+
+至此，我们也就可以轻易的写出complicated项目的makefile了：
+
+```
+complicated: main.o complicated.o
+	gcc -o complicated main.o complicated.o
+
+main.o: main.c
+	gcc -o main.o -c main.c
+	
+complicated.o: complicated.c
+	gcc -o complicated.o -c complicated.c
+```
+
+验证过程及结果如下：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid298389labid2374timestamp1481542750505.png/wm)
+
+### 使用`注释`提升makefile的可维护性
+
+在计算机编程界，有这么一句谚语：代码的目的是给人阅读的,只是顺便能让机器运行而已。
+
+虽然这话听起来有点夸张，但它其实是在强调，编写可维护代码的重要性。而一段代码可维护性强的一个重要标志就是要有**恰到好处的注释**，所谓恰到好处是指注释要控制到“多一分嫌胖，少一分则显瘦”的境界。
+
+makefile中`“#”`字符后的内容被作为是注释内容（和shell脚本一样）处理。如果此行的第一个非空字符为`“#”`，那么此行为注释行。注释行的结尾如果存在反斜线（`\`），那么下一行也被作为注释行。当在makefile中如果需要使用字符“#”时，可以使用反斜线加“#”（`\#`）来实现，其表示将“#”作为一字符而不是注释的开始标志。
+
+例子如下：
+
+```
+# 这是一个演示注释语法的makefile
+all: test #关于依赖的注释
+#	echo "Makefile for comment 1"   这里是注释，不是命令
+	echo "Makefile for comment 2" 
+# 这是一个关于test规则的 \
+  多行注释
+test:
+# 没有反斜线\, #被当作注释的开始
+	echo this is a # test rule1 
+# 加上反斜线\, #被当作普通字符
+	echo this is a \# test rule2 
+```
+
+一般在书写makefile时推荐将注释作为一个独立的行，而不要和makefile的有效行放在一行中书写。
+
+我们来演示一下上述的makefile，使用`vim`命令以上述内容为输入创建一个名为comment.mk的makefile文件。
+
+使用命令`make -f comment.mk`执行该makefile，过程及结果如下：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid298389labid2374timestamp1481592059161.png/wm)
+
+可见make在执行时一般情况下对于makefile中以`#`开始到行尾的内容都是直接忽略不做任何处理的。
+
+更新complicated项目的makefile版本，我们定上一节的makefile版本为v1.0，这个版本为v1.1：
+
+```
+# 描述：complicated 项目 makefile文件
+# 版本：v1.1
+# 修改记录：
+# 1. 为complicated项目makefile添加注释
+
+# 终极目标规则，生成complicated可执行文件
+complicated: main.o complicated.o
+	gcc -o complicated main.o complicated.o
+
+# 子规则1, main.o的生成规则
+main.o: main.c
+	gcc -o main.o -c main.c
+	
+# 子规则2，complicated.o的生成规则
+complicated.o: complicated.c
+	gcc -o complicated.o -c complicated.c
+```
+
+v1.1版本相对于v1.0仅仅添加了相关的注释，对makefile描述的实际功能没有任何影响，读者可依照上节的例子自行验证v1.1版本。
+
+### 使用`变量`让makefile更灵活
+
+#### 变量的定义
+
+makefile中的变量，与C语言中的宏类似，它为一个文本字符串（变量的值，其类型只能是字符串类型）提供了一个名字(变量名)。
+
+变量定义的基本格式：
+
+```
+变量名 赋值符 变量值
+```
+
+- 变量名指的就是该变量的名字，是不包括“:”、“#”、“=”、前置空白和尾空白的任何字符串。需要注意的是，尽管在GNU make中没有对变量的命名有其它的限制，但定义一个包含除字母、数字和下划线以外的变量的做法也是不可取的，因为除字母、数字和下划线以外的其它字符可能会在以后的make版本中被赋予特殊含义，并且这样命名的变量对于一些shell来说不能作为环境变量使用。变量名是大小写敏感的。变量“foo”、“Foo”和“FOO”指的是三个不同的变量。Makefile传统做法是变量名是全采用大写的方式。推荐的做法是在对于内部定义定义的一般变量（例如：目标文件列表objects）使用小写方式，而对于一些参数列表（例如：编译选项CFLAGS）采用大写方式。
+
+
+- 变量值，指的是变量所代表的内容，可以是一个文件名列表、编译选项列表、程序运行的选项参数列表、搜索源文件的目录列表、编译输出的目录列表和所有我们能够想到的事物。变量的值，其本质就是一个字符串。
+
+
+- 赋值符，有`=` 、 `:=` 、 `?=`和 `+=`四种格式，其中`=` 和 `:=` 为基本定义类型， `?=`和 `+=`为基于`=`的扩展定义类型。
+
+一个在makefile中定义变量的例子：
+
+```
+objects = program.o foo.o utils.o
+```
+
+#### 变量的引用
+
+当我们定义了一个变量之后，我们就可以在makfile中的**目标**、**依赖**、**命令**中引用我们的变量；而所谓的变量引用，就是在引用变量名的地方，用变量所代表的内容，执行一个严格的文本替换过程(该过程也称为变量**被展开的过程** )，替换掉变量的名字。
+
+变量的引用有以下几种方式：
+
+1. `${变量名}`
+2. `$（变量名）`
+3. `$单字符变量名` ，变量名仅包含一个字符，如`$@` 、`$^`等
+
+一个在makefile中引用变量的例子：
+
+```
+# 变量定义
+objects = program.o foo.o utils.o
+
+program : $(objects)          #在依赖中引用变量
+	gcc -o program ${objects} #在命令中引用变量
+
+$(objects) : defs.h           #在目标中引用变量
+```
+
+#### 变量的分类与赋值
+
+根据变量定义时所使用的赋值操作符的不同，可以将变量分成两种类型(或者说是两种风格)：`递归展开式变量`和`直接展开式变量`；使用赋值操作符`=` 、 `+=` 和 `?=`定义的变量都是**递归展开式变量**，使用赋值操作符 `:=`定义的变量为**直接展开式变量** 。两种变量类型的的最根本区别在于：**变量值的求值时机**，递归式变量的求值时机在于**变量被引用时**，直接展开式的求值时机在于**变量被定义时**。
+
+看以下的例子：
+
+```
+foo1 = $(bar)   #递归展开式变量
+foo2 := $(bar)  #直接展开式变量
+bar = $(ugh)
+ugh = Huh?
+
+all:
+	echo "foo1 is $(foo1), foo2 is $(foo2)"
+```
+
+我们来演示一下上述的makefile，使用`vim`命令以上述内容为输入创建一个名为variabletype.mk的makefile文件。
+
+然后，使用make执行variabletype.mk：
+
+```
+$ make -f variabletype.mk
+```
+
+演示及结果如下：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid298389labid2374timestamp1481542792661.png/wm)
+
+由于变量`foo1`的变量值是在执行`echo`命令时才求的值，所以`foo1`的值被递归的展开为`Huh?`； 而变量`foo2`的变量值在定义时就被求值了，此时由于变量`bar`的值为空，因此`foo2`的值也为空。
+
+&gt; **注意：使用递归展开式的变量定义，可能会由于出现变量的递归定义而导致make陷入到无限的变量展开过程中，最终使make执行失败**
+
+ `+=` 和 `?=`是基于`=`扩展而来的两种变量赋值操作符； 
+
+`+=` 称为追加赋值操作符，它实现对于一个已经存在定义的变量进行追加赋值，如下例子：
+
+```
+bar = foo1   
+bar += foo2  #追加赋值，bar的值将为 foo1 foo2
+
+all:
+	echo $(bar)
+```
+
+`?=`称为条件赋值的赋值操作符，被称为条件赋值为：只有此变量在之前没有赋值的情况下才会对这个变量进行赋值。看一下例子：
+
+```
+bar1 = foo1
+bar1 ?= foo2  # bar1 的值还是foo1
+bar2 ?= foo2  # bar2 的值为foo2
+
+all:  
+	echo "bar1 is $(bar1), bar2 is $(bar2)" 
+```
+
+
+
+#### 特殊的变量
+
+在makefile 中用户除了可以自定义变量外，还可以使用make工具为我们提供的一些特殊的变量及用法。
+
+##### 自动化变量
+
+所谓自动化变量，就是在每条规则中，make自动为我们提供的用于指定规则各个组成部分的变量，一般情况下常用的有以下几个自动化变量：
+
+`$@` -- 代表规则中的目标文件名
+
+`$&lt;` -- 代表规则的第一个依赖的文件名
+
+`$^` -- 代表规则中所有依赖文件的列表，文件名用空格分割
+
+看例子：
+
+```
+all: first second third
+	echo "\$$@ = $@"
+	echo "$$&lt; = $&lt;"
+	echo "$$^ = $^"
+
+first second third:
+```
+
+这里有几点需要说明一下：
+
+1. `$`字符在makefile中有特殊用途，因此如果要取消其特殊用途当成一个普通字符传递给`echo`命令执行，需要使用`$$`
+2. `$@`在bash shell中也有特殊用途，因此如果希望`echo`命令在bash中正常输出`$@`， 需要加上`\`字符
+3. 该makefile的最后一行`first second third:` 看起来有点奇怪，这是一条**没有依赖和命令的多目标规则**，读者可自行将它删除看有什么效果，并思考原因。
+
+演示及结果如下：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid298389labid2374timestamp1481542807922.png/wm)
+
+
+#### 变量的替换引用
+变量的分类与赋值
+对于一个已经定义的变量，可以使用“替换引用”将其值使用指定的字符（字符串）进行替换。格式为`$(VAR:A=B)`或者`${VAR:A=B}`，意思是，将变量“VAR”所表示的值中所有字符串“A”结尾的字符替换为“B”的字。“结尾”的含义是空格之前（变量值的多个字以空格分开）。而对于变量其它部分的“A”字符不进行替换。例如：
+
+```
+sources := a.c b.c c.c o.d
+objects := $(sources:.c=.o)
+all:
+	echo "objects = $(objects)"
+```
+
+在这个定义中，变量“objects”的值就为“a.c b.c c.c d.d”。使用变量的替换引用将变量“sources”以空格分开的值中的所有的字的尾字符“o”替换为“c”，其他部分不变，注意这里的`o.d`并不会被替换。
+
+使用变量改进我们complicated项目的makefile(v1.2)：
+
+```
+# 描述：complicated 项目 makefile文件
+# 版本：v1.2
+# 修改记录：
+# 1. 为complicated项目makefile添加注释
+# 2. 使用变量改进我们complicated项目的makefile
+
+# 定义可执行文件变量
+executbale := complicated
+# 定义源文件列表变量
+sources := main.c complicated.c
+# 使用变量的引用替换，定义object文件列表
+objects := $(sources:.c=.o)
+# 定义编译命令变量
+CC := gcc
+
+# 终极目标规则，生成complicated可执行文件
+$(executbale): $(objects)
+#  使用自动化变量改造我们的编译命令
+	$(CC) -o $@ $^
+
+# 子规则1, main.o的生成规则
+main.o: main.c
+	$(CC) -o $@  -c $&lt;
+	
+# 子规则2，complicated.o的生成规则
+complicated.o: complicated.c
+	$(CC) -o $@  -c $&lt;
+```
+
+
+### 更加深入的认识makefile的规则
+
+#### 多目标规则与多规则目标
+
+##### 多目标规则
+
+多目标规则，可以简单的理解为是一种将多条具有**1)相同依赖**和**2)相同生成命令**的规则，合并成一条规则的语法，其基本格式为：
+
+```
+targets...: prerequisites...
+	commands
+	...
+```
+
+假设我们有以下makefile：
+
+```
+all: target1 target2
+	echo "This is a rule for $@"
+
+target1: dep
+	echo "This is a rule for $@"
+	
+target2: dep
+	echo "This is a rule for $@"
+
+dep:
+```
+
+利用多目标规则，可以将makefile改写成：
+
+```
+all: target1 target2
+	echo "This is a rule for $@"
+
+# 利用多目标规则合并 target1 和target2的规则
+target1 target2: dep
+	echo "This is a rule for $@"
+	
+dep:
+```
+
+例子演示：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid298389labid2374timestamp1481542900748.png/wm)
+
+这里我们可以观察到，虽然多目标规则中要求命令必须相同，但是配合上自动化变量的使用，就是可以针对不同的目标有不同的执行结果。
+
+##### 多规则目标
+
+Makefile中，一个目标可以同时出现在多条规则中。这种情况下，此目标文件的所有依赖文件将会被合并成此目标一个依赖文件列表，其中任何一个依赖文件比目标更新（比较目标文件和依赖文件的时间戳）时，make将会执行特定的命令来重建这个目标。对于一个多规则的目标，**重建此目标的命令只能出现在一个规则中**（可以是多条命令）。如果多个规则同时给出重建此目标的命令，make将使用最后一个规则的命令，同时提示错误信息。
+
+#### 静态模式规则
+
+
+仔细观察我们的complicated项目中的两条子规则：
+
+```
+# 子规则1, main.o的生成规则
+main.o: main.c
+	$(CC) -o $@  -c $&lt;
+	
+# 子规则2，complicated.o的生成规则
+complicated.o: complicated.c
+	$(CC) -o $@  -c $&lt;
+```
+
+我们发现它们长得很像，好像一个模子里印出来的，首先**它们的命令是一样的**，其次它们目标依赖关系有点相似(目标都是以.o结尾的文件，依赖都是以.c结尾的文件)。对于这种长得很像的规则，makefile提供了一种称为**静态模式规则**的规则来帮助我们简化规则的编写。
+
+静态模式规则，可以理解为一种特殊的多目标规则，它仅要求多条规则具有相同的命令，而依赖可以不完全一样。
+
+静态模式规则，其基本语法：
+
+```
+TARGETS ...: TARGET-PATTERN: PREREQ-PATTERNS ...
+	COMMANDS
+	...
+```
+
+ 其大致意思就是，用`TARGET-PATTERN: PREREQ-PATTERNS ...`描述的模式，从`TARGETS ...`取值来形成一条条规则，所有规则的命令都用`COMMANDS`。 
+
+`TARGETS ...`代表具有相同模式的规则的目标列表，在我们的项目中就是main.o和complicated.o，我们可以直接引用我们先前定义的objects变量。
+
+`TARGET-PATTERN: PREREQ-PATTERNS ...`部分定义了，如何为目标列表中的目标，生成依赖；`TARGET-PATTERN`称为目标模式，`PREREQ-PATTERNS`称为依赖模式；目标模式和依赖模式中，一般需要包含模式字符`%`。 
+
+目标模式的作用就是从目标列表中的目标匹配过滤出需要的值，目标模式中的字符`%`表示在匹配过滤的过程中不做过滤的部分，目标模式中的其他字符表示要与目标列表中的目标精确匹配，例如，目标模式`%.o`， 表示从目标列表的目标中匹配所有已`.o`结尾的目标，然后过滤掉匹配目标的`.o`部分， 因此目标`main.o`经过目标模式`%.o`匹配过滤后，得到的输出就是`main`。 
+
+依赖模式的作用就是表示要如何生成依赖文件。具体的生成过程，就是使用目标模式过滤出来的值，替换依赖模式字符`%`所表示的位置。因此，如果依赖模式为`%.c`， 则使用上述例子过滤出来的`main`来替换字符`%`， 最终得到依赖文件`main.c`
+
+因此，我们可以这么用静态模式规则来简化我们的complicated项目：
+
+```
+# 静态模式规则简化complicated makefile
+$(objects): %.o: %.c
+	$(CC) -o $@  -c $&lt;
+```
+
+#### 伪目标
+
+我们的complicated项目编译完成后，会有可执行文件及中间目标文件，有时出于某些需求，需要将编译生成的文件都删除，让整个项目回到最初的状态。我们可以在该项目makefile定义添加一条目标为`clean`的规则，如下：
+
+```
+# complicated项目添加clean 规则
+clean:
+	rm -rf complicated complicated.o main.o
+```
+
+演示如下：
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid298389labid2374timestamp1481542923103.png/wm)
+
+上述的clean规则，貌似能正常工作，但其实是存在bug的，当我们的目录下刚好存在一个叫做clean的文件时，事情就没那么顺利了：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid298389labid2374timestamp1481542931541.png/wm)
+
+出现以上问题的原因是，当编译目录下存在clean文件时，由于clean规则没有依赖，所以clean文件的时间戳永远显得都是最新的，故其命令也无法被执行，这时我们就得请伪目标出手帮助了。
+
+当我们将一个目标定义成伪目标时，意味着它不代表一个真正的文件名，在执行make时可以指定这个目标来执行其所在规则定义的命令。
+
+定义一个为目标的基本语法：
+
+```
+.PHONY: &lt;伪目标&gt;
+```
+
+因此我们以定义complicated项目的clean目标，为伪目标，如下：
+
+```
+# complicated项目添加clean 规则
+.PHONY: clean
+clean:
+	rm -rf complicated complicated.o main.o
+```
+
+这样目标`clean`就是一个伪目标，无论当前目录下是否存在`clean`这个文件。我们输入`make clean`之后。`rm`命令都会被执行。
+
+演示如下：
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid298389labid2374timestamp1481542942866.png/wm)
+
+#### 命令
+
+##### 命令的回显
+
+通常，make在执行命令行之前会把要执行的命令行进行输出，如以下makefile：
+
+```
+all:
+	echo "Hello world!"
+```
+
+在执行make时，其输出：
+
+```
+$ make
+  echo "Hello world!"
+  Hello world!
+```
+
+关闭命令回显有以下几种方式：
+
+1. 每个需要关闭回显的命令行前加上"@"字符，上述例子关闭回显：
+
+   ```
+   all:
+   	@echo "Hello world!"
+   ```
+
+2. 执行make时带上参数`-s`或`--slient`禁止所有执行命令的显示
+
+3. 在Makefile中使用没有依赖的特殊目标`.SILENT`也可以禁止所有命令的回显
+
+##### 命令的执行
+
+在Makefile中**书写在同一行中的多个命令属于一个完整的shell命令行**，**书写在独立行的一条命令是一个独立的shell命令行**。所以需要注意：在一个规则的命令中，命令行`cd`改变目录不会对其后的命令的执行产生影响。就是说其后的命令执行的工作目录不会是之前使用`cd`进入的那个目录。如果要实现这个目的**，**就不能把`cd`和其后的命令放在两行来书写。而应该把这两条命令写在一行上，用分号分隔。这样它们才是一个完整的shell命令行。
+
+对比以下例子两个规则的输出：
+
+```
+target1:
+	@echo "target1"
+	@cd ~
+	@pwd
+	
+target2:
+	@echo "target2"
+	@cd ~; pwd
+```
+
+例子演示：
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid298389labid2374timestamp1481542963239.png/wm)
+
+##### 命令执行的错误处理
+
+通常情况下，规则中的每一条命令在运行结束后，make都会检测命令执行的返回状态，如果返回成功，就执行下一条命令；命令出错（返回状态非0），make就会放弃对当前规则的执行，或者终止对当前makefile的解析执行。
+
+在一些情况下，规则中的一个命令的执行失败并不代表规则执行的错误。为了忽略一些无关紧要的命令执行失败的情况，我们可以在命令之前加一个减号`-`，来告诉make忽略此命令的执行失败检查。
+
+在更加深入的认识了makefile的规则后，我们complicated项目的makefile(v1.3)就可以这样写了：
+
+```
+# 描述：complicated 项目 makefile文件
+# 版本：v1.3
+# 修改记录：
+# 1. 为complicated项目makefile添加注释
+# 2. 使用变量改进我们complicated项目的makefile
+# 3. 使用静态模式规则，简化makefile
+# 4. 使用伪目标，加上clean规则
+
+# 定义可执行文件变量
+executbale := complicated
+# 定义源文件列表变量
+sources := main.c complicated.c
+# 使用变量的引用替换，定义object文件列表
+objects := $(sources:.c=.o)
+# 定义编译命令变量
+CC := gcc
+RM := rm -rf
+
+# 终极目标规则，生成complicated可执行文件
+$(executbale): $(objects)
+#  使用自动化变量改造我们的编译命令
+	$(CC) -o $@ $^
+
+# 子规则, main.o和complicated.o的生成规则，使用静态模式规则
+$(objects):%.o:%.c
+	$(CC) -o $@  -c $&lt;
+		
+# clean规则
+.PHONY: clean
+clean:
+	$(RM) $(executbale) $(objects)
+```
+
+### 内嵌函数
+
+make的内嵌函数为我们提供了处理文件名、变量、文本和命令的方法。使我们的Makefile更为灵活和健壮。我们可以在需要的地方地调用函数来处理指定的文本（参数），函数的在调用它的地方被替换为它的处理结果。函数调用（引用）的展开和变量引用的展开方式类似：
+
+函数调用方式1：
+
+```
+$(FUNCTION ARGUMENTS)
+```
+
+函数调用方式2：
+
+```
+${FUNCTION ARGUMENTS}
+```
+
+#### 内嵌函数的分类
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid298389labid2374timestamp1481542989691.png/wm)
+
+#### 使用wildcard函数改进complicated项目makefile
+
+wildcard函数，其使用范式：
+
+```
+$(wildcard PATTERN)
+```
+
+函数名称：wildcard
+
+函数功能：列出当前目录下所有符合模式“PATTERN”格式的文件名。
+
+返回值：空格分割的、存在当前目录下的所有符合模式“PATTERN”的文件名。
+
+函数说明：“PATTERN”使用shell可识别的通配符，包括`?`（单字符）、`*`（多字符）等。 
+
+示例：&nbsp;
+
+```
+$(wildcard *.c)&nbsp;
+```
+
+返回值为当前目录下所有.c源文件列表。
+
+我们可以引进wildcard函数，改进complicated项目的makefile，使其能够**自动扫描当前目录下的源文件**：
+
+```
+# 描述：complicated 项目 makefile文件
+# 版本：v1.4
+# 修改记录：
+# 1. 为complicated项目makefile添加注释
+# 2. 使用变量改进我们complicated项目的makefile
+# 3. 使用静态模式规则，简化makefile
+# 4. 使用伪目标，加上clean规则
+# 5. 引进wildcard函数，自动扫描当前目录下的源文件
+
+# 定义可执行文件变量
+executbale := complicated
+# 引进wildcard函数扫描源文件，定义列表变量
+sources := $(wildcard *.c)
+# 使用变量的引用替换，定义object文件列表
+objects := $(sources:.c=.o)
+# 定义编译命令变量
+CC := gcc
+RM := rm -rf
+
+# 终极目标规则，生成complicated可执行文件
+$(executbale): $(objects)
+#  使用自动化变量改造我们的编译命令
+	$(CC) -o $@ $^
+
+# 子规则, main.o和complicated.o的生成规则，使用静态模式规则
+$(objects):%.o:%.c
+	$(CC) -o $@ -c $&lt;
+		
+# clean规则
+.PHONY: clean
+clean:
+	$(RM) $(executbale) $(objects) 
+```
+
+演示如下：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid298389labid2374timestamp1481543175412.png/wm)
+
+### 自动生成依赖关系
+
+至此，我们complicated项目的makefile已经完成的比较完善了，但还存在一个问题，当我们更新头文件complicated.h的内容后，执行make时，项目并不会重新编译，看演示：
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid298389labid2374timestamp1481543190884.png/wm)
+
+出现以上问题的根本原因是，我们的makefile还没能精确的反映整个项目工程的依赖关系！很明显，项目的依赖关系应该加入对于头文件的依赖，即如下图：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid298389labid2374timestamp1481543212885.png/wm)
+
+根据上述依赖关系，我们可以在makefile加上如下规则：
+
+```
+$(objects): complicated.h
+```
+
+上述新增规则，是一条多目标规则，它与之前的静态模式规则，又组成了多规则目标，读者可自行思考其工作原理。
+
+上述规则加入虽然能解决我们的问题，但是对于大型复杂的项目，这种需要我们逐个去分析头文件被依赖的关系，几乎是不可能的。所以我们需要工具来帮我们做这个事。下面我们来介绍如何实现自动生成依赖关系。
+
+gcc为我们提供了这样的功能，帮助我们分析一个文件对其他文件的依赖关系列表。当我们在执行gcc时带上`-MM`选项时，gcc工具就会为我们列出指定文件对其他文件的依赖关系列表。直接来看例子：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid298389labid2374timestamp1481543272733.png/wm)
+
+接下来要考虑的问题就是如何将gcc的输出导入到我们的makefile中了。
+
+makefile支持使用`sinclude`关键字将指定文件导入到当前的makefile当中，它的作用与C语言的`#inlucde`预处理命令是一样的。使用方式`sinclude &lt;other_makefiles&gt;`。因此，我们可以将gcc对于源文件的依赖关系分析输出到某个文件(我们可以称为依赖描述文件，一般命名为与源文件同名但以.d结尾的文件)当中，然后再将依赖描述文件导入到makefile中。
+
+```
+# 使用变量的引用替换，定义依赖描述文件列表
+deps := $(sources:.c=.d)
+
+# 导入依赖描述文件列表
+sinclude $(deps)
+```
+
+当我们使用`sinclude`关键字向当前makefile导入文件时，如果所导入的文件不存在，make会试图去执行可以生产导入文件的规则去生产被导入的文件，然后再执行导入。因此我们可以使用静态模式规则，让make在执行时，去调用gcc生成依赖关系文件，我们可以这么写：
+
+```
+$(deps):%.d:%.c
+	gcc -MM $&lt; &gt; $@
+```
+
+因此，我们complicated项目的最终makefile可以这么写：
+
+```
+# 描述：complicated 项目 makefile文件
+# 版本：v1.5
+# 修改记录：
+# 1. 为complicated项目makefile添加注释
+# 2. 使用变量改进我们complicated项目的makefile
+# 3. 使用静态模式规则，简化makefile
+# 4. 使用伪目标，加上clean规则
+# 5. 引进wildcard函数，自动扫描当前目录下的源文件
+# 6. 加入自动规则依赖
+
+# 定义可执行文件变量
+executbale := complicated
+# wildcard函数扫描源文件，定义列表变量
+sources := $(wildcard *.c)
+# 使用变量的引用替换，定义object文件列表
+objects := $(sources:.c=.o)
+# 使用变量的引用替换，定义依赖描述文件列表
+deps := $(sources:.c=.d)
+
+# 定义编译命令变量
+CC := gcc
+RM := rm -rf
+
+# 终极目标规则，生成complicated可执行文件
+$(executbale): $(objects)
+#  使用自动化变量改造我们的编译命令
+	$(CC) -o $@ $^
+
+# 子规则, main.o和complicated.o的生成规则，使用静态模式规则
+$(objects):%.o:%.c
+	$(CC) -o $@  -c $&lt;
+		
+# clean规则
+.PHONY: clean
+clean:
+	$(RM) $(executbale) $(objects) $(deps)
+
+# 自动规则依赖
+sinclude $(deps)
+
+$(deps):%.d:%.c
+	$(CC) -MM $&lt; &gt; $@
+```
+
+演示如下：
+
+![此处输入图片的描述](https://dn-anything-about-doc.qbox.me/document-uid298389labid2374timestamp1481543229020.png/wm)
+
+## 五、参考资料
+
+- [专业嵌入式软件开发](https://book.douban.com/subject/6966320/)
+
+
+- [Gnu make 中文手册](http://211.162.82.85:9011/hacker-yhj.github.io/c3pr90ntc0td/resources/gun_make.pdf)
+
+</textarea>
+<nav>
+    <ul class="pager">
+        
+        
+    </ul>
+</nav>
+
+
+    
+    <div class="vip-banner">
+        
+        动手实践是学习 IT 技术最有效的方式！
+        
+        
+
+        
+
+        
+            
+        
+
+        
+        <a class="btn   lab-item-start" data-mobile-url="/courses/document/2374" data-url="/courses/start/2374" data-next="/courses/running">开始实验</a>
+    </div>
+    
+
+
+        </div>
+        <div class="col-md-3 layout-side">
+            
+    <div class="side-image side-image-pc">
+        <img src="./跟我一起来玩转Makefile - 实验楼_files/1482215587606.png">
+    </div>
+    
+    
+
+    
+        
+    
+
+
+    
+        
+<div class="sidebox mooc-teacher">
+    <div class="sidebox-header mooc-header">
+        <h4 class="sidebox-title">课程教师</h4>
+    </div>
+    <div class="sidebox-body mooc-content">
+        <a href="https://www.shiyanlou.com/user/298389" target="_blank">
+            <img src="./跟我一起来玩转Makefile - 实验楼_files/gravatar8XE5DKMTNBL4.jpg">
+        </a>
+        <div class="mooc-info">
+            <div class="name"><strong>newdao</strong> </div>
+            
+            <div class="courses">共发布过<strong>2</strong>门课程</div>
+        </div>
+        <div class="mooc-extra-info">
+            <div class="word long-paragraph">
+                
+            </div>
+        </div>
+    </div>
+    <div class="sidebox-footer mooc-footer">
+        <a href="https://www.shiyanlou.com/teacher/298389" target="_blank">查看老师的所有课程 &gt;</a>
+    </div>
+</div>
+
+    
+    
+    
+    
+    <span class="btn side-btn" data-toggle="modal" data-target="#askquestion" id="askBtn" href="javascript:void(0)" style="position: fixed; top: 61px; width: 283px;">我要提问</span>
+    
+    
+    
+    
+    
+
+        </div>
+    </div>
+</div>
+
+
+	<div class="modal fade" id="invite-user" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">邀请好友，双方都可获赠实验豆！</h4>
+				</div>
+				<div class="modal-body">
+                    
+					<div class="form-label">
+                        分享专属链接给好友，或粘贴到QQ群/微博/论坛，好友注册后，您和好友将分别获赠3个实验豆！
+                    </div>
+					<input type="text" id="bstext" class="form-invite" value="https://www.shiyanlou.com/register?inviter=NTY0MzE5MjQ4Mzk4">              
+                    
+					<div id="msg-modal"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="flash-message" tabindex="-1" role="dialog">
+		<div class="modal-dialog" rolw="document">
+		</div>
+	</div>
+	<div class="modal fade" id="modal-message" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">注意</h4>
+				</div>
+				<div class="modal-body">
+				</div>
+				<div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary confirm" data-dismiss="modal">确定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+    
+
+    
+<div class="modal fade" id="start-newlab">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3>开始新实验</h3>
+			</div>
+			<div class="modal-body">
+                <p>一个实验正在进行，是否停止它，开始新实验？</p>
+			</div>
+			<div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+                <a class="btn btn-primary start-newlab-confirm">确定</a>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div>
+<div class="modal fade" id="start-evaluation-course">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3>开始评估课实验</h3>
+			</div>
+			<div class="modal-body">
+                <div>
+                    <p>为了让评估结果更加准确，请注意以下操作：</p>
+                    <ul>
+                        <li>完成实验后点击「停止实验」按钮</li>
+                        <li>将代码提交到代码库</li>
+                        <li>尽可能详尽的撰写实验报告</li>
+                        <li>尽可能在实验操作的关键步骤截图</li>
+                        <li>尽可能减少无用操作</li>
+                        <li>尽可能高效的利用内存/CPU资源</li>
+                    </ul>
+                    <p>评估课还在不断完善中，我们真挚希望你能通过我们提供的这个平台，找到更好的发展机会。</p>
+                </div>
+                <br>
+                <div class="start-newlab"></div>
+			</div>
+			<div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+                <a class="btn btn-primary start-confirm">确定</a>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div>
+<div class="modal fade" id="vip-startlab-modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3>开始实验</h3>
+			</div>
+			<div class="modal-body">
+                <div class="start-newlab"></div>
+                <br>
+                <div class="text-center vip-vm">
+                    <a class="btn btn-default btn-lg newvm">创建新环境</a>
+					
+                </div>
+                <br>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade askquestion-modal" id="askquestion" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">发帖</h4>
+            </div>
+            <div class="modal-body words-ctrl">
+                <form class="form-horizontal" action="https://www.shiyanlou.com/questions/">
+                    <input name="_csrf_token" type="hidden" value="1483756812##cc16d3597fb5c900cae95b83159fd49bef3eba17">
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">标题</label>
+                        <div class="col-md-10">
+                            <input type="text" name="title" min="5" max="100" class="form-control" placeholder="至少输入5个字" value="">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">描述</label>
+                        <div class="col-md-10">
+                            
+                            
+                            
+<div class="tabpanel mkeditor">
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active">
+            <a href="https://www.shiyanlou.com/courses/713/labs/2374/document#mkeditor-editor" role="tab" data-toggle="tab">编辑</a>
+        </li>
+        <li role="presentation">
+            <a class="mkeditor-btn-view" href="https://www.shiyanlou.com/courses/713/labs/2374/document#mkeditor-viewer" role="tab" data-toggle="tab">预览</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active mkeditor-editor" id="mkeditor-editor" role="tabpanel">
+            
+            <div class="btn-group" role="group">
+            
+                <button type="button" class="btn btn-default mkeditor-btn-bold">
+                    <i class="fa fa-bold"></i>
+                </button>
+                <button type="button" class="btn btn-default mkeditor-btn-italic">
+                    <i class="fa fa-italic"></i>
+                </button>
+                <button type="button" class="btn btn-default mkeditor-btn-link">
+                    <i class="fa fa-link"></i>
+                </button>
+                <button type="button" class="btn btn-default mkeditor-btn-quote">
+                    <i class="fa fa-quote-left"></i>
+                </button>
+                <button type="button" class="btn btn-default mkeditor-btn-code">
+                    <i class="fa fa-code"></i>
+                </button>
+                <button id="mkeditor-pickfile" type="button" class="btn btn-default mkeditor-btn-img">
+                    <i class="fa fa-image"></i>
+                </button>
+                
+                <button type="button" class="btn btn-default mkeditor-btn-listol">
+                    <i class="fa fa-list-ol"></i>
+                </button>
+                <button type="button" class="btn btn-default mkeditor-btn-listul">
+                    <i class="fa fa-list-ul"></i>
+                </button>
+            </div>
+            <div class="btn-group pull-right" role="group">
+                <a style="font-size:12px; color:#666; text-decoration:underline;" href="https://www.shiyanlou.com/questions/764" target="_blank">
+                    <i class="fa fa-question-circle"></i>Markdown 语法
+                </a>
+            </div>
+            <textarea name="content" class="content" min="0" max="20000" placeholder="推荐使用 Markdown 语法，至少输入 5 个字"></textarea>
+            <div class="help-block"></div>
+        </div>
+        <div class="tab-pane mkeditor-viewer markdown-body" id="mkeditor-viewer" role="tabpanel">
+            <div></div>
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">板块</label>
+                        <div class="col-md-10">
+                            <div class="q-types" data-type="">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="submit-question btn btn-primary" href="https://www.shiyanlou.com/vip" target="_blank" style="background:#FFFFFF;color:#00CC99;border:none;float:left;padding-left:0;"><img src="./跟我一起来玩转Makefile - 实验楼_files/senior-vip-icon.png" alt=""> 加入高级会员获得助教答疑</a>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="submit-question btn btn-primary" data-dismiss="modal">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+	
+		
+			
+		
+	
+
+    <div class="modal fade" id="sign-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <button type="button" class="close-modal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <div class="modal-body">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="https://www.shiyanlou.com/courses/713/labs/2374/document#signin-form" aria-controls="signin-form" role="tab" data-toggle="tab">登录</a>
+                    </li>
+                    <li role="presentation">
+                        <a href="https://www.shiyanlou.com/courses/713/labs/2374/document#signup-form" aria-controls="signup-form" role="tab" data-toggle="tab">注册</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="signin-form">
+                        <form action="https://www.shiyanlou.com/login" method="post">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-envelope" style="margin:0;"></i>
+                                    </div>
+                                    <input type="email" name="login" class="form-control" placeholder="请输入邮箱">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-lock" style="margin:0;"></i>
+                                    </div>
+                                    <input type="password" name="password" class="form-control" placeholder="请输入密码">
+                                </div>
+                            </div>
+                            <div class="form-inline verify-code-item" style="display:none;">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" name="captcha_v" class="form-control" placeholder="请输入验证码">
+                                    </div>
+                                </div>
+                                <img class="verify-code" src="https://www.shiyanlou.com/courses/713/labs/2374/document" source="/captcha.gif">
+                            </div>
+                            <div class="form-group remember-login">
+                                <input name="remember" type="checkbox" value="y"> 下次自动登录
+                                <a class="pull-right" href="https://www.shiyanlou.com/reset_password">忘记密码？</a>
+                            </div>
+                            <div class="form-group">
+                                <input class="btn btn-primary" name="submit" type="submit" value="进入实验楼">
+                            </div>
+                            <div class="form-group widget-signin">
+                                <span>快速登录</span>
+                                <a href="https://www.shiyanlou.com/auth/qq?next="><i class="fa fa-qq"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/weibo?next="><i class="fa fa-weibo"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/weixin?next="><i class="fa fa-weixin"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/github?next="><i class="fa fa-github"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/renren?next="><i class="fa fa-renren"></i></a>
+                            </div>
+                            <div class="form-group error-msg">
+                                <div class="alert alert-danger" role="alert"></div>
+                            </div>
+                        </form>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="signup-form">
+                        <form action="https://www.shiyanlou.com/register" method="post">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-envelope" style="margin:0;"></i>
+                                    </div>
+                                    <input type="email" name="email" class="form-control" placeholder="请输入邮箱">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-lock" style="margin:0;"></i>
+                                    </div>
+                                    <input type="password" name="password" class="form-control" placeholder="请输入密码">
+                                </div>
+                            </div>
+                            <div class="form-inline">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" name="captcha_v" class="form-control" placeholder="请输入验证码">
+                                    </div>
+                                </div>
+                                <img class="verify-code" src="https://www.shiyanlou.com/courses/713/labs/2374/document" source="/captcha.gif">
+                            </div>
+                            <div class="form-group">
+                                <input class="btn btn-primary" name="submit" type="submit" value="注册">
+                            </div>
+                            <div class="form-group agree-privacy">
+                                注册表示您已经同意我们的<a href="https://www.shiyanlou.com/privacy" target="_blank">隐私条款</a>
+                            </div>
+                            <div class="form-group widget-signup">
+                                <span>快速注册</span>
+                                <a href="https://www.shiyanlou.com/auth/qq?next="><i class="fa fa-qq"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/weibo?next="><i class="fa fa-weibo"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/weixin?next="><i class="fa fa-weixin"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/github?next="><i class="fa fa-github"></i></a>
+                                <a href="https://www.shiyanlou.com/auth/renren?next="><i class="fa fa-renren"></i></a>
+                            </div>
+                            <div class="form-group error-msg">
+                                <div class="alert alert-danger" role="alert"></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <div id="base-data" data-flash="false" data-is-login="true" data-jwt-token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzaGl5YW5sb3U6d2ViOmFwcCIsInVuYW1lIjoid2h1aGFuMjAxMyIsInVpZCI6IjIzNTcyMyIsImV4cCI6MTQ4MzgzOTYxMiwiaWF0IjoxNDgzNzUzMjEyfQ.Cq3-Ap-oCQw8XPf-gi6jrxRJ-zLSbua7Zx0dUf6g4gk" data-user-id="235723" data-is-jwt="true" data-socket-url="wss://comet.shiyanlou.com" data-msg-user="" data-msg-system=""></div>
+
+    <script charset="utf-8" src="./跟我一起来玩转Makefile - 实验楼_files/v.js"></script><script async="" src="./跟我一起来玩转Makefile - 实验楼_files/analytics.js"></script><script src="./跟我一起来玩转Makefile - 实验楼_files/hm.js"></script><script src="./跟我一起来玩转Makefile - 实验楼_files/lib.js"></script>
+    <script src="./跟我一起来玩转Makefile - 实验楼_files/jquery.min.js"></script>
+    <script src="./跟我一起来玩转Makefile - 实验楼_files/ace.js"></script>
+    <script src="./跟我一起来玩转Makefile - 实验楼_files/aliyun-oss-sdk-4.3.0.min.js"></script>
+    <script src="./跟我一起来玩转Makefile - 实验楼_files/highlight.min.js"></script>
+    <script src="./跟我一起来玩转Makefile - 实验楼_files/jspdf.min.js"></script>
+    <script src="./跟我一起来玩转Makefile - 实验楼_files/plupload.full.min.js"></script>
+    <script src="./跟我一起来玩转Makefile - 实验楼_files/ZeroClipboard.min.js"></script>
+    <script src="./跟我一起来玩转Makefile - 实验楼_files/video.min.js"></script>
+    <script src="./跟我一起来玩转Makefile - 实验楼_files/bootstrap-tour.min.js"></script>
+    <script src="./跟我一起来玩转Makefile - 实验楼_files/bootstrap-table.min.js"></script>
+    <script src="./跟我一起来玩转Makefile - 实验楼_files/bootstrap-table-zh-CN.min.js"></script>
+    <script src="./跟我一起来玩转Makefile - 实验楼_files/bootstrap-table-filter-control.min.js"></script>
+
+    <script src="./跟我一起来玩转Makefile - 实验楼_files/raven.min.js"></script>
+    <script>
+        Raven.config('https://bc3878b7ed0a4468a65390bd79e6e73f@sentry.shiyanlou.com/5', {
+            release: '3.12.13'
+        }).install();
+    </script>
+
+    
+<div id="jinja-data" data-tencent-labid="[662]" data-course-detail="/courses/713" data-left-time="0" data-course-id="713" data-userlab-id="None" data-question-form="/questions/meta" data-start-newlab-url="/courses/clear"></div>
+<script src="./跟我一起来玩转Makefile - 实验楼_files/labDoc.js"></script><div style="display: none; position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; background: rgba(0, 0, 0, 0.498039); text-align: center; z-index: 1600;"><i class="fa fa-spinner fa-pulse" style="margin-top: 240.8px; color: rgb(255, 255, 255); font-size: 35px;"></i></div>
+
+
+
+	
+        
+            
+            
+<div class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 clearfix footer-col">
+                <img src="./跟我一起来玩转Makefile - 实验楼_files/logo_03.png">
+                <div class="footer-slogan">动手做实验，轻松学编程</div>
+                <div class="col-xs-2">
+                    <div class="social-item footer-weixin-item">
+                        <i class="fa fa-weixin"></i>
+                        <div class="footer-weixin">
+                            <img src="./跟我一起来玩转Makefile - 实验楼_files/footer-weixin.png">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-2">
+                    <div class="social-item footer-qq-item">
+                        <i class="fa fa-qq"></i>
+                    </div>
+                </div>
+                <div class="col-xs-2">
+                    <div class="social-item footer-weibo-item">
+                        <a href="http://weibo.com/shiyanlou2013" target="_blank">
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6 col-sm-3 col-md-2 footer-col">
+                <div class="col-title">公司</div>
+                <a href="https://www.shiyanlou.com/aboutus" target="_blank">关于我们</a><br>
+                <a href="https://www.shiyanlou.com/contact" target="_blank">联系我们</a><br>
+                <a href="http://www.simplecloud.cn/jobs.html" target="_blank">加入我们</a><br>
+                <a href="https://blog.shiyanlou.com/" target="_blank">技术博客</a><br>
+            </div>
+            <div class="col-xs-6 col-sm-3 col-md-2 footer-col">
+                <div class="col-title">合作</div>
+                <a href="https://www.shiyanlou.com/contribute" target="_blank">我要投稿</a><br>
+                <a href="https://www.shiyanlou.com/labs" target="_blank">教师合作</a><br>
+                <a href="https://www.shiyanlou.com/edu/" target="_blank">高校合作</a><br>
+                <a href="https://www.shiyanlou.com/friends" target="_blank">友情链接</a>
+            </div>
+            <div class="col-xs-6 col-sm-3 col-md-2 footer-col">
+                <div class="col-title">服务</div>
+                <a href="https://www.shiyanlou.com/bootcamp/" target="_blank">实战训练营</a><br>
+                <a href="https://www.shiyanlou.com/vip" target="_blank">会员服务</a><br>
+                <a href="https://www.shiyanlou.com/courses/reports" target="_blank">实验报告</a><br>
+                <a href="https://www.shiyanlou.com/questions/?tag=%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98" target="_blank">常见问题</a><br>
+                <a href="https://www.shiyanlou.com/privacy" target="_blank">隐私条款</a>
+            </div>
+            <div class="col-xs-6 col-sm-3 col-md-2 footer-col">
+                <div class="col-title">学习路径</div>
+                <a href="https://www.shiyanlou.com/paths/python" target="_blank">Python学习路径</a><br>
+                <a href="https://www.shiyanlou.com/paths/linuxdev" target="_blank">Linux学习路径</a><br>
+                <a href="https://www.shiyanlou.com/paths/bigdata" target="_blank">大数据学习路径</a><br>
+                <a href="https://www.shiyanlou.com/paths/java" target="_blank">Java学习路径</a><br>
+                <a href="https://www.shiyanlou.com/paths/php" target="_blank">PHP学习路径</a><br>
+                <a href="https://www.shiyanlou.com/paths/" ,="" target="_blank">全部</a>
+            </div>
+        </div>
+    </div>
+    <div class="text-center copyright">
+        <span>Copyright @2013-2016 实验楼在线教育</span>
+        <span class="ver-line"> | </span>
+        <a href="http://www.miibeian.gov.cn/" target="_blank">蜀ICP备13019762号</a>
+        <script type="text/javascript">
+            var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+            document.write(unescape("%3Cspan id='cnzz_stat_icon_5902315'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D5902315' type='text/javascript'%3E%3C/script%3E"));
+        </script><span id="cnzz_stat_icon_5902315"><a href="http://www.cnzz.com/stat/website.php?web_id=5902315" target="_blank" title="站长统计">站长统计</a></span><script src="./跟我一起来玩转Makefile - 实验楼_files/stat.php" type="text/javascript"></script><script src="./跟我一起来玩转Makefile - 实验楼_files/core.php" charset="utf-8" type="text/javascript"></script>
+        <script>
+            var _hmt = _hmt || [];
+            (function() {
+             var hm = document.createElement("script");
+             hm.src = "//hm.baidu.com/hm.js?6eb47a3aeda6ea31fa53985fdfdc78e8";
+             var s = document.getElementsByTagName("script")[0];
+             s.parentNode.insertBefore(hm, s);
+             })();
+        </script>
+        <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+         })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-89338452-1', 'auto');
+        ga('send', 'pageview');
+        </script>
+    </div>
+</div>
+
+            
+        
+	
+
+
+</body></html>
