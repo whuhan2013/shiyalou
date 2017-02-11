@@ -8,3 +8,4 @@ shiyalou course
 - [scikit-learn实现ebay数据分析 - 实验楼](scikit-learn实现ebay数据分析 - 实验楼.htm)
 - [跟我一起来玩转Makefile - 实验楼](跟我一起来玩转Makefile - 实验楼.htm)
 - [神经网络实现手写字符识别系统 - 实验楼](神经网络实现手写字符识别系统 - 实验楼.htm)
+- [人机对战初体验_四子棋游戏 - 实验楼](人机对战初体验_四子棋游戏 - 实验楼.htm)
